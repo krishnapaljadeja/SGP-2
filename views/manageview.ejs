@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuiziFY</title>
+    <style>
+      @imprt url(https://fonts.googleapis.com/css2?family=Lato&display=swap);
+      
+      @import url(https://fonts.googleapis.com/css2?family=Open+Sans&display=swap);
+      
+      @import url(https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200);
+      
+      /*! tailwindcss v3.4.11 | MIT License | https://tailwindcss.com*/
+      *,
+      :after,
+      :before {
+        border: 0 solid #e5e7eb;
+        box-sizing: border-box;
+      }
+      :after,
+      :before {
+        --tw-content: "";
+      }
+      :host,
+      html {
+        line-height: 1.5;
+        -webkit-text-size-adjust: 100%;
+        font-family:
+          Open Sans,
+          ui-sans-serif,
+          system-ui,
+          sans-serif,
+          Apple Color Emoji,
+          Segoe UI Emoji,
+          Segoe UI Symbol,
+          Noto Color Emoji;
+        font-feature-settings: normal;
+        font-variation-settings: normal;
+        -moz-tab-size: 4;
+        tab-size: 4;
+        -webkit-tap-highlight-color: transparent;
+      }
+      body {
+        line-height: inherit;
+        margin: 0;
+      }
+      hr {
+        border-top-width: 1px;
+        color: inherit;
+        height: 0;
+      }
+      abbr:where([title]) {
+        text-decoration: underline dotted;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-size: inherit;
+        font-weight: inherit;
+      }
+      a {
+        color: inherit;
+        text-decoration: inherit;
+      }
+      b,
+      strong {
+        font-weight: bolder;
+      }
+      code,
+      kbd,
+      pre,
+      samp {
+        font-family:
+          ui-monospace,
+          SFMono-Regular,
+          Menlo,
+          Monaco,
+          Consolas,
+          Liberation Mono,
+          Courier New,
+          monospace;
+        font-feature-settings: normal;
+        font-size: 1em;
+        font-variation-settings: normal;
+      }
+      small {
+        font-size: 80%;
+      }
+      sub,
+      sup {
+        font-size: 75%;
+        line-height: 0;
+        position: relative;
+        vertical-align: baseline;
+      }
+      sub {
+        bottom: -0.25em;
+      }
+      sup {
+        top: -0.5em;
+      }
+      table {
+        border-collapse: collapse;
+        border-color: inherit;
+        text-indent: 0;
+      }
+      button,
+      input,
+      optgroup,
+      select,
+      textarea {
+        color: inherit;
+        font-family: inherit;
+        font-feature-settings: inherit;
+        font-size: 100%;
+        font-variation-settings: inherit;
+        font-weight: inherit;
+        letter-spacing: inherit;
+        line-height: inherit;
+        margin: 0;
+        padding: 0;
+      }
+      button,
+      select {
+        text-transform: none;
+      }
+      button,
+      input:where([type="button"]),
+      input:where([type="reset"]),
+      input:where([type="submit"]) {
+        -webkit-appearance: button;
+        background-color: transparent;
+        background-image: none;
+      }
+      :-moz-focusring {
+        outline: auto;
+      }
+      :-moz-ui-invalid {
+        box-shadow: none;
+      }
+      progress {
+        vertical-align: baseline;
+      }
+      ::-webkit-inner-spin-button,
+      ::-webkit-outer-spin-button {
+        height: auto;
+      }
+      [type="search"] {
+        -webkit-appearance: textfield;
+        outline-offset: -2px;
+      }
+      ::-webkit-search-decoration {
+        -webkit-appearance: none;
+      }
+      ::-webkit-file-upload-button {
+        -webkit-appearance: button;
+        font: inherit;
+      }
+      summary {
+        display: list-item;
+      }
+      blockquote,
+      dd,
+      dl,
+      figure,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      hr,
+      p,
+      pre {
+        margin: 0;
+      }
+      fieldset {
+        margin: 0;
+      }
+      fieldset,
+      legend {
+        padding: 0;
+      }
+      menu,
+      ol,
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      dialog {
+        padding: 0;
+      }
+      textarea {
+        resize: vertical;
+      }
+      input::placeholder,
+      textarea::placeholder {
+        color: #9ca3af;
+        opacity: 1;
+      }
+      [role="button"],
+      button {
+        cursor: pointer;
+      }
+      :disabled {
+        cursor: default;
+      }
+      audio,
+      canvas,
+      embed,
+      iframe,
+      img,
+      object,
+      svg,
+      video {
+        display: block;
+        vertical-align: middle;
+      }
+      img,
+      video {
+        height: auto;
+        max-width: 100%;
+      }
+      [hidden] {
+        display: none;
+      }
+      *,
+      :after,
+      :before {
+        --tw-border-spacing-x: 0;
+        --tw-border-spacing-y: 0;
+        --tw-translate-x: 0;
+        --tw-translate-y: 0;
+        --tw-rotate: 0;
+        --tw-skew-x: 0;
+        --tw-skew-y: 0;
+        --tw-scale-x: 1;
+        --tw-scale-y: 1;
+        --tw-pan-x: ;
+        --tw-pan-y: ;
+        --tw-pinch-zoom: ;
+        --tw-scroll-snap-strictness: proximity;
+        --tw-gradient-from-position: ;
+        --tw-gradient-via-position: ;
+        --tw-gradient-to-position: ;
+        --tw-ordinal: ;
+        --tw-slashed-zero: ;
+        --tw-numeric-figure: ;
+        --tw-numeric-spacing: ;
+        --tw-numeric-fraction: ;
+        --tw-ring-inset: ;
+        --tw-ring-offset-width: 0px;
+        --tw-ring-offset-color: #fff;
+        --tw-ring-color: rgba(59, 130, 246, 0.5);
+        --tw-ring-offset-shadow: 0 0 #0000;
+        --tw-ring-shadow: 0 0 #0000;
+        --tw-shadow: 0 0 #0000;
+        --tw-shadow-colored: 0 0 #0000;
+        --tw-blur: ;
+        --tw-brightness: ;
+        --tw-contrast: ;
+        --tw-grayscale: ;
+        --tw-hue-rotate: ;
+        --tw-invert: ;
+        --tw-saturate: ;
+        --tw-sepia: ;
+        --tw-drop-shadow: ;
+        --tw-backdrop-blur: ;
+        --tw-backdrop-brightness: ;
+        --tw-backdrop-contrast: ;
+        --tw-backdrop-grayscale: ;
+        --tw-backdrop-hue-rotate: ;
+        --tw-backdrop-invert: ;
+        --tw-backdrop-opacity: ;
+        --tw-backdrop-saturate: ;
+        --tw-backdrop-sepia: ;
+        --tw-contain-size: ;
+        --tw-contain-layout: ;
+        --tw-contain-paint: ;
+        --tw-contain-style: ;
+      }
+      ::backdrop {
+        --tw-border-spacing-x: 0;
+        --tw-border-spacing-y: 0;
+        --tw-translate-x: 0;
+        --tw-translate-y: 0;
+        --tw-rotate: 0;
+        --tw-skew-x: 0;
+        --tw-skew-y: 0;
+        --tw-scale-x: 1;
+        --tw-scale-y: 1;
+        --tw-pan-x: ;
+        --tw-pan-y: ;
+        --tw-pinch-zoom: ;
+        --tw-scroll-snap-strictness: proximity;
+        --tw-gradient-from-position: ;
+        --tw-gradient-via-position: ;
+        --tw-gradient-to-position: ;
+        --tw-ordinal: ;
+        --tw-slashed-zero: ;
+        --tw-numeric-figure: ;
+        --tw-numeric-spacing: ;
+        --tw-numeric-fraction: ;
+        --tw-ring-inset: ;
+        --tw-ring-offset-width: 0px;
+        --tw-ring-offset-color: #fff;
+        --tw-ring-color: rgba(59, 130, 246, 0.5);
+        --tw-ring-offset-shadow: 0 0 #0000;
+        --tw-ring-shadow: 0 0 #0000;
+        --tw-shadow: 0 0 #0000;
+        --tw-shadow-colored: 0 0 #0000;
+        --tw-blur: ;
+        --tw-brightness: ;
+        --tw-contrast: ;
+        --tw-grayscale: ;
+        --tw-hue-rotate: ;
+        --tw-invert: ;
+        --tw-saturate: ;
+        --tw-sepia: ;
+        --tw-drop-shadow: ;
+        --tw-backdrop-blur: ;
+        --tw-backdrop-brightness: ;
+        --tw-backdrop-contrast: ;
+        --tw-backdrop-grayscale: ;
+        --tw-backdrop-hue-rotate: ;
+        --tw-backdrop-invert: ;
+        --tw-backdrop-opacity: ;
+        --tw-backdrop-saturate: ;
+        --tw-backdrop-sepia: ;
+        --tw-contain-size: ;
+        --tw-contain-layout: ;
+        --tw-contain-paint: ;
+        --tw-contain-style: ;
+      }
+      #webcrumbs .mb-6 {
+        margin-bottom: 24px;
+      }
+      #webcrumbs .mb-8 {
+        margin-bottom: 32px;
+      }
+      #webcrumbs .flex {
+        display: flex;
+      }
+      #webcrumbs .grid {
+        display: grid;
+      }
+      #webcrumbs .w-\[1200px\] {
+        width: 1200px;
+      }
+      #webcrumbs .grid-cols-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      #webcrumbs .flex-row {
+        flex-direction: row;
+      }
+      #webcrumbs .items-start {
+        align-items: flex-start;
+      }
+      #webcrumbs .items-center {
+        align-items: center;
+      }
+      #webcrumbs .justify-between {
+        justify-content: space-between;
+      }
+      #webcrumbs .gap-4 {
+        gap: 16px;
+      }
+      #webcrumbs :is(.space-x-2 > :not([hidden]) ~ :not([hidden])) {
+        --tw-space-x-reverse: 0;
+        margin-left: calc(8px * (1 - var(--tw-space-x-reverse)));
+        margin-right: calc(8px * var(--tw-space-x-reverse));
+      }
+      #webcrumbs :is(.space-x-3 > :not([hidden]) ~ :not([hidden])) {
+        --tw-space-x-reverse: 0;
+        margin-left: calc(12px * (1 - var(--tw-space-x-reverse)));
+        margin-right: calc(12px * var(--tw-space-x-reverse));
+      }
+      #webcrumbs :is(.space-x-4 > :not([hidden]) ~ :not([hidden])) {
+        --tw-space-x-reverse: 0;
+        margin-left: calc(16px * (1 - var(--tw-space-x-reverse)));
+        margin-right: calc(16px * var(--tw-space-x-reverse));
+      }
+      #webcrumbs :is(.space-y-8 > :not([hidden]) ~ :not([hidden])) {
+        --tw-space-y-reverse: 0;
+        margin-bottom: calc(32px * var(--tw-space-y-reverse));
+        margin-top: calc(32px * (1 - var(--tw-space-y-reverse)));
+      }
+      #webcrumbs .rounded-lg {
+        border-radius: 24px;
+      }
+      #webcrumbs .rounded-xl {
+        border-radius: 36px;
+      }
+      #webcrumbs .border {
+        border-width: 1px;
+      }
+      #webcrumbs .border-neutral-200 {
+        --tw-border-opacity: 1;
+        border-color: rgb(224 224 224 / var(--tw-border-opacity));
+      }
+      #webcrumbs .bg-neutral-50 {
+        --tw-bg-opacity: 1;
+        background-color: rgb(247 247 247 / var(--tw-bg-opacity));
+      }
+      #webcrumbs .bg-primary-500 {
+        --tw-bg-opacity: 1;
+        background-color: rgb(115 65 255 / var(--tw-bg-opacity));
+      }
+      #webcrumbs .bg-white {
+        --tw-bg-opacity: 1;
+        background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+      }
+      #webcrumbs .bg-gradient-to-r {
+        background-image: linear-gradient(to right, var(--tw-gradient-stops));
+      }
+      #webcrumbs .from-primary-600 {
+        --tw-gradient-from: #631bff var(--tw-gradient-from-position);
+        --tw-gradient-to: rgba(99, 27, 255, 0) var(--tw-gradient-to-position);
+        --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+      }
+      #webcrumbs .to-primary-600 {
+        --tw-gradient-to: #631bff var(--tw-gradient-to-position);
+      }
+      #webcrumbs .bg-clip-text {
+        background-clip: text;
+      }
+      #webcrumbs .p-2 {
+        padding: 8px;
+      }
+      #webcrumbs .p-4 {
+        padding: 16px;
+      }
+      #webcrumbs .p-6 {
+        padding: 24px;
+      }
+      #webcrumbs .p-8 {
+        padding: 32px;
+      }
+      #webcrumbs .px-4 {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+      #webcrumbs .px-6 {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+      #webcrumbs .px-8 {
+        padding-left: 32px;
+        padding-right: 32px;
+      }
+      #webcrumbs .py-2 {
+        padding-bottom: 8px;
+        padding-top: 8px;
+      }
+      #webcrumbs .py-4 {
+        padding-bottom: 16px;
+        padding-top: 16px;
+      }
+      #webcrumbs .font-sans {
+        font-family:
+          Open Sans,
+          ui-sans-serif,
+          system-ui,
+          sans-serif,
+          Apple Color Emoji,
+          Segoe UI Emoji,
+          Segoe UI Symbol,
+          Noto Color Emoji;
+      }
+      #webcrumbs .text-2xl {
+        font-size: 24px;
+        line-height: 31.200000000000003px;
+      }
+      #webcrumbs .text-3xl {
+        font-size: 30px;
+        line-height: 36px;
+      }
+      #webcrumbs .text-xl {
+        font-size: 20px;
+        line-height: 28px;
+      }
+      #webcrumbs .font-bold {
+        font-weight: 700;
+      }
+      #webcrumbs .font-medium {
+        font-weight: 500;
+      }
+      #webcrumbs .font-semibold {
+        font-weight: 600;
+      }
+      #webcrumbs .text-primary-500 {
+        --tw-text-opacity: 1;
+        color: rgb(115 65 255 / var(--tw-text-opacity));
+      }
+      #webcrumbs .text-transparent {
+        color: transparent;
+      }
+      #webcrumbs .text-white {
+        --tw-text-opacity: 1;
+        color: rgb(255 255 255 / var(--tw-text-opacity));
+      }
+      #webcrumbs .shadow-lg {
+        --tw-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color),
+          0 4px 6px -4px var(--tw-shadow-color);
+        box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+          var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+      }
+      #webcrumbs .transition-all {
+        transition-duration: 0.15s;
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      #webcrumbs {
+        font-family: Open Sans !important;
+        font-size: 16px !important;
+      }
+      #webcrumbs :is(.bg-neutral-50) {
+        color: rgba(0, 0, 0, 0.9) !important;
+      }
+      #webcrumbs :is(.bg-primary-500) {
+        color: hsla(0, 0%, 100%, 0.9) !important;
+      }
+      #webcrumbs .hover\:bg-neutral-100:hover {
+        --tw-bg-opacity: 1;
+        background-color: rgb(238 238 238 / var(--tw-bg-opacity));
+      }
+      #webcrumbs .hover\:bg-neutral-200:hover {
+        --tw-bg-opacity: 1;
+        background-color: rgb(224 224 224 / var(--tw-bg-opacity));
+      }
+      #webcrumbs .hover\:bg-primary-100:hover {
+        --tw-bg-opacity: 1;
+        background-color: rgb(233 229 255 / var(--tw-bg-opacity));
+      }
+      #webcrumbs .hover\:bg-primary-600:hover {
+        --tw-bg-opacity: 1;
+        background-color: rgb(99 27 255 / var(--tw-bg-opacity));
+      }
+      #webcrumbs .hover\:shadow-lg:hover {
+        --tw-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color),
+          0 4px 6px -4px var(--tw-shadow-color);
+        box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+          var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+      }
+      
+      body {
+        line-height: inherit;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        min-width: 100vw;
+        min-height: 100vh;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #ffffff, #d4d4d4);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="webcrumbs">
+      <div class="w-[1200px] font-sans">
+        
+        <!-- Navigation Bar -->
+        <nav class="bg-white shadow-lg">
+          <div class="flex items-center justify-between px-8 py-4">
+            <h1 class="text-3xl font-bold bg-gradient-to-r from-primary-600 to-primary-600 bg-clip-text text-transparent">
+              QUIZIFY
+            </h1>
+            <div class="flex items-center space-x-4">
+              <button class="px-4 py-2 rounded-lg hover:bg-neutral-100 transition-all">
+                <span class="material-symbols-outlined">person</span>
+              </button>
+              <button class="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-all">
+                Logout
+              </button>
+            </div>
+          </div>
+        </nav>
+  
+        <!-- Main Content -->
+        <main class="p-8">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                
+                <!-- Manage Questions Header -->
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl font-semibold">Manage Questions</h2>
+                    
+                    <!-- Quiz Selection Dropdown -->
+                    <select id="quizSelect" name="quiz_title" class="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all">
+                        <option selected disabled>Select Quiz</option>
+                        <% users.forEach(function(e) { %>
+                            <option value="<%= e._id %>"><%= e.title %></option>
+                        <% }); %>
+                    </select>
+        
+                    <div class="flex space-x-3">
+                        <a href="/" class="px-6 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-all flex items-center space-x-2">
+                            <span class="material-symbols-outlined">home</span>
+                            <span>Home</span>
+                        </a>
+                        <a href="/manage" class="px-6 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-all flex items-center space-x-2">
+                            <span class="material-symbols-outlined">add</span>
+                            <span>Add New Question</span>
+                        </a>
+                    </div>
+                </div>
+        
+                <!-- Questions List (Dynamic) -->
+                <div id="questionsList" class="space-y-8">
+                    <p class="text-gray-500 text-center">Select a quiz to view questions.</p>
+                </div>
+            </div>
+        
+            <script>
+                $(document).ready(function() {
+                    $("#quizSelect").change(function() {
+                        let quizId = $(this).val();
+                        if (!quizId) return;
+        
+                        $("#questionsList").html("<p class='text-gray-500 text-center'>Loading questions...</p>");
+                        
+                        $.ajax({
+                            url: `/api/questions/${quizId}`,
+                            type: "GET",
+                            success: function(data) {
+                                console.log("Fetched Questions:", data); // Debugging
+        
+                                let questionsHTML = "";
+        
+                                if (!data.questions || data.questions.length === 0) {
+                                    questionsHTML = "<p class='text-gray-500 text-center'>No questions available for this quiz.</p>";
+                                } else {
+                                    data.questions.forEach(q => {
+                                        let optionsHTML = q.options.map((option, index) => {
+                                            let isCorrect = (index === 4) ? "bg-green-100 border-green-500 text-green-700 font-semibold" : ""; 
+                                            return `<div class="bg-white p-4 rounded-lg border border-neutral-200 ${isCorrect}">${option}</div>`;
+                                        }).join("");
+        
+                                        questionsHTML += `
+                                            <div class="bg-neutral-50 rounded-xl p-6 hover:shadow-lg transition-all">
+                                                <div class="flex justify-between items-start mb-6">
+                                                    <h3 class="text-xl font-medium">${q.question}</h3>
+                                                    <div class="flex space-x-2">
+                                                        <button class="p-2 hover:bg-neutral-200 rounded-lg transition-all edit-btn" data-id="${q._id}">
+                                                            <span class="material-symbols-outlined">edit</span>
+                                                        </button>
+                                                        <button class="p-2 hover:bg-red-100 rounded-lg transition-all delete-btn" data-id="${q._id}">
+                                                            <span class="material-symbols-outlined text-red-500">delete</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="grid grid-cols-2 gap-4 mb-6">
+                                                    ${optionsHTML}
+                                                </div>
+                                            </div>`;
+                                    });
+                                }
+        
+                                $("#questionsList").html(questionsHTML);
+                            },
+                            error: function(xhr) {
+                                console.error("Error fetching questions:", xhr.responseText);
+                                $("#questionsList").html("<p class='text-red-500 text-center'>Error fetching questions. Please try again.</p>");
+                            }
+                        });
+                    });
+        
+                    // Delete question event listener
+                    $(document).on("click", ".delete-btn", function() {
+                        let questionId = $(this).data("id");
+                        if (confirm("Are you sure you want to delete this question?")) {
+                            $.ajax({
+                                url: `/api/questions/delete/${questionId}`,
+                                type: "DELETE",
+                                success: function() {
+                                    alert("Question deleted successfully!");
+                                    $("#quizSelect").trigger("change"); // Refresh questions
+                                },
+                                error: function() {
+                                    alert("Error deleting question.");
+                                }
+                            });
+                        }
+                    });
+                });
+            </script>
+        </main>
+        
+        
+  
+      </div>
+    </div>
+  </body>
+  
+</html>
