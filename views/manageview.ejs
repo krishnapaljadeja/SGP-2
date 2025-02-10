@@ -588,112 +588,90 @@
   
         <!-- Main Content -->
         <main class="p-8">
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                
-                <!-- Manage Questions Header -->
-                <div class="flex justify-between items-center mb-8">
-                    <h2 class="text-2xl font-semibold">Manage Questions</h2>
-                    
-                    <!-- Quiz Selection Dropdown -->
-                    <select id="quizSelect" name="quiz_title" class="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all">
-                        <option selected disabled>Select Quiz</option>
-                        <% users.forEach(function(e) { %>
-                            <option value="<%= e._id %>"><%= e.title %></option>
-                        <% }); %>
-                    </select>
-        
-                    <div class="flex space-x-3">
-                        <a href="/" class="px-6 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-all flex items-center space-x-2">
-                            <span class="material-symbols-outlined">home</span>
-                            <span>Home</span>
-                        </a>
-                        <a href="/manage" class="px-6 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-all flex items-center space-x-2">
-                            <span class="material-symbols-outlined">add</span>
-                            <span>Add New Question</span>
-                        </a>
-                    </div>
-                </div>
-        
-                <!-- Questions List (Dynamic) -->
-                <div id="questionsList" class="space-y-8">
-                    <p class="text-gray-500 text-center">Select a quiz to view questions.</p>
-                </div>
-            </div>
-        
-            <script>
-                $(document).ready(function() {
-                    $("#quizSelect").change(function() {
-                        let quizId = $(this).val();
-                        if (!quizId) return;
-        
-                        $("#questionsList").html("<p class='text-gray-500 text-center'>Loading questions...</p>");
-                        
-                        $.ajax({
-                            url: `/api/questions/${quizId}`,
-                            type: "GET",
-                            success: function(data) {
-                                console.log("Fetched Questions:", data); // Debugging
-        
-                                let questionsHTML = "";
-        
-                                if (!data.questions || data.questions.length === 0) {
-                                    questionsHTML = "<p class='text-gray-500 text-center'>No questions available for this quiz.</p>";
-                                } else {
-                                    data.questions.forEach(q => {
-                                        let optionsHTML = q.options.map((option, index) => {
-                                            let isCorrect = (index === 4) ? "bg-green-100 border-green-500 text-green-700 font-semibold" : ""; 
-                                            return `<div class="bg-white p-4 rounded-lg border border-neutral-200 ${isCorrect}">${option}</div>`;
-                                        }).join("");
-        
-                                        questionsHTML += `
-                                            <div class="bg-neutral-50 rounded-xl p-6 hover:shadow-lg transition-all">
-                                                <div class="flex justify-between items-start mb-6">
-                                                    <h3 class="text-xl font-medium">${q.question}</h3>
-                                                    <div class="flex space-x-2">
-                                                        <button class="p-2 hover:bg-neutral-200 rounded-lg transition-all edit-btn" data-id="${q._id}">
-                                                            <span class="material-symbols-outlined">edit</span>
-                                                        </button>
-                                                        <button class="p-2 hover:bg-red-100 rounded-lg transition-all delete-btn" data-id="${q._id}">
-                                                            <span class="material-symbols-outlined text-red-500">delete</span>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <div class="grid grid-cols-2 gap-4 mb-6">
-                                                    ${optionsHTML}
-                                                </div>
-                                            </div>`;
-                                    });
-                                }
-        
-                                $("#questionsList").html(questionsHTML);
-                            },
-                            error: function(xhr) {
-                                console.error("Error fetching questions:", xhr.responseText);
-                                $("#questionsList").html("<p class='text-red-500 text-center'>Error fetching questions. Please try again.</p>");
-                            }
-                        });
-                    });
-        
-                    // Delete question event listener
-                    $(document).on("click", ".delete-btn", function() {
-                        let questionId = $(this).data("id");
-                        if (confirm("Are you sure you want to delete this question?")) {
-                            $.ajax({
-                                url: `/api/questions/delete/${questionId}`,
-                                type: "DELETE",
-                                success: function() {
-                                    alert("Question deleted successfully!");
-                                    $("#quizSelect").trigger("change"); // Refresh questions
-                                },
-                                error: function() {
-                                    alert("Error deleting question.");
-                                }
-                            });
-                        }
-                    });
-                });
-            </script>
-        </main>
+          <div class="bg-white rounded-xl shadow-lg p-6">
+              
+              <!-- Manage Questions Header -->
+              <div class="flex justify-between items-center mb-8">
+                  <h2 class="text-2xl font-semibold">Manage Questions</h2>
+                  
+                  <!-- Quiz Selection Dropdown -->
+                  <select id="quizSelect" name="quiz_title" class="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all">
+                      <option selected disabled>Select Quiz</option>
+                      <% users.forEach(function(e) { %>
+                          <option value="<%= e._id %>"><%= e.title %></option>
+                      <% }); %>
+                  </select>
+      
+                  <!-- Buttons: Home & Add Question -->
+                  <div class="flex space-x-3">
+                      <a href="/" class="px-6 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-all flex items-center space-x-2">
+                          <span class="material-symbols-outlined">home</span>
+                          <span>Home</span>
+                      </a>
+                      <a href="/manage" class="px-6 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-all flex items-center space-x-2">
+                          <span class="material-symbols-outlined">add</span>
+                          <span>Add New Question</span>
+                      </a>
+                  </div>
+              </div>
+      
+              <!-- Questions List (Dynamic) -->
+              <div id="questionsList" class="space-y-8">
+                  <p class="text-gray-500 text-center">Select a quiz to view questions.</p>
+              </div>
+          </div>
+      
+          <!-- jQuery Script (Ensures $ Works) -->
+          <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      
+          <script>
+              $(document).ready(function() {
+                  console.log("✅ jQuery Loaded");
+      
+                  $("#quizSelect").change(function() {
+                      let quizId = $(this).val();
+                      console.log("📌 Selected Quiz ID:", quizId);
+      
+                      if (!quizId) return;
+      
+                      $("#questionsList").html("<p class='text-gray-500 text-center'>Loading questions...</p>");
+      
+                      $.ajax({
+                          url: `/api/questions/${quizId}`,
+                          type: "GET",
+                          success: function(data) {
+                              console.log("✅ Questions Fetched:", data);
+      
+                              let questionsHTML = "";
+                              if (!data.questions || data.questions.length === 0) {
+                                  questionsHTML = "<p class='text-gray-500 text-center'>No questions available for this quiz.</p>";
+                              } else {
+                                  data.questions.forEach(q => {
+                                      let optionsHTML = q.options.map(option => `<div class="bg-white p-4 rounded-lg border">${option}</div>`).join("");
+      
+                                      questionsHTML += `
+                                          <div class="bg-neutral-50 rounded-xl p-6 hover:shadow-lg transition-all">
+                                              <h3 class="text-xl font-medium">${q.question}</h3>
+                                              <div class="grid grid-cols-2 gap-4 mb-6">${optionsHTML}</div>
+                                          </div>`;
+                                  });
+                              }
+      
+                              $("#questionsList").html(questionsHTML);
+                          },
+                          error: function(xhr) {
+                              console.error("❌ Error fetching questions:", xhr.responseText);
+                              $("#questionsList").html("<p class='text-red-500 text-center'>Error fetching questions. Please try again.</p>");
+                          }
+                      });
+                  });
+              });
+          </script>
+      </main>
+      
+      
+      
+       
         
         
   

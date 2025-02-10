@@ -1,40 +1,36 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
+const mongoose = require('mongoose');
 const QuizTitle = require("./models/title");
 const Question = require("./models/question");
 
 const app = express();
 const port = 3000;
 
-// Set up EJS
 app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static('public')); // Serve static files
+app.use(express.static('public'));
 
-// Routes
-app.get('/', (req, res) => {
-    res.render('index');
-});
+// Homepage
+app.get('/', (req, res) => res.render('index'));
 
-app.get('/add', (req, res) => {
-    res.render('add');
-});
+// Add Quiz Page
+app.get('/add', (req, res) => res.render('add'));
 
 // Create a new quiz
 app.post('/created', async (req, res) => {
     const { title, que, time } = req.body;
 
     try {
-        const existingQuiz = await QuizTitle.findOne({ title: title });
+        const existingQuiz = await QuizTitle.findOne({ title });
 
         if (existingQuiz) {
             return res.send(`<script>alert("Quiz already exists!"); window.location.href = "/";</script>`);
         }
 
         await QuizTitle.create({ title, que, time });
-
         res.send(`<script>alert("Quiz successfully created!"); window.location.href = "/";</script>`);
     } catch (err) {
         console.error(err);
@@ -44,23 +40,32 @@ app.post('/created', async (req, res) => {
 
 // Add a question to a quiz
 app.post('/submitque', async (req, res) => {
-    const { quiz_title, question, option1, option2, option3, option4,correct_answer } = req.body;
+    console.log("Received Data:", req.body);
+
+    const { quiz_title, question, option1, option2, option3, option4, correct_answer } = req.body;
+
+    if (!question || !correct_answer) {
+        return res.send(`<script>alert("Error: Missing required fields!"); window.location.href = "/manage";</script>`);
+    }
 
     try {
         const newQuestion = await Question.create({
             question,
-            options: [option1, option2, option3, option4,correct_answer]
+            options: [option1, option2, option3, option4],
+            correct_answer
         });
+
+      
 
         await QuizTitle.findOneAndUpdate(
             { title: quiz_title },
-            { $push: { questions: newQuestion._id } },  // Push only the ObjectId
+            { $push: { questions: newQuestion._id } },
             { new: true }
         );
 
         res.send(`<script>alert("Question added successfully!"); window.location.href = "/manage";</script>`);
     } catch (err) {
-        console.error(err);
+        console.error("❌ Error adding question:", err);
         res.send(`<script>alert("Error adding question."); window.location.href = "/manage";</script>`);
     }
 });
@@ -71,22 +76,36 @@ app.get('/manageview', async (req, res) => {
     res.render('manageview', { users: allQuizzes });
 });
 
-// Fetch questions for a selected quiz
+// ✅ FIX: Fetch questions properly and debug issues
+
+
 app.get('/api/questions/:quizId', async (req, res) => {
-    console.log("hey");
     try {
-        const quiz = await usermodel.findById(req.params.quizId).populate('questions');
-        if (!quiz) return res.status(404).json({ error: "Quiz not found" });
+        const { quizId } = req.params;
+
+        // Validate ObjectId
+        if (!mongoose.Types.ObjectId.isValid(quizId)) {
+            console.error("❌ Invalid Quiz ID:", quizId);
+            return res.status(400).json({ error: "Invalid Quiz ID" });
+        }
+
+        // Fetch quiz with questions
+        const quiz = await QuizTitle.findById(quizId).populate('questions');
+
+        if (!quiz) {
+            return res.status(404).json({ error: "Quiz not found" });
+        }
 
         const formattedQuestions = quiz.questions.map(q => ({
             _id: q._id,
             question: q.question,
             options: q.options,
-            correct_answer: q.options.length >= 5 ? q.options[4] : null // 5th option as correct
+            correct_answer: q.correct_answer
         }));
 
         res.json({ questions: formattedQuestions });
     } catch (error) {
+        console.error("❌ Error fetching questions:", error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
@@ -96,11 +115,6 @@ app.get('/api/questions/:quizId', async (req, res) => {
 app.get('/manage', async (req, res) => {
     let allQuizzes = await QuizTitle.find();
     res.render('manage', { users: allQuizzes });
-});
-
-// Analytics Page
-app.get('/analytics', (req, res) => {
-    res.render('analytics');
 });
 
 // Start Server
