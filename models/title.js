@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const question = require('./question');
 
-const con = mongoose.connect("mongodb+srv://jadejakrishnapal04:M1cKC56DzhxCeKjg@quizify.zgpmu.mongodb.net/?retryWrites=true&w=majority&appName=QuiziFY");
+const con = mongoose.connect("mongodb+srv://jadejakrishnapal04:M1cKC56DzhxCeKjg@quizify.zgpmu.mongodb.net/test?retryWrites=true&w=majority&appName=QuiziFY");
 con.then(()=>{
   console.log('Connected to MongoDB');
 }).catch(()=>{
