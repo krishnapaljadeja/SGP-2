@@ -40,7 +40,6 @@ app.post('/created', async (req, res) => {
 
 // Add a question to a quiz
 app.post('/submitque', async (req, res) => {
-    console.log("Received Data:", req.body);
 
     const { quiz_title, question, option1, option2, option3, option4, correct_answer } = req.body;
 
@@ -65,7 +64,7 @@ app.post('/submitque', async (req, res) => {
 
         res.send(`<script>alert("Question added successfully!"); window.location.href = "/manage";</script>`);
     } catch (err) {
-        console.error("❌ Error adding question:", err);
+        console.error("Error adding question:", err);
         res.send(`<script>alert("Error adding question."); window.location.href = "/manage";</script>`);
     }
 });
@@ -76,24 +75,23 @@ app.get('/manageview', async (req, res) => {
     res.render('manageview', { users: allQuizzes });
 });
 
-// ✅ FIX: Fetch questions properly and debug issues
 
 
+// displays the list of question
 app.get('/api/questions/:quizId', async (req, res) => {
     try {
         const { quizId } = req.params;
 
-        // Validate ObjectId
+      
         if (!mongoose.Types.ObjectId.isValid(quizId)) {
-            console.error("❌ Invalid Quiz ID:", quizId);
-            return res.status(400).json({ error: "Invalid Quiz ID" });
+            console.error("Invalid Quiz ID:", quizId);
         }
 
-        // Fetch quiz with questions
+        
         const quiz = await QuizTitle.findById(quizId).populate('questions');
 
         if (!quiz) {
-            return res.status(404).json({ error: "Quiz not found" });
+            console.error("Quiz not found", quizId);
         }
 
         const formattedQuestions = quiz.questions.map(q => ({
@@ -105,12 +103,17 @@ app.get('/api/questions/:quizId', async (req, res) => {
 
         res.json({ questions: formattedQuestions });
     } catch (error) {
-        console.error("❌ Error fetching questions:", error);
+        console.error("Error fetching questions:", error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
-
-
+//delete the question
+app.delete("/delete/:id", async (req, res) => {
+      const questionId = req.params.id;
+      const result = await Question.findByIdAndDelete({_id:questionId});
+      res.redirect("/manageview");
+  });
+  
 // Manage Page
 app.get('/manage', async (req, res) => {
     let allQuizzes = await QuizTitle.find();
@@ -119,5 +122,5 @@ app.get('/manage', async (req, res) => {
 
 // Start Server
 app.listen(port, () => {
-    console.log(`🚀 Server running on http://localhost:${port}`);
+    console.log(` Server running on http://localhost:${port}`);
 });
