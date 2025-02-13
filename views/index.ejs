@@ -601,7 +601,6 @@
         flex-direction: column;
         min-width: 100vw;
         min-height: 100vh;
-        align-items: center;
         justify-content: center;
         background: linear-gradient(135deg, #ffffff, #d4d4d4);
       }
@@ -609,7 +608,7 @@
   </head>
   <body>
     <div id="webcrumbs">
-      <div class="w-[1200px] font-sans">
+      <div class=" font-sans">
         <nav class="bg-white shadow-lg w-full top-0 z-50 fixed">
           <div class="container mx-auto flex items-center justify-between px-8 py-4">
             <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -718,11 +717,14 @@
     
             <div class="bg-white rounded-xl shadow-lg p-6">
               <h2 class="text-2xl font-semibold mb-6">Quick Stats</h2>
-              <div class="space-y-4">
-                <div class="bg-gray-50 rounded-lg p-4">
-                  <p class="text-gray-600">Total Quizzes</p>
-                  <p class="text-3xl font-bold">24</p>
+              
+                <div class="space-y-4">
+                  <div class="bg-gray-50 rounded-lg p-4">
+                    <p class="text-gray-600">Total Quizzes</p>
+                    <p class="text-3xl font-bold"><%= totalQuizzes %></p>
+                  </div>
                 </div>
+                
     
                 <div class="bg-gray-50 rounded-lg p-4">
                   <p class="text-gray-600">Active Users</p>

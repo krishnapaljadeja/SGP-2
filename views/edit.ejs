@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QuiziFY</title>
     <style>
-      @imprt url(https://fonts.googleapis.com/css2?family=Lato&display=swap);
-
+      @import url(https://fonts.googleapis.com/css2?family=Lato&display=swap);
+      
       @import url(https://fonts.googleapis.com/css2?family=Open+Sans&display=swap);
-
+      
       @import url(https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200);
-
+      
       /*! tailwindcss v3.4.11 | MIT License | https://tailwindcss.com*/
       *,
       :after,
@@ -26,8 +26,15 @@
       html {
         line-height: 1.5;
         -webkit-text-size-adjust: 100%;
-        font-family: Open Sans, ui-sans-serif, system-ui, sans-serif,
-          Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+        font-family:
+          Open Sans,
+          ui-sans-serif,
+          system-ui,
+          sans-serif,
+          Apple Color Emoji,
+          Segoe UI Emoji,
+          Segoe UI Symbol,
+          Noto Color Emoji;
         font-feature-settings: normal;
         font-variation-settings: normal;
         -moz-tab-size: 4;
@@ -67,8 +74,15 @@
       kbd,
       pre,
       samp {
-        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-          Liberation Mono, Courier New, monospace;
+        font-family:
+          ui-monospace,
+          SFMono-Regular,
+          Menlo,
+          Monaco,
+          Consolas,
+          Liberation Mono,
+          Courier New,
+          monospace;
         font-feature-settings: normal;
         font-size: 1em;
         font-variation-settings: normal;
@@ -323,11 +337,29 @@
         --tw-contain-paint: ;
         --tw-contain-style: ;
       }
+      #webcrumbs .absolute {
+        position: absolute;
+      }
+      #webcrumbs .relative {
+        position: relative;
+      }
+      #webcrumbs .left-0 {
+        left: 0;
+      }
+      #webcrumbs .top-full {
+        top: 100%;
+      }
+      #webcrumbs .z-10 {
+        z-index: 10;
+      }
       #webcrumbs .mb-6 {
-        margin-bottom: 24px;
+        margin-bottom: 18px;
       }
       #webcrumbs .mb-8 {
-        margin-bottom: 32px;
+        margin-bottom: 24px;
+      }
+      #webcrumbs .mt-2 {
+        margin-top: 6px;
       }
       #webcrumbs .flex {
         display: flex;
@@ -335,8 +367,14 @@
       #webcrumbs .grid {
         display: grid;
       }
+      #webcrumbs .w-48 {
+        width: 144px;
+      }
       #webcrumbs .w-\[1200px\] {
         width: 1200px;
+      }
+      #webcrumbs .cursor-pointer {
+        cursor: pointer;
       }
       #webcrumbs .grid-cols-2 {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -354,27 +392,27 @@
         justify-content: space-between;
       }
       #webcrumbs .gap-4 {
-        gap: 16px;
+        gap: 12px;
       }
       #webcrumbs :is(.space-x-2 > :not([hidden]) ~ :not([hidden])) {
         --tw-space-x-reverse: 0;
-        margin-left: calc(8px * (1 - var(--tw-space-x-reverse)));
-        margin-right: calc(8px * var(--tw-space-x-reverse));
+        margin-left: calc(6px * (1 - var(--tw-space-x-reverse)));
+        margin-right: calc(6px * var(--tw-space-x-reverse));
       }
       #webcrumbs :is(.space-x-3 > :not([hidden]) ~ :not([hidden])) {
+        --tw-space-x-reverse: 0;
+        margin-left: calc(9px * (1 - var(--tw-space-x-reverse)));
+        margin-right: calc(9px * var(--tw-space-x-reverse));
+      }
+      #webcrumbs :is(.space-x-4 > :not([hidden]) ~ :not([hidden])) {
         --tw-space-x-reverse: 0;
         margin-left: calc(12px * (1 - var(--tw-space-x-reverse)));
         margin-right: calc(12px * var(--tw-space-x-reverse));
       }
-      #webcrumbs :is(.space-x-4 > :not([hidden]) ~ :not([hidden])) {
-        --tw-space-x-reverse: 0;
-        margin-left: calc(16px * (1 - var(--tw-space-x-reverse)));
-        margin-right: calc(16px * var(--tw-space-x-reverse));
-      }
       #webcrumbs :is(.space-y-8 > :not([hidden]) ~ :not([hidden])) {
         --tw-space-y-reverse: 0;
-        margin-bottom: calc(32px * var(--tw-space-y-reverse));
-        margin-top: calc(32px * (1 - var(--tw-space-y-reverse)));
+        margin-bottom: calc(24px * var(--tw-space-y-reverse));
+        margin-top: calc(24px * (1 - var(--tw-space-y-reverse)));
       }
       #webcrumbs .rounded-lg {
         border-radius: 24px;
@@ -385,17 +423,29 @@
       #webcrumbs .border {
         border-width: 1px;
       }
-      #webcrumbs .border-neutral-200 {
+      #webcrumbs .border-gray-200 {
         --tw-border-opacity: 1;
-        border-color: rgb(224 224 224 / var(--tw-border-opacity));
+        border-color: rgb(229 231 235 / var(--tw-border-opacity));
       }
-      #webcrumbs .bg-neutral-50 {
+      #webcrumbs .bg-blue-500 {
         --tw-bg-opacity: 1;
-        background-color: rgb(247 247 247 / var(--tw-bg-opacity));
+        background-color: rgb(59 130 246 / var(--tw-bg-opacity));
       }
-      #webcrumbs .bg-primary-500 {
+      #webcrumbs .bg-gray-100 {
         --tw-bg-opacity: 1;
-        background-color: rgb(115 65 255 / var(--tw-bg-opacity));
+        background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+      }
+      #webcrumbs .bg-gray-50 {
+        --tw-bg-opacity: 1;
+        background-color: rgb(249 250 251 / var(--tw-bg-opacity));
+      }
+      #webcrumbs .bg-purple-500 {
+        --tw-bg-opacity: 1;
+        background-color: rgb(168 85 247 / var(--tw-bg-opacity));
+      }
+      #webcrumbs .bg-red-500 {
+        --tw-bg-opacity: 1;
+        background-color: rgb(239 68 68 / var(--tw-bg-opacity));
       }
       #webcrumbs .bg-white {
         --tw-bg-opacity: 1;
@@ -404,52 +454,59 @@
       #webcrumbs .bg-gradient-to-r {
         background-image: linear-gradient(to right, var(--tw-gradient-stops));
       }
-      #webcrumbs .from-primary-600 {
-        --tw-gradient-from: #631bff var(--tw-gradient-from-position);
-        --tw-gradient-to: rgba(99, 27, 255, 0) var(--tw-gradient-to-position);
+      #webcrumbs .from-blue-600 {
+        --tw-gradient-from: #2563eb var(--tw-gradient-from-position);
+        --tw-gradient-to: rgba(37, 99, 235, 0) var(--tw-gradient-to-position);
         --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
       }
-      #webcrumbs .to-primary-600 {
-        --tw-gradient-to: #631bff var(--tw-gradient-to-position);
+      #webcrumbs .to-purple-600 {
+        --tw-gradient-to: #9333ea var(--tw-gradient-to-position);
       }
       #webcrumbs .bg-clip-text {
         background-clip: text;
       }
       #webcrumbs .p-2 {
-        padding: 8px;
+        padding: 6px;
       }
       #webcrumbs .p-4 {
-        padding: 16px;
+        padding: 12px;
       }
       #webcrumbs .p-6 {
-        padding: 24px;
+        padding: 18px;
       }
       #webcrumbs .p-8 {
-        padding: 32px;
+        padding: 24px;
       }
       #webcrumbs .px-4 {
-        padding-left: 16px;
-        padding-right: 16px;
+        padding-left: 12px;
+        padding-right: 12px;
       }
       #webcrumbs .px-6 {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+      #webcrumbs .px-8 {
         padding-left: 24px;
         padding-right: 24px;
       }
-      #webcrumbs .px-8 {
-        padding-left: 32px;
-        padding-right: 32px;
-      }
       #webcrumbs .py-2 {
-        padding-bottom: 8px;
-        padding-top: 8px;
+        padding-bottom: 6px;
+        padding-top: 6px;
       }
       #webcrumbs .py-4 {
-        padding-bottom: 16px;
-        padding-top: 16px;
+        padding-bottom: 12px;
+        padding-top: 12px;
       }
       #webcrumbs .font-sans {
-        font-family: Open Sans, ui-sans-serif, system-ui, sans-serif,
-          Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+        font-family:
+          Open Sans,
+          ui-sans-serif,
+          system-ui,
+          sans-serif,
+          Apple Color Emoji,
+          Segoe UI Emoji,
+          Segoe UI Symbol,
+          Noto Color Emoji;
       }
       #webcrumbs .text-2xl {
         font-size: 24px;
@@ -472,9 +529,9 @@
       #webcrumbs .font-semibold {
         font-weight: 600;
       }
-      #webcrumbs .text-primary-500 {
+      #webcrumbs .text-red-500 {
         --tw-text-opacity: 1;
-        color: rgb(115 65 255 / var(--tw-text-opacity));
+        color: rgb(239 68 68 / var(--tw-text-opacity));
       }
       #webcrumbs .text-transparent {
         color: transparent;
@@ -500,27 +557,33 @@
         font-family: Open Sans !important;
         font-size: 16px !important;
       }
-      #webcrumbs :is(.bg-neutral-50) {
-        color: rgba(0, 0, 0, 0.9) !important;
+      #webcrumbs .hover\:border-blue-500:hover {
+        --tw-border-opacity: 1;
+        border-color: rgb(59 130 246 / var(--tw-border-opacity));
       }
-      #webcrumbs :is(.bg-primary-500) {
-        color: hsla(0, 0%, 100%, 0.9) !important;
-      }
-      #webcrumbs .hover\:bg-neutral-100:hover {
+      #webcrumbs .hover\:bg-blue-600:hover {
         --tw-bg-opacity: 1;
-        background-color: rgb(238 238 238 / var(--tw-bg-opacity));
+        background-color: rgb(37 99 235 / var(--tw-bg-opacity));
       }
-      #webcrumbs .hover\:bg-neutral-200:hover {
+      #webcrumbs .hover\:bg-gray-100:hover {
         --tw-bg-opacity: 1;
-        background-color: rgb(224 224 224 / var(--tw-bg-opacity));
+        background-color: rgb(243 244 246 / var(--tw-bg-opacity));
       }
-      #webcrumbs .hover\:bg-primary-100:hover {
+      #webcrumbs .hover\:bg-gray-200:hover {
         --tw-bg-opacity: 1;
-        background-color: rgb(233 229 255 / var(--tw-bg-opacity));
+        background-color: rgb(229 231 235 / var(--tw-bg-opacity));
       }
-      #webcrumbs .hover\:bg-primary-600:hover {
+      #webcrumbs .hover\:bg-purple-600:hover {
         --tw-bg-opacity: 1;
-        background-color: rgb(99 27 255 / var(--tw-bg-opacity));
+        background-color: rgb(147 51 234 / var(--tw-bg-opacity));
+      }
+      #webcrumbs .hover\:bg-red-100:hover {
+        --tw-bg-opacity: 1;
+        background-color: rgb(254 226 226 / var(--tw-bg-opacity));
+      }
+      #webcrumbs .hover\:bg-red-600:hover {
+        --tw-bg-opacity: 1;
+        background-color: rgb(220 38 38 / var(--tw-bg-opacity));
       }
       #webcrumbs .hover\:shadow-lg:hover {
         --tw-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
@@ -530,7 +593,7 @@
         box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
           var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
       }
-
+      
       body {
         line-height: inherit;
         padding: 24px;
@@ -547,179 +610,102 @@
         top: 0;
         left: 0;
         width: 100%;
-        z-index: 1;
+        z-index: 1000;
+        background-color: #fff;
+        padding: 0 24px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
+      
       main {
-        padding-top: 60px; /* adjust this value to match the height of your navigation bar */
+        margin-top: 64px;
       }
     </style>
   </head>
   <body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <div id="webcrumbs">
-      <div class="w-[1200px] font-sans">
-        <!-- Navigation Bar -->
-        <nav class="bg-white shadow-lg fixed top-0 left-0 w-full z-10">
-          <div class="flex items-center justify-between px-8 py-4">
-            <h1
-              class="text-3xl font-bold bg-gradient-to-r from-primary-600 to-primary-600 bg-clip-text text-transparent"
-            >
+        <nav class="bg-white shadow-lg w-full top-0 z-50 fixed">
+          <div class="container mx-auto flex items-center justify-between px-8 py-4">
+            <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
               QUIZIFY
             </h1>
             <div class="flex items-center space-x-4">
-              <button
-                class="px-4 py-2 rounded-lg hover:bg-neutral-100 transition-all"
-              >
+              <button class="px-4 py-2 rounded-lg hover:bg-gray-100 transition-all duration-300">
                 <span class="material-symbols-outlined">person</span>
               </button>
-              <button
-                class="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-all"
-              >
+              <button class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all duration-300 transform hover:-translate-y-0.5">
                 Logout
               </button>
             </div>
           </div>
         </nav>
-
-        <!-- Main Content -->
-        <main class="p-8 padding-top-16">
+      
+        <main class="p-8 mt-20">
           <div class="bg-white rounded-xl shadow-lg p-6">
-            <!-- Manage Questions Header -->
-            <div class="flex justify-between items-center mb-8">
-              <h2 class="text-2xl font-semibold">Manage Questions</h2>
-
-              <!-- Quiz Selection Dropdown -->
-              <select
-                id="quizSelect"
-                name="quiz_title"
-                class="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-all"
-              >
-                <option selected disabled>Select Quiz</option>
-                <% users.forEach(function(e) { %>
-                <option value="<%= e._id %>"><%= e.title %></option>
-                <% }); %>
-              </select>
-
-              <!-- Buttons: Home & Add Question -->
-              <div class="flex space-x-3">
-                <a
-                  href="/"
-                  class="px-6 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-all flex items-center space-x-2"
-                >
-                  <span class="material-symbols-outlined">home</span>
-                  <span>Home</span>
-                </a>
-                <a
-                  href="/manage"
-                  class="px-6 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-all flex items-center space-x-2"
-                >
-                  <span class="material-symbols-outlined">add</span>
-                  <span>Add New Question</span>
-                </a>
+            <form id="editQuestionForm" class="bg-white rounded-lg shadow-lg p-6 max-w-2xl mx-auto">
+              <input type="hidden" id="questionId" value="<%= question._id %>">
+      
+              <h2 class="text-2xl font-semibold mb-4">Edit Question</h2>
+              <div class="mb-6">
+                <label class="block text-lg font-semibold mb-2">Question</label>
+                <input style="border-radius: 14px; width:850px;" type="text" id="question" name="question" value="<%= question.question %>" class=" p-4 border border-gray-300 focus:ring-2 focus:ring-blue-400 focus:outline-none" required>
               </div>
-            </div>
-
-            <div id="questionsList" class="space-y-8">
-              <p class="text-gray-500 text-center">
-                Select a quiz to view questions.
-              </p>
-            </div>
+      
+            
+      
+              <div class="grid grid-cols-2 gap-4 mb-6">
+                <% question.options.forEach((option, index) => { %>
+                  <div>
+                    <label class="block text-sm font-medium mb-1">Option <%= index + 1 %></label>
+                    <input type="text" class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none" value="<%= option %>" id="option<%= index + 1 %>" required>
+                  </div>
+                <% }) %>
+              </div>
+      
+              <div class="mb-6">
+                <label class="block text-lg font-semibold mb-2">Correct Answer</label>
+                <input type="text" id="correctAnswer" value="<%= question.correct_answer %>" class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none" required>
+              </div>
+      
+              <div class="flex justify-end space-x-3">
+                <button type="button" onclick="updateQuestion()" class="px-6 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-all flex items-center space-x-2">
+                  <span class="material-symbols-outlined">save</span>
+                  <span>Save Changes</span>
+                </button>
+              </div>
+            </form>
           </div>
-
-          <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-          <script>
-            $(document).ready(function () {
-              $("#quizSelect").change(function () {
-                let quizId = $(this).val();
-
-                if (!quizId) return;
-
-                $("#questionsList").html(
-                  "<p class='text-gray-500 text-center'>Loading questions...</p>"
-                );
-
-                $.ajax({
-                  url: `/api/questions/${quizId}`,
-                  type: "GET",
-                  success: function (data) {
-                    console.log("✅ Questions Fetched:", data);
-
-                    let questionsHTML = "";
-                    if (!data.questions || data.questions.length === 0) {
-                      questionsHTML =
-                        "<p class='text-gray-500 text-center'>No questions available for this quiz.</p>";
-                    } else {
-                      data.questions.forEach((q, index) => {
-                        let optionsHTML = q.options
-                          .map(
-                            (option) =>
-                              `<div class="bg-white p-4 rounded-lg border">${option}</div>`
-                          )
-                          .join("");
-
-                        questionsHTML += `
-                        <div class="bg-neutral-50 rounded-xl p-6 hover:shadow-lg transition-all">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-xl font-medium flex-grow">${q.question}</h3>
-                                <div class="flex gap-2">
-                                    <button onclick="editQuestion('${q._id}')" 
-                                        style="background-color: #3b82f6; color: white; padding: 6px 12px; border-radius: 8px; border: none; font-size: 14px; cursor: pointer; transition: background-color 0.3s;"
-                                        onmouseover="this.style.backgroundColor='#2563eb'"
-                                        onmouseout="this.style.backgroundColor='#3b82f6'">Edit</button>
-                                    <button onclick="deleteQuestion('${q._id}')" 
-                                        style="background-color: #ef4444; color: white; padding: 6px 12px; border-radius: 8px; border: none; font-size: 14px; cursor: pointer; transition: background-color 0.3s;"
-                                        onmouseover="this.style.backgroundColor='#dc2626'"
-                                        onmouseout="this.style.backgroundColor='#ef4444'">Delete</button>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-2 gap-4 mb-4">${optionsHTML}</div>
-                            <div class="text-green-600 font-semibold">Correct Answer: ${q.correct_answer}</div>
-                        </div>`;
-                      });
-                    }
-
-                    $("#questionsList").html(questionsHTML);
-                  },
-                  error: function (xhr) {
-                    console.error(
-                      " Error fetching questions:",
-                      xhr.responseText
-                    );
-                    $("#questionsList").html(
-                      "<p class='text-red-500 text-center'>Error fetching questions. Please try again.</p>"
-                    );
-                  },
-                });
-              });
-            });
-
-            function deleteQuestion(questionId) {
-              if (confirm("Are you sure you want to delete this question?")) {
-                console.log(questionId);
-                fetch(`/delete/${questionId}`, { method: "DELETE" }).then(
-                  () => {
-                    alert("Question deleted successfully!");
-                    location.reload();
-                  }
-                );
-              }
-            }
-            function editQuestion(questionId) {
-    console.log("Editing Question ID:", questionId);
-
-    // Ensure questionId is valid
-    if (!questionId || questionId.trim() === "") {
-        alert("Invalid Question ID");
-        return;
-    }
-
-    // Navigate to edit page
-    window.location.href = `/edit/${encodeURIComponent(questionId)}`;
-}
-
-          </script>
         </main>
       </div>
-    </div>
+      
+      <script>
+        function updateQuestion() {
+          const questionId = document.getElementById("questionId").value;
+          const question = document.getElementById("question").value;
+          const options = [
+            document.getElementById("option1").value,
+            document.getElementById("option2").value,
+            document.getElementById("option3").value,
+            document.getElementById("option4").value
+          ];
+          const correctAnswer = document.getElementById("correctAnswer").value;
+      
+          fetch(`/edit/${questionId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ question, options, correct_answer: correctAnswer }),
+          })
+          .then(response => response.json())
+          .then(() => {
+            alert("Question updated successfully!");
+            window.location.href = "/manageview";
+          })
+          .catch(error => {
+            console.error("Error updating question:", error);
+            alert("Failed to update question.");
+          });
+        }
+      </script>
+      
   </body>
 </html>
