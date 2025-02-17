@@ -3,7 +3,6 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const QuizTitle = require("./models/title");
 const Question = require("./models/question");
-const question = require('./models/question');
 const router = express.Router();
 
 const app = express();
@@ -16,7 +15,6 @@ app.use(cookieParser());
 app.use(express.static('public'));
 
 // Homepage
-
 app.get("/", async (req, res) => {
   try {
     const totalQuizzes = await QuizTitle.countDocuments(); 
@@ -27,10 +25,11 @@ app.get("/", async (req, res) => {
   }
 });
 
-
-
 // Add Quiz Page
 app.get('/add', (req, res) => res.render('add'));
+
+//Analytics page demo
+app.get('/analytics', (req, res) => res.render('analytics'));
 
 // Create a new quiz
 app.post('/created', async (req, res) => {
@@ -51,8 +50,6 @@ app.post('/created', async (req, res) => {
     }
 });
 
-
-
 router.get("/api/quiz-count", async (req, res) => {
   try {
     const totalQuizzes = await QuizTitle.countDocuments();
@@ -65,7 +62,6 @@ router.get("/api/quiz-count", async (req, res) => {
 
 module.exports = router;
 
-
 // Add a question to a quiz
 app.post('/submitque', async (req, res) => {
     const { quiz_title, question, option1, option2, option3, option4, correct_answer } = req.body;
@@ -75,7 +71,6 @@ app.post('/submitque', async (req, res) => {
     }
 
     try {
-        // Find the quiz by title
         const quiz = await QuizTitle.findOne({ title: quiz_title });
 
         if (!quiz) {
@@ -85,14 +80,12 @@ app.post('/submitque', async (req, res) => {
             return res.send(`<script>alert("Error: Maximum question limit reached! (${quiz.que})"); window.location.href = "/manage";</script>`);
         }
 
-    
         const newQuestion = await Question.create({
             question,
             options: [option1, option2, option3, option4],
             correct_answer
         });
 
-        
         await QuizTitle.findOneAndUpdate(
             { title: quiz_title },
             { $push: { questions: newQuestion._id } },
@@ -106,28 +99,21 @@ app.post('/submitque', async (req, res) => {
     }
 });
 
-
 // Manage Quizzes
 app.get('/manageview', async (req, res) => {
     let allQuizzes = await QuizTitle.find();
     res.render('manageview', { users: allQuizzes });
 });
 
-
-
-// displays the list of question
+// Display the list of questions
 app.get('/api/questions/:quizId', async (req, res) => {
     try {
         const { quizId } = req.params;
-
-      
         if (!mongoose.Types.ObjectId.isValid(quizId)) {
             console.error("Invalid Quiz ID:", quizId);
         }
 
-        
         const quiz = await QuizTitle.findById(quizId).populate('questions');
-
         if (!quiz) {
             console.error("Quiz not found", quizId);
         }
@@ -145,21 +131,19 @@ app.get('/api/questions/:quizId', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
-//delete the question
+
+// Delete a question
 app.delete("/delete/:id", async (req, res) => {
     try {
         const questionId = req.params.id;
-
-        
         const deletedQuestion = await Question.findByIdAndDelete(questionId);
         if (!deletedQuestion) {
             return res.status(404).json({ message: "Question not found" });
         }
 
-       
         await QuizTitle.updateMany(
             { questions: questionId }, 
-            { $pull: { questions: questionId } } 
+            { $pull: { questions: questionId } }
         );
 
         res.redirect("/manageview"); 
@@ -168,10 +152,8 @@ app.delete("/delete/:id", async (req, res) => {
         res.status(500).json({ message: "Internal Server Error" });
     }
 });
-// app.put("/edit/:id",async (req,res)=>{
-//     question.findOne({_id:req.params.userid})
-//     res.render("edit",{user});
-// })
+
+// Edit a question
 app.get('/edit/:id', async (req, res) => {
     try {
         const question = await Question.findById(req.params.id);
@@ -205,10 +187,6 @@ app.put('/edit/:id', async (req, res) => {
     }
 });
 
-
-
-
-  
 // Manage Page
 app.get('/manage', async (req, res) => {
     let allQuizzes = await QuizTitle.find();
