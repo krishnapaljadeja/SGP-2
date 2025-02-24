@@ -586,7 +586,7 @@
             <!-- Manage Questions Header -->
             <div class="flex justify-between items-center mb-8">
               <h2 class="text-2xl font-semibold">Manage Questions</h2>
-
+        
               <!-- Quiz Selection Dropdown -->
               <select
                 id="quizSelect"
@@ -598,7 +598,7 @@
                 <option value="<%= e._id %>"><%= e.title %></option>
                 <% }); %>
               </select>
-
+        
               <!-- Buttons: Home & Add Question -->
               <div class="flex space-x-3">
                 <a
@@ -617,33 +617,33 @@
                 </a>
               </div>
             </div>
-
+        
             <div id="questionsList" class="space-y-8">
               <p class="text-gray-500 text-center">
                 Select a quiz to view questions.
               </p>
             </div>
           </div>
-
+        
           <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+        
           <script>
             $(document).ready(function () {
               $("#quizSelect").change(function () {
                 let quizId = $(this).val();
-
+        
                 if (!quizId) return;
-
+        
                 $("#questionsList").html(
                   "<p class='text-gray-500 text-center'>Loading questions...</p>"
                 );
-
+        
                 $.ajax({
                   url: `/api/questions/${quizId}`,
                   type: "GET",
                   success: function (data) {
                     console.log("✅ Questions Fetched:", data);
-
+        
                     let questionsHTML = "";
                     if (!data.questions || data.questions.length === 0) {
                       questionsHTML =
@@ -656,7 +656,8 @@
                               `<div class="bg-white p-4 rounded-lg border">${option}</div>`
                           )
                           .join("");
-
+        
+                        // ✅ Added Points Display Below the Question
                         questionsHTML += `
                         <div class="bg-neutral-50 rounded-xl p-6 hover:shadow-lg transition-all">
                             <div class="flex items-center justify-between mb-4">
@@ -674,17 +675,15 @@
                             </div>
                             <div class="grid grid-cols-2 gap-4 mb-4">${optionsHTML}</div>
                             <div class="text-green-600 font-semibold">Correct Answer: ${q.correct_answer}</div>
+                            <div class="text-blue-600 font-semibold">Points: ${q.points}</div> <!-- ✅ Added Points Display -->
                         </div>`;
                       });
                     }
-
+        
                     $("#questionsList").html(questionsHTML);
                   },
                   error: function (xhr) {
-                    console.error(
-                      " Error fetching questions:",
-                      xhr.responseText
-                    );
+                    console.error("❌ Error fetching questions:", xhr.responseText);
                     $("#questionsList").html(
                       "<p class='text-red-500 text-center'>Error fetching questions. Please try again.</p>"
                     );
@@ -692,33 +691,32 @@
                 });
               });
             });
-
+        
             function deleteQuestion(questionId) {
               if (confirm("Are you sure you want to delete this question?")) {
                 console.log(questionId);
-                fetch(`/delete/${questionId}`, { method: "DELETE" }).then(
-                  () => {
-                    alert("Question deleted successfully!");
-                    location.reload();
-                  }
-                );
+                fetch(`/delete/${questionId}`, { method: "DELETE" }).then(() => {
+                  alert("Question deleted successfully!");
+                  location.reload();
+                });
               }
             }
+        
             function editQuestion(questionId) {
-    console.log("Editing Question ID:", questionId);
-
-    // Ensure questionId is valid
-    if (!questionId || questionId.trim() === "") {
-        alert("Invalid Question ID");
-        return;
-    }
-
-    // Navigate to edit page
-    window.location.href = `/edit/${encodeURIComponent(questionId)}`;
-}
-
+              console.log("Editing Question ID:", questionId);
+        
+              // Ensure questionId is valid
+              if (!questionId || questionId.trim() === "") {
+                alert("Invalid Question ID");
+                return;
+              }
+        
+              // Navigate to edit page
+              window.location.href = `/edit/${encodeURIComponent(questionId)}`;
+            }
           </script>
         </main>
+        
       </div>
     </div>
   </body>

@@ -64,40 +64,63 @@ module.exports = router;
 
 // Add a question to a quiz
 app.post('/submitque', async (req, res) => {
-    const { quiz_title, question, option1, option2, option3, option4, correct_answer } = req.body;
+    const { quiz_title, question, option1, option2, option3, option4, correct_answer ,points} = req.body;
 
     if (!question || !correct_answer) {
-        return res.send(`<script>alert("Error: Missing required fields!"); window.location.href = "/manage";</script>`);
+        return res.send(`<script>alert("Error: Missing required fields!"); window.location.href = "/manage?quiz_title=${quiz_title}";</script>`);
     }
 
     try {
         const quiz = await QuizTitle.findOne({ title: quiz_title });
 
         if (!quiz) {
-            return res.send(`<script>alert("Error: Quiz not found!"); window.location.href = "/manage";</script>`);
-        }
-        if (quiz.questions.length >= quiz.que) {
-            return res.send(`<script>alert("Error: Maximum question limit reached! (${quiz.que})"); window.location.href = "/manage";</script>`);
+            return res.send(`<script>alert("Error: Quiz not found!"); window.location.href = "/manage?quiz_title=${quiz_title}";</script>`);
         }
 
+        if (quiz.questions.length >= quiz.que) {
+            return res.send(`<script>alert("Error: Maximum question limit reached!"); window.location.href = "/manage?quiz_title=${quiz_title}";</script>`);
+        }
+
+        // Check if any option already exists in the database
+        const existingOptions = await Question.find({
+            options: { $in: [option1, option2, option3, option4] }
+        });
+
+        // Compare the options after sorting them to avoid order issues
+        const optionsArray = [option1, option2, option3, option4].sort();
+
+        if (existingOptions.length > 0) {
+            const duplicateQuestion = existingOptions.find(item => {
+                const itemOptionsSorted = item.options.sort(); // Sort options for proper comparison
+                return item.question === question && JSON.stringify(itemOptionsSorted) === JSON.stringify(optionsArray);
+            });
+
+            if (duplicateQuestion) {
+                return res.send(`<script>alert("Error: The same question with the same options already exists!"); window.location.href = "/manage?quiz_title=${quiz_title}";</script>`);
+            }
+        }
+
+        // Create the new question
         const newQuestion = await Question.create({
             question,
             options: [option1, option2, option3, option4],
-            correct_answer
+            correct_answer,
+            points
         });
 
+        // Update the quiz with the new question
         await QuizTitle.findOneAndUpdate(
             { title: quiz_title },
             { $push: { questions: newQuestion._id } },
             { new: true }
         );
-
-        res.send(`<script>alert("Question added successfully!"); window.location.href = "/manage";</script>`);
+        res.send(`<script>alert("Question added successfully!"); window.location.href = "/manage?quiz_title=${quiz_title}";</script>`);
     } catch (err) {
         console.error("Error adding question:", err);
-        res.send(`<script>alert("Error adding question."); window.location.href = "/manage";</script>`);
+        res.send(`<script>alert("Error adding question."); window.location.href = "/manage?quiz_title=${quiz_title}";</script>`);
     }
 });
+
 
 // Manage Quizzes
 app.get('/manageview', async (req, res) => {
@@ -122,7 +145,8 @@ app.get('/api/questions/:quizId', async (req, res) => {
             _id: q._id,
             question: q.question,
             options: q.options,
-            correct_answer: q.correct_answer
+            correct_answer: q.correct_answer,
+            points:q.points 
         }));
 
         res.json({ questions: formattedQuestions });

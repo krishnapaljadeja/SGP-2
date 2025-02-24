@@ -13,9 +13,9 @@ con.then(()=>{
 
 const userSchema = new mongoose.Schema({
     title: { type: String, required: true },
-    que: Number,
-    questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Question' }], 
-    time: Number
+    que: {type : Number, required:true },
+     questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Question' }], 
+    time: {type:Number, required:true}
 });
 
 module.exports = mongoose.model('QuizTitle', userSchema);
