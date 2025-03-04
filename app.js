@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static('public'));
 
-// Homepage
+// Homepge
 app.get("/", async (req, res) => {
   try {
     const totalQuizzes = await QuizTitle.countDocuments(); 
