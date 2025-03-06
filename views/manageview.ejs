@@ -555,6 +555,7 @@
     </style>
   </head>
   <body>
+    
     <div id="webcrumbs">
       <div class="w-[1200px] font-sans">
         <!-- Navigation Bar -->
@@ -601,12 +602,10 @@
         
               <!-- Buttons: Home & Add Question -->
               <div class="flex space-x-3">
-                <a
-                  href="/"
+                <a onclick="deleteQuiz()"
                   class="px-6 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-all flex items-center space-x-2"
                 >
                 <span class="material-symbols-outlined">delete</span>
-                <!-- <span>Home</span> -->
                 </a>
                 <a
                   href="/"
@@ -632,8 +631,10 @@
             </div>
           </div>
         
-          <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        
+          
+        <!-- Add jQuery CDN before your script -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
           <script>
             $(document).ready(function () {
               $("#quizSelect").change(function () {
@@ -721,6 +722,33 @@
               // Navigate to edit page
               window.location.href = `/edit/${encodeURIComponent(questionId)}`;
             }
+            function deleteQuiz() {
+  let quizId = $("#quizSelect").val(); // Get selected quiz ID
+
+  if (!quizId) {
+    alert("Please select a quiz to delete.");
+    return;
+  }
+
+  if (confirm("Are you sure you want to delete this entire quiz? This action cannot be undone!")) {
+    console.log("Deleting Quiz ID:", quizId);
+    
+    fetch(`/api/quiz/${quizId}`, { method: "DELETE" })
+      .then((response) => {
+        if (response.ok) {
+          alert("Quiz deleted successfully!");
+          location.reload(); // Reload page to reflect changes
+        } else {
+          alert("Error deleting quiz. Please try again.");
+        }
+      })
+      .catch((error) => {
+        console.error("❌ Error deleting quiz:", error);
+        alert("An error occurred while deleting the quiz.");
+      });
+  }
+}
+
           </script>
         </main>
         

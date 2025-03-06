@@ -3,10 +3,11 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const QuizTitle = require("./models/title");
 const Question = require("./models/question");
+const title = require('./models/title');
 const router = express.Router();
 
 const app = express();
-const port = 3000;
+const port = 5000;
 
 app.set('view engine', 'ejs');
 app.use(express.json());
@@ -16,15 +17,24 @@ app.use(express.static('public'));
 
 // Homepgeeee
 app.get("/", async (req, res) => {
-  try {
-    const totalQuizzes = await QuizTitle.countDocuments(); 
-    res.render("index", { totalQuizzes }); 
-  } catch (error) {
-    console.error("Error fetching quiz count:", error);
-    res.render("index", { totalQuizzes: 0 }); 
-  }
-});
-
+    try {
+      let allQuizzes = await QuizTitle.find().populate('questions'); // Populate questions
+  
+      const totalQuizzes = await QuizTitle.countDocuments(); 
+  
+     
+      let quizzesWithStatus = allQuizzes.map(quiz => ({
+        ...quiz.toObject(), 
+        isComplete: quiz.questions.length === quiz.que 
+      }));
+  
+      res.render("index", { totalQuizzes, users: quizzesWithStatus }); 
+    } catch (error) {
+      console.error("Error fetching quiz count:", error);
+      res.render("index", { totalQuizzes: 0, users: [] }); 
+    }
+  });
+  
 // Add Quiz Page
 app.get('/add', (req, res) => res.render('add'));
 
@@ -216,6 +226,21 @@ app.get('/manage', async (req, res) => {
     let allQuizzes = await QuizTitle.find();
     res.render('manage', { users: allQuizzes });
 });
+
+app.delete("/api/quiz/:quizId", async (req, res) => {
+    try {
+      const { quizId } = req.params;
+      const deletedQuiz = await QuizTitle.findByIdAndDelete(quizId);
+  
+      if (!deletedQuiz) return res.status(404).json({ error: "Quiz not found" });
+  
+      res.json({ message: "Quiz deleted successfully" });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+
 
 // Start Server
 app.listen(port, () => {

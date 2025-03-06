@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QUIZIFY</title>
+    <title>QuiziFY</title>
     <style>
       @import url(https://fonts.googleapis.com/css2?family=Lato&display=swap);
       
@@ -609,29 +609,19 @@
                   <h2 class="text-2xl font-semibold mb-6">Available Quizzes</h2>
                   <div class="grid grid-cols-2 gap-6 sm:grid-cols-1 md:grid-cols-2">
                       <!-- Quiz Card: Science -->
+                      <% users.forEach(function(e) { %>
                       <div class="bg-gray-50 rounded-lg p-6 hover:shadow-md transition-all cursor-pointer transform hover:-translate-y-1">
-                          <h3 class="text-xl font-medium mb-2">Science</h3>
-                          <p class="text-gray-600 mb-4">10 Questions • 15 Minutes</p>
-                          <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-all">Start Quiz</button>
+                          <h3 class="text-xl font-medium mb-2"><%= e.title %></h3>
+                          <p class="text-gray-600 mb-4"><%= e.que %> Questions • <%= e.time %> Minutes</p>
+                          <form action="/quiz/<%= e._id %>" method="get">
+                            <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-all">
+                                Start Quiz
+                            </button>
+                        </form>
+                        
+                        
                       </div>
-                      <!-- Quiz Card: History -->
-                      <div class="bg-gray-50 rounded-lg p-6 hover:shadow-md transition-all cursor-pointer transform hover:-translate-y-1">
-                          <h3 class="text-xl font-medium mb-2">History</h3>
-                          <p class="text-gray-600 mb-4">10 Questions • 15 Minutes</p>
-                          <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-all">Start Quiz</button>
-                      </div>
-                      <!-- Quiz Card: Sports -->
-                      <div class="bg-gray-50 rounded-lg p-6 hover:shadow-md transition-all cursor-pointer transform hover:-translate-y-1">
-                          <h3 class="text-xl font-medium mb-2">Sports</h3>
-                          <p class="text-gray-600 mb-4">10 Questions • 15 Minutes</p>
-                          <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-all">Start Quiz</button>
-                      </div>
-                      <!-- Quiz Card: Geography -->
-                      <div class="bg-gray-50 rounded-lg p-6 hover:shadow-md transition-all cursor-pointer transform hover:-translate-y-1">
-                          <h3 class="text-xl font-medium mb-2">Geography</h3>
-                          <p class="text-gray-600 mb-4">10 Questions • 15 Minutes</p>
-                          <button class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-all">Start Quiz</button>
-                      </div>
+                      <% }); %>
                   </div>
               </section>
               

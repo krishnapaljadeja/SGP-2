@@ -14,7 +14,7 @@ con.then(()=>{
 const userSchema = new mongoose.Schema({
     title: { type: String, required: true },
     que: {type : Number, required:true },
-     questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Question' }], 
+    questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Question' }], 
     time: {type:Number, required:true}
 });
 
