@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>QuiziFY</title>
+        <style>
+            @import url(https://fonts.googleapis.com/css2?family=Lato&display=swap);
+            @import url(https://fonts.googleapis.com/css2?family=Open+Sans&display=swap);
+            @import url(https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200);
+
+            /*! tailwindcss v3.4.11 | MIT License | https://tailwindcss.com*/
+            *,
+            :after,
+            :before {
+                border: 0 solid #e5e7eb;
+                box-sizing: border-box;
+            }
+            :after,
+            :before {
+                --tw-content: "";
+            }
+            :host,
+            html {
+                line-height: 1.5;
+                -webkit-text-size-adjust: 100%;
+                font-family:
+                    Open Sans,
+                    ui-sans-serif,
+                    system-ui,
+                    sans-serif,
+                    Apple Color Emoji,
+                    Segoe UI Emoji,
+                    Segoe UI Symbol,
+                    Noto Color Emoji;
+                font-feature-settings: normal;
+                font-variation-settings: normal;
+                -moz-tab-size: 4;
+                tab-size: 4;
+                -webkit-tap-highlight-color: transparent;
+            }
+            body {
+                line-height: inherit;
+                margin: 0;
+            }
+            hr {
+                border-top-width: 1px;
+                color: inherit;
+                height: 0;
+            }
+            abbr:where([title]) {
+                text-decoration: underline dotted;
+            }
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6 {
+                font-size: inherit;
+                font-weight: inherit;
+            }
+            a {
+                color: inherit;
+                text-decoration: inherit;
+            }
+            b,
+            strong {
+                font-weight: bolder;
+            }
+            code,
+            kbd,
+            pre,
+            samp {
+                font-family:
+                    ui-monospace,
+                    SFMono-Regular,
+                    Menlo,
+                    Monaco,
+                    Consolas,
+                    Liberation Mono,
+                    Courier New,
+                    monospace;
+                font-feature-settings: normal;
+                font-size: 1em;
+                font-variation-settings: normal;
+            }
+            small {
+                font-size: 80%;
+            }
+            sub,
+            sup {
+                font-size: 75%;
+                line-height: 0;
+                position: relative;
+                vertical-align: baseline;
+            }
+            sub {
+                bottom: -0.25em;
+            }
+            sup {
+                top: -0.5em;
+            }
+            table {
+                border-collapse: collapse;
+                border-color: inherit;
+                text-indent: 0;
+            }
+            button,
+            input,
+            optgroup,
+            select,
+            textarea {
+                color: inherit;
+                font-family: inherit;
+                font-feature-settings: inherit;
+                font-size: 100%;
+                font-variation-settings: inherit;
+                font-weight: inherit;
+                letter-spacing: inherit;
+                line-height: inherit;
+                margin: 0;
+                padding: 0;
+            }
+            button,
+            select {
+                text-transform: none;
+            }
+            button,
+            input:where([type="button"]),
+            input:where([type="reset"]),
+            input:where([type="submit"]) {
+                -webkit-appearance: button;
+                background-color: transparent;
+                background-image: none;
+            }
+            :-moz-focusring {
+                outline: auto;
+            }
+            :-moz-ui-invalid {
+                box-shadow: none;
+            }
+            progress {
+                vertical-align: baseline;
+            }
+            ::-webkit-inner-spin-button,
+            ::-webkit-outer-spin-button {
+                height: auto;
+            }
+            [type="search"] {
+                -webkit-appearance: textfield;
+                outline-offset: -2px;
+            }
+            ::-webkit-search-decoration {
+                -webkit-appearance: none;
+            }
+            ::-webkit-file-upload-button {
+                -webkit-appearance: button;
+                font: inherit;
+            }
+            summary {
+                display: list-item;
+            }
+            blockquote,
+            dd,
+            dl,
+            figure,
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6,
+            hr,
+            p,
+            pre {
+                margin: 0;
+            }
+            fieldset {
+                margin: 0;
+            }
+            fieldset,
+            legend {
+                padding: 0;
+            }
+            menu,
+            ol,
+            ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            dialog {
+                padding: 0;
+            }
+            textarea {
+                resize: vertical;
+            }
+            input::placeholder,
+            textarea::placeholder {
+                color: #9ca3af;
+                opacity: 1;
+            }
+            [role="button"],
+            button {
+                cursor: pointer;
+            }
+            :disabled {
+                cursor: default;
+            }
+            audio,
+            canvas,
+            embed,
+            iframe,
+            img,
+            object,
+            svg,
+            video {
+                display: block;
+                vertical-align: middle;
+            }
+            img,
+            video {
+                height: auto;
+                max-width: 100%;
+            }
+            [hidden] {
+                display: none;
+            }
+            *,
+            :after,
+            :before {
+                --tw-border-spacing-x: 0;
+                --tw-border-spacing-y: 0;
+                --tw-translate-x: 0;
+                --tw-translate-y: 0;
+                --tw-rotate: 0;
+                --tw-skew-x: 0;
+                --tw-skew-y: 0;
+                --tw-scale-x: 1;
+                --tw-scale-y: 1;
+                --tw-pan-x: ;
+                --tw-pan-y: ;
+                --tw-pinch-zoom: ;
+                --tw-scroll-snap-strictness: proximity;
+                --tw-gradient-from-position: ;
+                --tw-gradient-via-position: ;
+                --tw-gradient-to-position: ;
+                --tw-ordinal: ;
+                --tw-slashed-zero: ;
+                --tw-numeric-figure: ;
+                --tw-numeric-spacing: ;
+                --tw-numeric-fraction: ;
+                --tw-ring-inset: ;
+                --tw-ring-offset-width: 0px;
+                --tw-ring-offset-color: #fff;
+                --tw-ring-color: rgba(59, 130, 246, 0.5);
+                --tw-ring-offset-shadow: 0 0 #0000;
+                --tw-ring-shadow: 0 0 #0000;
+                --tw-shadow: 0 0 #0000;
+                --tw-shadow-colored: 0 0 #0000;
+                --tw-blur: ;
+                --tw-brightness: ;
+                --tw-contrast: ;
+                --tw-grayscale: ;
+                --tw-hue-rotate: ;
+                --tw-invert: ;
+                --tw-saturate: ;
+                --tw-sepia: ;
+                --tw-drop-shadow: ;
+                --tw-backdrop-blur: ;
+                --tw-backdrop-brightness: ;
+                --tw-backdrop-contrast: ;
+                --tw-backdrop-grayscale: ;
+                --tw-backdrop-hue-rotate: ;
+                --tw-backdrop-invert: ;
+                --tw-backdrop-opacity: ;
+                --tw-backdrop-saturate: ;
+                --tw-backdrop-sepia: ;
+                --tw-contain-size: ;
+                --tw-contain-layout: ;
+                --tw-contain-paint: ;
+                --tw-contain-style: ;
+            }
+            ::backdrop {
+                --tw-border-spacing-x: 0;
+                --tw-border-spacing-y: 0;
+                --tw-translate-x: 0;
+                --tw-translate-y: 0;
+                --tw-rotate: 0;
+                --tw-skew-x: 0;
+                --tw-skew-y: 0;
+                --tw-scale-x: 1;
+                --tw-scale-y: 1;
+                --tw-pan-x: ;
+                --tw-pan-y: ;
+                --tw-pinch-zoom: ;
+                --tw-scroll-snap-strictness: proximity;
+                --tw-gradient-from-position: ;
+                --tw-gradient-via-position: ;
+                --tw-gradient-to-position: ;
+                --tw-ordinal: ;
+                --tw-slashed-zero: ;
+                --tw-numeric-figure: ;
+                --tw-numeric-spacing: ;
+                --tw-numeric-fraction: ;
+                --tw-ring-inset: ;
+                --tw-ring-offset-width: 0px;
+                --tw-ring-offset-color: #fff;
+                --tw-ring-color: rgba(59, 130, 246, 0.5);
+                --tw-ring-offset-shadow: 0 0 #0000;
+                --tw-ring-shadow: 0 0 #0000;
+                --tw-shadow: 0 0 #0000;
+                --tw-shadow-colored: 0 0 #0000;
+                --tw-blur: ;
+                --tw-brightness: ;
+                --tw-contrast: ;
+                --tw-grayscale: ;
+                --tw-hue-rotate: ;
+                --tw-invert: ;
+                --tw-saturate: ;
+                --tw-sepia: ;
+                --tw-drop-shadow: ;
+                --tw-backdrop-blur: ;
+                --tw-backdrop-brightness: ;
+                --tw-backdrop-contrast: ;
+                --tw-backdrop-grayscale: ;
+                --tw-backdrop-hue-rotate: ;
+                --tw-backdrop-invert: ;
+                --tw-backdrop-opacity: ;
+                --tw-backdrop-saturate: ;
+                --tw-backdrop-sepia: ;
+                --tw-contain-size: ;
+                --tw-contain-layout: ;
+                --tw-contain-paint: ;
+                --tw-contain-style: ;
+            }
+            #webcrumbs .absolute {
+                position: absolute;
+            }
+            #webcrumbs .relative {
+                position: relative;
+            }
+            #webcrumbs .inset-0 {
+                inset: 0;
+            }
+            #webcrumbs .mx-auto {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            #webcrumbs .mb-1 {
+                margin-bottom: 4px;
+            }
+            #webcrumbs .mb-10 {
+                margin-bottom: 40px;
+            }
+            #webcrumbs .mb-2 {
+                margin-bottom: 8px;
+            }
+            #webcrumbs .mb-4 {
+                margin-bottom: 16px;
+            }
+            #webcrumbs .mb-6 {
+                margin-bottom: 24px;
+            }
+            #webcrumbs .mb-8 {
+                margin-bottom: 32px;
+            }
+            #webcrumbs .mt-1 {
+                margin-top: 4px;
+            }
+            #webcrumbs .mt-8 {
+                margin-top: 32px;
+            }
+            #webcrumbs .inline-block {
+                display: inline-block;
+            }
+            #webcrumbs .flex {
+                display: flex;
+            }
+            #webcrumbs .grid {
+                display: grid;
+            }
+            #webcrumbs .h-56 {
+                height: 224px;
+            }
+            #webcrumbs .h-full {
+                height: 100%;
+            }
+            #webcrumbs .min-h-screen {
+                min-height: 100vh;
+            }
+            #webcrumbs .w-56 {
+                width: 224px;
+            }
+            #webcrumbs .w-\[1000px\] {
+                width: 1000px;
+            }
+            #webcrumbs .w-full {
+                width: 100%;
+            }
+            #webcrumbs .max-w-4xl {
+                max-width: 56rem;
+            }
+            #webcrumbs .origin-center {
+                transform-origin: center;
+            }
+            #webcrumbs .-rotate-90 {
+                --tw-rotate: -90deg;
+            }
+            #webcrumbs .-rotate-90,
+            #webcrumbs .transform {
+                transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate))
+                    skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+            }
+            #webcrumbs .grid-cols-1 {
+                grid-template-columns: repeat(1, minmax(0, 1fr));
+            }
+            #webcrumbs .flex-row {
+                flex-direction: row;
+            }
+            #webcrumbs .items-center {
+                align-items: center;
+            }
+            #webcrumbs .justify-center {
+                justify-content: center;
+            }
+            #webcrumbs .justify-between {
+                justify-content: space-between;
+            }
+            #webcrumbs .gap-2 {
+                gap: 8px;
+            }
+            #webcrumbs .gap-4 {
+                gap: 16px;
+            }
+            #webcrumbs .rounded-full {
+                border-radius: 9999px;
+            }
+            #webcrumbs .rounded-lg {
+                border-radius: 24px;
+            }
+            #webcrumbs .rounded-xl {
+                border-radius: 36px;
+            }
+            #webcrumbs .border {
+                border-width: 1px;
+            }
+            #webcrumbs .border-t {
+                border-top-width: 1px;
+            }
+            #webcrumbs .border-blue-600 {
+                --tw-border-opacity: 1;
+                border-color: rgb(37 99 235 / var(--tw-border-opacity));
+            }
+            #webcrumbs .border-gray-200 {
+                --tw-border-opacity: 1;
+                border-color: rgb(229 231 235 / var(--tw-border-opacity));
+            }
+            #webcrumbs .bg-blue-50 {
+                --tw-bg-opacity: 1;
+                background-color: rgb(239 246 255 / var(--tw-bg-opacity));
+            }
+            #webcrumbs .bg-gray-50 {
+                --tw-bg-opacity: 1;
+                background-color: rgb(249 250 251 / var(--tw-bg-opacity));
+            }
+            #webcrumbs .bg-green-100 {
+                --tw-bg-opacity: 1;
+                background-color: rgb(220 252 231 / var(--tw-bg-opacity));
+            }
+            #webcrumbs .bg-red-500 {
+                --tw-bg-opacity: 1;
+                background-color: rgb(239 68 68 / var(--tw-bg-opacity));
+            }
+            #webcrumbs .bg-white {
+                --tw-bg-opacity: 1;
+                background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+            }
+            #webcrumbs .p-2 {
+                padding: 8px;
+            }
+            #webcrumbs .p-4 {
+                padding: 16px;
+            }
+            #webcrumbs .p-6 {
+                padding: 24px;
+            }
+            #webcrumbs .px-4 {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+            #webcrumbs .px-6 {
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+            #webcrumbs .py-1\.5 {
+                padding-bottom: 6px;
+                padding-top: 6px;
+            }
+            #webcrumbs .py-2\.5 {
+                padding-bottom: 10px;
+                padding-top: 10px;
+            }
+            #webcrumbs .py-3 {
+                padding-bottom: 12px;
+                padding-top: 12px;
+            }
+            #webcrumbs .pt-6 {
+                padding-top: 24px;
+            }
+            #webcrumbs .text-center {
+                text-align: center;
+            }
+            #webcrumbs .text-2xl {
+                font-size: 24px;
+                line-height: 31.200000000000003px;
+            }
+            #webcrumbs .text-3xl {
+                font-size: 30px;
+                line-height: 36px;
+            }
+            #webcrumbs .text-5xl {
+                font-size: 48px;
+                line-height: 52.800000000000004px;
+            }
+            #webcrumbs .text-sm {
+                font-size: 14px;
+                line-height: 21px;
+            }
+            #webcrumbs .text-xl {
+                font-size: 20px;
+                line-height: 28px;
+            }
+            #webcrumbs .font-bold {
+                font-weight: 700;
+            }
+            #webcrumbs .font-medium {
+                font-weight: 500;
+            }
+            #webcrumbs .font-semibold {
+                font-weight: 600;
+            }
+            #webcrumbs .text-blue-600 {
+                --tw-text-opacity: 1;
+                color: rgb(37 99 235 / var(--tw-text-opacity));
+            }
+            #webcrumbs .text-gray-200 {
+                --tw-text-opacity: 1;
+                color: rgb(229 231 235 / var(--tw-text-opacity));
+            }
+            #webcrumbs .text-gray-500 {
+                --tw-text-opacity: 1;
+                color: rgb(107 114 128 / var(--tw-text-opacity));
+            }
+            #webcrumbs .text-gray-600 {
+                --tw-text-opacity: 1;
+                color: rgb(75 85 99 / var(--tw-text-opacity));
+            }
+            #webcrumbs .text-gray-800 {
+                --tw-text-opacity: 1;
+                color: rgb(31 41 55 / var(--tw-text-opacity));
+            }
+            #webcrumbs .text-green-600 {
+                --tw-text-opacity: 1;
+                color: rgb(22 163 74 / var(--tw-text-opacity));
+            }
+            #webcrumbs .text-green-700 {
+                --tw-text-opacity: 1;
+                color: rgb(21 128 61 / var(--tw-text-opacity));
+            }
+            #webcrumbs .text-red-500 {
+                --tw-text-opacity: 1;
+                color: rgb(239 68 68 / var(--tw-text-opacity));
+            }
+            #webcrumbs .text-white {
+                --tw-text-opacity: 1;
+                color: rgb(255 255 255 / var(--tw-text-opacity));
+            }
+            #webcrumbs .shadow-sm {
+                --tw-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+                --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+                box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+            }
+            #webcrumbs .transition-all {
+                transition-duration: 0.15s;
+                transition-property: all;
+                transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            #webcrumbs .transition-colors {
+                transition-duration: 0.15s;
+                transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+                transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            #webcrumbs .transition-shadow {
+                transition-duration: 0.15s;
+                transition-property: box-shadow;
+                transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            #webcrumbs .duration-1000 {
+                transition-duration: 1s;
+            }
+            #webcrumbs .duration-200 {
+                transition-duration: 0.2s;
+            }
+            #webcrumbs {
+                font-family: Open Sans !important;
+                font-size: 16px !important;
+            }
+            #webcrumbs .hover\:bg-blue-50:hover {
+                --tw-bg-opacity: 1;
+                background-color: rgb(239 246 255 / var(--tw-bg-opacity));
+            }
+            #webcrumbs .hover\:bg-gray-100:hover {
+                --tw-bg-opacity: 1;
+                background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+            }
+            #webcrumbs .hover\:bg-red-600:hover {
+                --tw-bg-opacity: 1;
+                background-color: rgb(220 38 38 / var(--tw-bg-opacity));
+            }
+            #webcrumbs .hover\:shadow-md:hover {
+                --tw-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+                --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+                box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+            }
+            @media (min-width: 768px) {
+                #webcrumbs .md\:grid-cols-2 {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+            }
+
+            body {
+                line-height: inherit;
+                padding: 24px;
+                display: flex;
+                flex-direction: column;
+                min-width: 100vw;
+                min-height: 100vh;
+                align-items: center;
+                justify-content: center;
+                background: linear-gradient(135deg, #ffffff, #d4d4d4);
+            }
+        </style>
+    </head>
+    <body>
+        <div id="webcrumbs">
+            <div class="w-full flex justify-center">
+                <div class="w-[1000px] bg-gray-50 min-h-screen">
+                    <header class="bg-white shadow-sm py-3 px-6 flex justify-between items-center">
+                        <div class="text-blue-600 font-bold text-2xl">QUIZIFY</div>
+                        <div class="flex items-center gap-4">
+                            <button class="hover:bg-gray-100 rounded-full p-2 transition-colors duration-200">
+                                <span class="material-symbols-outlined">account_circle</span>
+                            </button>
+                            <button
+                                class="bg-red-500 hover:bg-red-600 text-white px-4 py-1.5 rounded-full text-sm transition-all duration-200 hover:shadow-md"
+                            >
+                                Logout
+                            </button>
+                        </div>
+                    </header>
+                    <div class="p-6 max-w-4xl mx-auto">
+                        <div class="bg-white rounded-xl shadow-sm p-6">
+                            <div class="flex justify-center">
+                                <div class="text-center mb-8">
+                                    <div
+                                        class="bg-green-100 text-green-700 rounded-full px-4 py-1.5 text-sm font-medium inline-block mb-2"
+                                    >
+                                        Quiz Completed
+                                    </div>
+                                    <h1 class="text-3xl font-bold text-gray-800 mb-2"><%=quiz.title%> Quiz Results</h1>
+                                    <p class="text-gray-600">You have successfully completed this quiz!</p>
+                                </div>
+                            </div>
+                            <div class="flex justify-center mb-10">
+                                <div class="relative w-56 h-56">
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <div class="text-center">
+                                            <div class="text-5xl font-bold text-blue-600"><%=totalScore%></div>
+                                            <div class="text-gray-500 mt-1">out of <%= totalPossiblePoints %> points</div>
+                                        </div>
+                                    </div>
+                                    <svg class="w-full h-full" viewBox="0 0 100 100">
+                                        <circle
+                                            class="text-gray-200"
+                                            stroke-width="10"
+                                            stroke="currentColor"
+                                            fill="transparent"
+                                            r="40"
+                                            cx="50"
+                                            cy="50"
+                                        ></circle>
+                                        <circle
+                                            class="text-blue-600 transform -rotate-90 origin-center transition-all duration-1000"
+                                            stroke-width="10"
+                                            stroke-dasharray="251"
+                                            stroke-dashoffset="45"
+                                            stroke="currentColor"
+                                            fill="transparent"
+                                            r="40"
+                                            cx="50"
+                                            cy="50"
+                                        ></circle>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="bg-blue-50 rounded-xl p-6 mb-8">
+                                <h2 class="text-xl font-semibold text-gray-800 mb-4">Quiz Summary</h2>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                                    <div
+                                        class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200"
+                                    >
+                                        <div class="text-gray-600 mb-1">Total Questions</div>
+                                        <div class="text-2xl font-bold">5</div>
+                                    </div>
+                                    <div
+                                        class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200"
+                                    >
+                                        <div class="text-gray-600 mb-1">Time Taken</div>
+                                        <div class="text-2xl font-bold">11:15</div>
+                                    </div>
+                                    <div
+                                        class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200"
+                                    >
+                                        <div class="text-gray-600 mb-1">Correct Answers</div>
+                                        <div class="text-2xl font-bold text-green-600">4</div>
+                                    </div>
+                                    <div
+                                        class="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow duration-200"
+                                    >
+                                        <div class="text-gray-600 mb-1">Incorrect Answers</div>
+                                        <div class="text-2xl font-bold text-red-500">1</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex justify-between items-center mt-8">
+                                <button
+                                    class="bg-white border border-blue-600 text-blue-600 hover:bg-blue-50 px-6 py-2.5 rounded-lg transition-all duration-200 hover:shadow-md flex items-center gap-2"
+                                >
+                                    <span class="material-symbols-outlined">arrow_back</span>
+                                    <span>Back to Quizzes</span>
+                                </button>
+                                <div class="flex gap-4"></div>
+                            </div>
+                            <div class="mt-8 border-t border-gray-200 pt-6"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

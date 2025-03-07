@@ -50,7 +50,7 @@ app.get('/quiz/:id', async (req, res) => {
 
 
 
-  app.post("/startQuiz", async (req, res) => {
+app.post("/startQuiz", async (req, res) => {
     try {
         const { quizId, answers } = req.body;
         const quiz = await QuizTitle.findById(quizId).populate('questions');
@@ -65,19 +65,23 @@ app.get('/quiz/:id', async (req, res) => {
         // Process each question
         quiz.questions.forEach((q) => {
             correctAnswers[q._id] = q.correct_answer;
-            if (answers[q._id] && answers[q._id] === q.correct_answer) {
+            if (answers && answers[q._id] && answers[q._id] === q.correct_answer) {
                 totalScore += q.points;
             }
         });
 
-        // Return result (or redirect to a result page)
-        res.send(`Quiz submitted! Your score: ${totalScore}`);
+        // Ensure total possible points
+        const totalPossiblePoints = quiz.questions.reduce((sum, q) => sum + q.points, 0);
+
+        // Render quiz results
+        res.render('quizResult', { quiz, totalScore, totalPossiblePoints });
         
     } catch (error) {
         console.error("Error processing quiz:", error);
         res.status(500).send("Error processing quiz.");
     }
 });
+
 
 app.listen(port, () => {
     console.log(` Server running on http://localhost:${port}`);
