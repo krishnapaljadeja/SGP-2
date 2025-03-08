@@ -618,9 +618,13 @@
               <button class="px-4 py-2 rounded-lg hover:bg-gray-100 transition-all duration-300">
                 <span class="material-symbols-outlined">person</span>
               </button>
-              <button class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all duration-300 transform hover:-translate-y-0.5">
-                Logout
-              </button>
+              <form action="/logout" method="POST">
+                <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all duration-300 transform hover:-translate-y-0.5">
+                  Logout
+                </button>
+              </form>
+              
+              
             </div>
           </div>
         </nav>

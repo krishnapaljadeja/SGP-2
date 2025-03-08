@@ -2,12 +2,21 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const QuizTitle = require("./models/title");
+const jwt = require("jsonwebtoken")
 const Question = require("./models/question");
 const title = require('./models/title');
-const router = express.Router();
+const collection = require('./models/user') 
+const transporter = require("./otp");
+const verifyToken = require("./middlewares/authmiddleware")
+const dotenv = require("dotenv").config();
+const bcrypt = require("bcrypt");
+
 
 const app = express();
 const port = 5000;
+
+const tempUserStore = new Map(); // Temporary store for user details
+const otpStore = new Map();
 
 app.set('view engine', 'ejs');
 app.use(express.json());
@@ -15,8 +24,210 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static('public'));
 
-// Homepgeeee
-app.get("/", async (req, res) => {
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+// app.get("/home", (req, res) => {
+//     res.render("home");
+// });
+
+// Home Route
+app.get("/", (req, res) => {
+    res.render("login");
+});
+
+//logout route
+app.post("/logout", (req, res) => {
+    res.clearCookie("token")
+    res.render("login");
+});
+
+// Signup Route (GET)
+app.get("/signup", (req, res) => {
+    res.render("signup");
+});
+
+// OTP Route (GET)
+app.get("/otp", (req, res) => {
+    res.render("otp");
+});
+
+
+// Signup Route (POST)
+app.post("/signup", async (req, res) => {
+    try {
+        const { username, email, password } = req.body;
+        const existingUser = await collection.findOne({ name: username });
+        const existingEmail = await collection.findOne({ email });
+
+        if (existingUser || existingEmail) {
+            return res.send(`<script>alert("User already exists."); window.location.href = "/";</script>`);
+        }
+
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        otpStore.set(email, { otp, expiresAt: Date.now() + 2 * 60 * 1000 });
+        tempUserStore.set(email, { username, email, password });
+
+        const mailOptions = {
+            from: "digitalworld2511@gmail.com",
+            to: email,
+            subject: "Your OTP for Signup",
+            text: `Your OTP for signup is: ${otp}. It expires in 2 minutes.`,
+        };
+
+        await transporter.sendMail(mailOptions);
+        res.redirect("/otp");
+    } catch (error) {
+        console.error("Error during signup:", error);
+        res.status(500).send("Error during signup");
+    }
+});
+
+// OTP Verification Route
+app.post("/otp", async (req, res) => {
+    try {
+        const { otp } = req.body;
+        let emailFound = null;
+        for (const [email, otpData] of otpStore.entries()) {
+            if (otpData.otp === otp && Date.now() <= otpData.expiresAt) {
+                emailFound = email;
+                break;
+            }
+        }
+
+        if (!emailFound) {
+            return res.status(400).send("Invalid or expired OTP.");
+        }
+
+        const tempUser = tempUserStore.get(emailFound);
+        if (!tempUser) {
+            return res.status(400).send("User data not found. Please restart signup.");
+        }
+
+        const hashedPassword = await bcrypt.hash(tempUser.password, 10);
+        const newUser = new collection({ name: tempUser.username, password: hashedPassword, email: tempUser.email, role: "student" });
+        await newUser.save();
+
+        otpStore.delete(emailFound);
+        tempUserStore.delete(emailFound);
+
+        res.send(`<script>alert("Signup successful! You can now log in."); window.location.href = "/";</script>`);
+    } catch (error) {
+        console.error("Error verifying OTP:", error);
+        res.status(500).send("Error verifying OTP");
+    }
+});
+
+// Login Route
+app.post("/login", async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        const user = await collection.findOne({ $or: [{ name: username }, { email: username }] });
+
+        if (!user) {
+            return res.send(`<script>alert("User not found"); window.location.href = "/";</script>`);
+        }
+
+        const isPasswordMatch = await bcrypt.compare(password, user.password);
+        if (isPasswordMatch) {
+
+            const token = jwt.sign({id: user._id, role: user.role, name: user.name},process.env.ACCESS_TOKEN_SECRET_KEY)
+            
+
+            res.cookie("token", token, { httpOnly: true, secure: false });
+
+            // console.log("JWT Secret Key:", process.env.ACCESS_TOKEN_SECRET_KEY);
+
+             // Redirect based on user role
+             if (user.role === "admin") {
+                res.redirect("/admin-dashboard");
+            } else if (user.role === "student") {
+                res.redirect("/student-dashboard");
+            } else {
+                res.redirect("/home"); // Default fallback
+            }
+        } else {
+            res.send(`<script>alert("Wrong username or password"); window.location.href = "/";</script>`);
+        }
+    } catch (error) {
+        console.error("Error during login:", error);
+        res.status(500).send("Login error");
+    }
+});
+
+// Forgot Password Routes
+app.get("/forgot", (req, res) => {
+    res.render("forgot");
+});
+
+// Forgot (POST)
+app.post("/forgot", async (req, res) => {
+    try {
+        const { email } = req.body;
+        const user = await collection.findOne({ email });
+
+        if (!user) {
+            return res.send("User not exist");
+        }
+
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        otpStore.set(email, { otp, expiresAt: Date.now() + 2 * 60 * 1000 });
+
+        const mailOptions = {
+            from: "quizify54@gmail.com",
+            to: email,
+            subject: "Your OTP for Reset Password",
+            text: `Your OTP for Reset Password is: ${otp}. It expires in 2 minutes.`,
+        };
+
+        await transporter.sendMail(mailOptions);
+        res.status(200).send("OTP sent successfully. Please check your email.");
+    } catch (error) {
+        console.error("Error during forgot password:", error);
+        res.status(500).send("Forgot password error");
+    }
+});
+
+//reset(POST)
+app.post("/reset-password", async (req, res) => {
+    try {
+        const { email, fotp, newpassword, cnfpassword } = req.body;
+        if (newpassword !== cnfpassword) {
+            return res.status(400).send("Passwords do not match.");
+        }
+
+        const otpData = otpStore.get(email);
+        if (!otpData || otpData.otp !== fotp) {
+            return res.status(400).send("Invalid OTP.");
+        }
+
+        const hashedPassword = await bcrypt.hash(newpassword, 10);
+        await collection.updateOne({ email: email }, { $set: { password: hashedPassword } });
+        otpStore.delete(email);
+
+        res.status(200).send("Password reset successful. You can now log in.");
+    } catch (error) {
+        console.error("Error during password reset:", error);
+        res.status(500).send("Reset password error");
+    }
+});
+
+
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+//admin dashboard
+//////////////////////////////////////////////////////////////////////////////////////////
+app.get("/admin-dashboard",verifyToken, async (req, res) => {
     try {
       let allQuizzes = await QuizTitle.find().populate('questions'); // Populate questions
   
@@ -60,7 +271,7 @@ app.post('/created', async (req, res) => {
     }
 });
 
-router.get("/api/quiz-count", async (req, res) => {
+app.get("/api/quiz-count", async (req, res) => {
   try {
     const totalQuizzes = await QuizTitle.countDocuments();
     res.json({ total: totalQuizzes });
@@ -70,7 +281,7 @@ router.get("/api/quiz-count", async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = app;
 
 // Add a question to a quiz
 app.post('/submitque', async (req, res) => {
@@ -239,6 +450,89 @@ app.delete("/api/quiz/:quizId", async (req, res) => {
       res.status(500).json({ error: err.message });
     }
   });
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+//student dashboard
+/////////////////////////////////////////////////////////////////////////////////////////
+
+app.get('/student-dashboard',verifyToken, async (req, res) => {
+    try {
+        let allQuizzes = await QuizTitle.find().populate('questions'); // Populate questions
+
+        // Filter quizzes where que matches the actual number of questions
+        let validQuizzes = allQuizzes.filter(quiz => quiz.questions.length === quiz.que);
+
+        res.render('user', { users: validQuizzes }); // Send only valid quizzes
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.get('/quiz/:id', async (req, res) => {
+   
+    try {
+        const quiz = await QuizTitle.findById(req.params.id).populate('questions');
+        if (!quiz) {
+            console.log("Quiz not found in the database.");
+            return res.status(404).send('Quiz not found');
+        }
+        
+        res.render('startQuiz', { quiz });  
+    } catch (error) {
+        console.error("Error fetching quiz:", error);
+        res.status(500).send("Error loading quiz");
+    }
+});
+
+
+
+app.post("/startQuiz", async (req, res) => {
+    try {
+        const { quizId, answers } = req.body;
+        const quiz = await QuizTitle.findById(quizId).populate('questions');
+
+        if (!quiz) {
+            return res.status(404).send("Quiz not found.");
+        }
+
+        let totalScore = 0;
+        let correctAnswers = {};
+
+        // Process each question
+        quiz.questions.forEach((q) => {
+            correctAnswers[q._id] = q.correct_answer;
+            if (answers && answers[q._id] && answers[q._id] === q.correct_answer) {
+                totalScore += q.points;
+            }
+        });
+
+        // Ensure total possible points
+        const totalPossiblePoints = quiz.questions.reduce((sum, q) => sum + q.points, 0);
+
+        // Render quiz results
+        res.render('quizResult', { quiz, totalScore, totalPossiblePoints });
+        
+    } catch (error) {
+        console.error("Error processing quiz:", error);
+        res.status(500).send("Error processing quiz.");
+    }
+});
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+
+
 
 
 
