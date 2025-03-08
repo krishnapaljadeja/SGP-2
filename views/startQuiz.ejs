@@ -1,674 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>QuiziFY</title>
-        <style>
-            @import url(https://fonts.googleapis.com/css2?family=Lato&display=swap);
-            @import url(https://fonts.googleapis.com/css2?family=Open+Sans&display=swap);
-            @import url(https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200);
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuiziFY - Take Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #6366f1, #8b5cf6);
+            --secondary-gradient: linear-gradient(135deg, #3b82f6, #2dd4bf);
+            --background-gradient: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            --hover-transform: translateY(-5px);
+        }
 
-            /*! tailwindcss v3.4.11 | MIT License | https://tailwindcss.com*/
-            *,
-            :after,
-            :before {
-                border: 0 solid #e5e7eb;
-                box-sizing: border-box;
-            }
-            :after,
-            :before {
-                --tw-content: "";
-            }
-            :host,
-            html {
-                line-height: 1.5;
-                -webkit-text-size-adjust: 100%;
-                font-family:
-                    Open Sans,
-                    ui-sans-serif,
-                    system-ui,
-                    sans-serif,
-                    Apple Color Emoji,
-                    Segoe UI Emoji,
-                    Segoe UI Symbol,
-                    Noto Color Emoji;
-                font-feature-settings: normal;
-                font-variation-settings: normal;
-                -moz-tab-size: 4;
-                tab-size: 4;
-                -webkit-tap-highlight-color: transparent;
-            }
-            body {
-                line-height: inherit;
+        * {
                 margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
             }
-            hr {
-                border-top-width: 1px;
-                color: inherit;
-                height: 0;
-            }
-            abbr:where([title]) {
-                text-decoration: underline dotted;
-            }
-            h1,
-            h2,
-            h3,
-            h4,
-            h5,
-            h6 {
-                font-size: inherit;
-                font-weight: inherit;
-            }
-            a {
-                color: inherit;
-                text-decoration: inherit;
-            }
-            b,
-            strong {
-                font-weight: bolder;
-            }
-            code,
-            kbd,
-            pre,
-            samp {
-                font-family:
-                    ui-monospace,
-                    SFMono-Regular,
-                    Menlo,
-                    Monaco,
-                    Consolas,
-                    Liberation Mono,
-                    Courier New,
-                    monospace;
-                font-feature-settings: normal;
-                font-size: 1em;
-                font-variation-settings: normal;
-            }
-            small {
-                font-size: 80%;
-            }
-            sub,
-            sup {
-                font-size: 75%;
-                line-height: 0;
-                position: relative;
-                vertical-align: baseline;
-            }
-            sub {
-                bottom: -0.25em;
-            }
-            sup {
-                top: -0.5em;
-            }
-            table {
-                border-collapse: collapse;
-                border-color: inherit;
-                text-indent: 0;
-            }
-            button,
-            input,
-            optgroup,
-            select,
-            textarea {
-                color: inherit;
-                font-family: inherit;
-                font-feature-settings: inherit;
-                font-size: 100%;
-                font-variation-settings: inherit;
-                font-weight: inherit;
-                letter-spacing: inherit;
-                line-height: inherit;
-                margin: 0;
-                padding: 0;
-            }
-            button,
-            select {
-                text-transform: none;
-            }
-            button,
-            input:where([type="button"]),
-            input:where([type="reset"]),
-            input:where([type="submit"]) {
-                -webkit-appearance: button;
-                background-color: transparent;
-                background-image: none;
-            }
-            :-moz-focusring {
-                outline: auto;
-            }
-            :-moz-ui-invalid {
-                box-shadow: none;
-            }
-            progress {
-                vertical-align: baseline;
-            }
-            ::-webkit-inner-spin-button,
-            ::-webkit-outer-spin-button {
-                height: auto;
-            }
-            [type="search"] {
-                -webkit-appearance: textfield;
-                outline-offset: -2px;
-            }
-            ::-webkit-search-decoration {
-                -webkit-appearance: none;
-            }
-            ::-webkit-file-upload-button {
-                -webkit-appearance: button;
-                font: inherit;
-            }
-            summary {
-                display: list-item;
-            }
-            blockquote,
-            dd,
-            dl,
-            figure,
-            h1,
-            h2,
-            h3,
-            h4,
-            h5,
-            h6,
-            hr,
-            p,
-            pre {
-                margin: 0;
-            }
-            fieldset {
-                margin: 0;
-            }
-            fieldset,
-            legend {
-                padding: 0;
-            }
-            menu,
-            ol,
-            ul {
-                list-style: none;
-                margin: 0;
-                padding: 0;
-            }
-            dialog {
-                padding: 0;
-            }
-            textarea {
-                resize: vertical;
-            }
-            input::placeholder,
-            textarea::placeholder {
-                color: #9ca3af;
-                opacity: 1;
-            }
-            [role="button"],
-            button {
-                cursor: pointer;
-            }
-            :disabled {
-                cursor: default;
-            }
-            audio,
-            canvas,
-            embed,
-            iframe,
-            img,
-            object,
-            svg,
-            video {
-                display: block;
-                vertical-align: middle;
-            }
-            img,
-            video {
-                height: auto;
-                max-width: 100%;
-            }
-            [hidden] {
-                display: none;
-            }
-            *,
-            :after,
-            :before {
-                --tw-border-spacing-x: 0;
-                --tw-border-spacing-y: 0;
-                --tw-translate-x: 0;
-                --tw-translate-y: 0;
-                --tw-rotate: 0;
-                --tw-skew-x: 0;
-                --tw-skew-y: 0;
-                --tw-scale-x: 1;
-                --tw-scale-y: 1;
-                --tw-pan-x: ;
-                --tw-pan-y: ;
-                --tw-pinch-zoom: ;
-                --tw-scroll-snap-strictness: proximity;
-                --tw-gradient-from-position: ;
-                --tw-gradient-via-position: ;
-                --tw-gradient-to-position: ;
-                --tw-ordinal: ;
-                --tw-slashed-zero: ;
-                --tw-numeric-figure: ;
-                --tw-numeric-spacing: ;
-                --tw-numeric-fraction: ;
-                --tw-ring-inset: ;
-                --tw-ring-offset-width: 0px;
-                --tw-ring-offset-color: #fff;
-                --tw-ring-color: rgba(59, 130, 246, 0.5);
-                --tw-ring-offset-shadow: 0 0 #0000;
-                --tw-ring-shadow: 0 0 #0000;
-                --tw-shadow: 0 0 #0000;
-                --tw-shadow-colored: 0 0 #0000;
-                --tw-blur: ;
-                --tw-brightness: ;
-                --tw-contrast: ;
-                --tw-grayscale: ;
-                --tw-hue-rotate: ;
-                --tw-invert: ;
-                --tw-saturate: ;
-                --tw-sepia: ;
-                --tw-drop-shadow: ;
-                --tw-backdrop-blur: ;
-                --tw-backdrop-brightness: ;
-                --tw-backdrop-contrast: ;
-                --tw-backdrop-grayscale: ;
-                --tw-backdrop-hue-rotate: ;
-                --tw-backdrop-invert: ;
-                --tw-backdrop-opacity: ;
-                --tw-backdrop-saturate: ;
-                --tw-backdrop-sepia: ;
-                --tw-contain-size: ;
-                --tw-contain-layout: ;
-                --tw-contain-paint: ;
-                --tw-contain-style: ;
-            }
-            ::backdrop {
-                --tw-border-spacing-x: 0;
-                --tw-border-spacing-y: 0;
-                --tw-translate-x: 0;
-                --tw-translate-y: 0;
-                --tw-rotate: 0;
-                --tw-skew-x: 0;
-                --tw-skew-y: 0;
-                --tw-scale-x: 1;
-                --tw-scale-y: 1;
-                --tw-pan-x: ;
-                --tw-pan-y: ;
-                --tw-pinch-zoom: ;
-                --tw-scroll-snap-strictness: proximity;
-                --tw-gradient-from-position: ;
-                --tw-gradient-via-position: ;
-                --tw-gradient-to-position: ;
-                --tw-ordinal: ;
-                --tw-slashed-zero: ;
-                --tw-numeric-figure: ;
-                --tw-numeric-spacing: ;
-                --tw-numeric-fraction: ;
-                --tw-ring-inset: ;
-                --tw-ring-offset-width: 0px;
-                --tw-ring-offset-color: #fff;
-                --tw-ring-color: rgba(59, 130, 246, 0.5);
-                --tw-ring-offset-shadow: 0 0 #0000;
-                --tw-ring-shadow: 0 0 #0000;
-                --tw-shadow: 0 0 #0000;
-                --tw-shadow-colored: 0 0 #0000;
-                --tw-blur: ;
-                --tw-brightness: ;
-                --tw-contrast: ;
-                --tw-grayscale: ;
-                --tw-hue-rotate: ;
-                --tw-invert: ;
-                --tw-saturate: ;
-                --tw-sepia: ;
-                --tw-drop-shadow: ;
-                --tw-backdrop-blur: ;
-                --tw-backdrop-brightness: ;
-                --tw-backdrop-contrast: ;
-                --tw-backdrop-grayscale: ;
-                --tw-backdrop-hue-rotate: ;
-                --tw-backdrop-invert: ;
-                --tw-backdrop-opacity: ;
-                --tw-backdrop-saturate: ;
-                --tw-backdrop-sepia: ;
-                --tw-contain-size: ;
-                --tw-contain-layout: ;
-                --tw-contain-paint: ;
-                --tw-contain-style: ;
-            }
-            #webcrumbs .mx-auto {
-                margin-left: auto;
-                margin-right: auto;
-            }
-            #webcrumbs .mb-2 {
-                margin-bottom: 8px;
-            }
-            #webcrumbs .mb-6 {
-                margin-bottom: 24px;
-            }
-            #webcrumbs .mb-8 {
-                margin-bottom: 32px;
-            }
-            #webcrumbs .mr-2 {
-                margin-right: 8px;
-            }
-            #webcrumbs .mt-4 {
-                margin-top: 16px;
-            }
-            #webcrumbs .mt-8 {
-                margin-top: 32px;
-            }
-            #webcrumbs .flex {
-                display: flex;
-            }
-            #webcrumbs .grid {
-                display: grid;
-            }
-            #webcrumbs .h-7 {
-                height: 28px;
-            }
-            #webcrumbs .min-h-screen {
+        body {
+            background: var(--background-gradient);
                 min-height: 100vh;
-            }
-            #webcrumbs .w-7 {
-                width: 28px;
-            }
-            #webcrumbs .w-\[1000px\] {
-                width: 1000px;
-            }
-            #webcrumbs .w-full {
-                width: 100%;
-            }
-            #webcrumbs .max-w-4xl {
-                max-width: 56rem;
-            }
-            #webcrumbs .cursor-pointer {
-                cursor: pointer;
-            }
-            #webcrumbs .grid-cols-1 {
-                grid-template-columns: repeat(1, minmax(0, 1fr));
-            }
-            #webcrumbs .flex-row {
-                flex-direction: row;
-            }
-            #webcrumbs .items-center {
-                align-items: center;
-            }
-            #webcrumbs .justify-center {
-                justify-content: center;
-            }
-            #webcrumbs .justify-between {
-                justify-content: space-between;
-            }
-            #webcrumbs .gap-2 {
-                gap: 8px;
-            }
-            #webcrumbs .gap-3 {
-                gap: 12px;
-            }
-            #webcrumbs .gap-4 {
-                gap: 16px;
-            }
-            #webcrumbs .rounded-full {
-                border-radius: 9999px;
-            }
-            #webcrumbs .rounded-lg {
-                border-radius: 24px;
-            }
-            #webcrumbs .rounded-md {
-                border-radius: 18px;
-            }
-            #webcrumbs .rounded-xl {
-                border-radius: 36px;
-            }
-            #webcrumbs .border {
-                border-width: 1px;
-            }
-            #webcrumbs .border-gray-200 {
-                --tw-border-opacity: 1;
-                border-color: rgb(229 231 235 / var(--tw-border-opacity));
-            }
-            #webcrumbs .bg-blue-100 {
-                --tw-bg-opacity: 1;
-                background-color: rgb(219 234 254 / var(--tw-bg-opacity));
-            }
-            #webcrumbs .bg-blue-50 {
-                --tw-bg-opacity: 1;
-                background-color: rgb(239 246 255 / var(--tw-bg-opacity));
-            }
-            #webcrumbs .bg-blue-600 {
-                --tw-bg-opacity: 1;
-                background-color: rgb(37 99 235 / var(--tw-bg-opacity));
-            }
-            #webcrumbs .bg-gray-50 {
-                --tw-bg-opacity: 1;
-                background-color: rgb(249 250 251 / var(--tw-bg-opacity));
-            }
-            #webcrumbs .bg-green-600 {
-                --tw-bg-opacity: 1;
-                background-color: rgb(22 163 74 / var(--tw-bg-opacity));
-            }
-            #webcrumbs .bg-red-500 {
-                --tw-bg-opacity: 1;
-                background-color: rgb(239 68 68 / var(--tw-bg-opacity));
-            }
-            #webcrumbs .bg-white {
-                --tw-bg-opacity: 1;
-                background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-            }
-            #webcrumbs .bg-yellow-100 {
-                --tw-bg-opacity: 1;
-                background-color: rgb(254 249 195 / var(--tw-bg-opacity));
-            }
-            #webcrumbs .p-2 {
-                padding: 8px;
-            }
-            #webcrumbs .p-3 {
-                padding: 12px;
-            }
-            #webcrumbs .p-4 {
-                padding: 16px;
-            }
-            #webcrumbs .p-6 {
-                padding: 24px;
-            }
-            #webcrumbs .px-3 {
-                padding-left: 12px;
-                padding-right: 12px;
-            }
-            #webcrumbs .px-4 {
-                padding-left: 16px;
-                padding-right: 16px;
-            }
-            #webcrumbs .px-6 {
-                padding-left: 24px;
-                padding-right: 24px;
-            }
-            #webcrumbs .py-1 {
-                padding-bottom: 4px;
-                padding-top: 4px;
-            }
-            #webcrumbs .py-1\.5 {
-                padding-bottom: 6px;
-                padding-top: 6px;
-            }
-            #webcrumbs .py-2 {
-                padding-bottom: 8px;
-                padding-top: 8px;
-            }
-            #webcrumbs .py-2\.5 {
-                padding-bottom: 10px;
-                padding-top: 10px;
-            }
-            #webcrumbs .py-3 {
-                padding-bottom: 12px;
-                padding-top: 12px;
-            }
-            #webcrumbs .text-2xl {
-                font-size: 24px;
-                line-height: 31.200000000000003px;
-            }
-            #webcrumbs .text-lg {
-                font-size: 18px;
-                line-height: 27px;
-            }
-            #webcrumbs .text-sm {
-                font-size: 14px;
-                line-height: 21px;
-            }
-            #webcrumbs .font-bold {
-                font-weight: 700;
-            }
-            #webcrumbs .font-medium {
-                font-weight: 500;
-            }
-            #webcrumbs .font-semibold {
-                font-weight: 600;
-            }
-            #webcrumbs .text-blue-600 {
-                --tw-text-opacity: 1;
-                color: rgb(37 99 235 / var(--tw-text-opacity));
-            }
-            #webcrumbs .text-blue-800 {
-                --tw-text-opacity: 1;
-                color: rgb(30 64 175 / var(--tw-text-opacity));
-            }
-            #webcrumbs .text-gray-600 {
-                --tw-text-opacity: 1;
-                color: rgb(75 85 99 / var(--tw-text-opacity));
-            }
-            #webcrumbs .text-gray-800 {
-                --tw-text-opacity: 1;
-                color: rgb(31 41 55 / var(--tw-text-opacity));
-            }
-            #webcrumbs .text-white {
-                --tw-text-opacity: 1;
-                color: rgb(255 255 255 / var(--tw-text-opacity));
-            }
-            #webcrumbs .text-yellow-800 {
-                --tw-text-opacity: 1;
-                color: rgb(133 77 14 / var(--tw-text-opacity));
-            }
-            #webcrumbs .shadow-sm {
-                --tw-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-                --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
-                box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-            }
-            #webcrumbs .transition-all {
-                transition-duration: 0.15s;
-                transition-property: all;
-                transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-            }
-            #webcrumbs .transition-colors {
-                transition-duration: 0.15s;
-                transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-                transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-            }
-            #webcrumbs .duration-200 {
-                transition-duration: 0.2s;
-            }
-            #webcrumbs {
-                font-family: Open Sans !important;
-                font-size: 16px !important;
-            }
-            #webcrumbs .hover\:border-blue-400:hover {
-                --tw-border-opacity: 1;
-                border-color: rgb(96 165 250 / var(--tw-border-opacity));
-            }
-            #webcrumbs .hover\:bg-gray-100:hover {
-                --tw-bg-opacity: 1;
-                background-color: rgb(243 244 246 / var(--tw-bg-opacity));
-            }
-            #webcrumbs .hover\:bg-green-700:hover {
-                --tw-bg-opacity: 1;
-                background-color: rgb(21 128 61 / var(--tw-bg-opacity));
-            }
-            #webcrumbs .hover\:bg-red-600:hover {
-                --tw-bg-opacity: 1;
-                background-color: rgb(220 38 38 / var(--tw-bg-opacity));
-            }
-            #webcrumbs .hover\:shadow-md:hover {
-                --tw-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-                --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
-                box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-            }
-            @media (min-width: 768px) {
-                #webcrumbs .md\:grid-cols-2 {
-                    grid-template-columns: repeat(2, minmax(0, 1fr));
-                }
+            color: #1e293b;
             }
 
-            body {
-                line-height: inherit;
-                padding: 24px;
+        .navbar {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+            }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -1px;
+            }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            }
+
+        .main-content {
+            margin-top: 100px;
+            padding: 2rem 0;
+            }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+        .question-card {
+            background: #f0f7ff;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            border: 1px solid #e5e7eb;
+            }
+
+        .question-number {
+            background: var(--primary-gradient);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
                 display: flex;
-                flex-direction: column;
-                min-width: 100vw;
-                min-height: 100vh;
                 align-items: center;
                 justify-content: center;
-                background: linear-gradient(135deg, #ffffff, #d4d4d4);
+            font-weight: 600;
+            margin-right: 1rem;
             }
-        </style>
-    </head>
+
+        .option-label {
+            display: block;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option-label:hover {
+            border-color: #8b5cf6;
+            background: #f5f3ff;
+        }
+
+        .option-label input[type="radio"] {
+            margin-right: 0.5rem;
+        }
+
+        .timer {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .btn-submit {
+            background: #22c55e;
+            color: white;
+        }
+
+        .btn-submit:hover {
+            background: #16a34a;
+            transform: translateY(-2px);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
     <body>
-        <div id="webcrumbs">
-            <div class="w-full flex justify-center">
-                <div class="w-[1000px] bg-gray-50 min-h-screen">
-                    <header class="bg-white shadow-sm py-3 px-6 flex justify-between items-center">
-                        <div class="text-blue-600 font-bold text-2xl">QUIZIFY</div>
-                        <div class="flex items-center gap-4">
-                            <button class="hover:bg-gray-100 rounded-full p-2 transition-colors duration-200">
-                                <span class="material-symbols-outlined">account_circle</span>
+    <nav class="navbar">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h1 class="logo">QUIZIFY</h1>
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <button class="btn">
+                        <span class="material-symbols-outlined">person</span>
                             </button>
-                            <button
-                                class="bg-red-500 hover:bg-red-600 text-white px-4 py-1.5 rounded-full text-sm transition-all duration-200 hover:shadow-md"
-                            >
-                                Logout
-                            </button>
+                    <button class="btn" style="background: #ef4444; color: white;">
+                        Logout
+                    </button>
                         </div>
-                    </header>
-                    <div class="p-6 max-w-4xl mx-auto">
-                        <div class="bg-white rounded-xl shadow-sm p-6">
-                            <div class="flex justify-between items-center mb-6">
-                                <h1 class="text-2xl font-bold text-gray-800"><%= quiz.title %></h1>
-                                <div class="bg-blue-100 text-blue-800 rounded-lg px-4 py-2 flex items-center gap-2">
-                                    <span class="material-symbols-outlined">timer</span>
-                                    <span class="font-semibold">09:45</span>
+            </div>
                                 </div>
-                            </div>
-                            <form action="/startQuiz" method="post">
-                                <input type="hidden" name="quizId" value="<%= quiz._id %>" />
-                                
-                                <% quiz.questions.forEach(function(q, index) { %>
-                                    <div class="bg-blue-50 rounded-lg p-4 mb-8">
-                                        <div class="flex justify-between items-center mb-2">
-                                            <div class="flex items-center gap-2">
-                                                <span class="bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center font-semibold"><%= index + 1 %></span>
-                                                <h2 class="font-semibold text-lg"><%= q.question %></h2>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="card fade-in">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h1 style="font-size: 1.8rem; font-weight: 600;"><%= quiz.title %></h1>
+                    <div class="timer">
+                        <span class="material-symbols-outlined">timer</span>
+                        <span>09:45</span>
                                             </div>
                                         </div>
                             
-                                        <% q.options.forEach(function(option) { %>
-                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
-                                                <label class="bg-white rounded-lg border border-gray-200 p-3 cursor-pointer">
-                                                    <input type="radio" name="answers[<%= q._id %>]" value="<%= option %>" required />
-                                                    <span><%= option %></span>
-                                                </label>
+                <form action="/startQuiz" method="post">
+                    <input type="hidden" name="quizId" value="<%= quiz._id %>" />
+                    <% quiz.questions.forEach(function(q, index) { %>
+                        <div class="question-card">
+                            <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+                                <div class="question-number"><%= index + 1 %></div>
+                                <h2 style="font-weight: 500; font-size: 1.1rem;"><%= q.question %></h2>
                                             </div>
-                                        <% }); %>
-                                    </div>
+
+                            <div style="display: grid; gap: 0.75rem;">
+                                <% q.options.forEach(function(option) { %>
+                                    <label class="option-label">
+                                        <input type="radio" name="answers[<%= q._id %>]" value="<%= option %>" required />
+                                        <%= option %>
+                                    </label>
                                 <% }); %>
-                            
-                                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2.5 rounded-lg transition-all duration-200">
-                                    Submit Quiz
-                                </button>
-                            </form>
-                            
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    <% }); %>
+
+                    <div style="margin-top: 2rem;">
+                        <button type="submit" class="btn btn-submit">
+                            <span class="material-symbols-outlined">check_circle</span>
+                            Submit Quiz
+                        </button>
             </div>
+                </form>
         </div>
-    </body>
+        </div>
+    </main>
     
+    <script>
+        // Add timer functionality here if needed
+    </script>
+</body>
 </html>
