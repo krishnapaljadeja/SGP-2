@@ -147,6 +147,26 @@
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         }
 
+        .logout-btn {
+        width: 100%;
+        padding: 1rem;
+        border: none;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #ef4444, #dc2626); /* Red gradient */
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+        box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+    }
+
+    .logout-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(220, 38, 38, 0.4);
+        background: linear-gradient(135deg, #dc2626, #b91c1c);
+    }
+
         .grid {
             display: grid;
             gap: 2rem;
@@ -191,9 +211,12 @@
                     <button class="btn">
                           <span class="material-symbols-outlined">person</span>
                       </button>
-                      <button class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all" aria-label="Logout">
-                          Logout
-                      </button>
+                      <form action="/logout" method="post">
+                        <button class="logout-btn">
+                            Logout
+                        </button>
+                    </form>
+                    
                   </div>
               </div>
           </nav>

@@ -166,6 +166,26 @@
             margin-bottom: 2rem;
         }
 
+        .logout-btn {
+        width: 100%;
+        padding: 1rem;
+        border: none;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #ef4444, #dc2626); /* Red gradient */
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 1rem;
+        box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+    }
+
+    .logout-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(220, 38, 38, 0.4);
+        background: linear-gradient(135deg, #dc2626, #b91c1c);
+    }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -185,9 +205,11 @@
                     <button class="btn">
                         <span class="material-symbols-outlined">person</span>
                     </button>
-                    <button class="btn btn-danger">
-                        Logout
-                    </button>
+                    <form action="/logout" method="post">
+                        <button class="logout-btn">
+                            Logout
+                        </button>
+                    </form>
                                 </div>
                             </div>
       </div>
@@ -211,7 +233,7 @@
                             <span class="material-symbols-outlined">delete</span>
                             Delete Quiz
                         </button>
-                        <a href="/" class="btn btn-primary">
+                        <a href="/admin-dashboard" class="btn btn-primary">
                             <span class="material-symbols-outlined">home</span>
                             Home
                         </a>
