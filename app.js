@@ -404,12 +404,11 @@ app.delete("/delete/:id", async (req, res) => {
         }
 
         await QuizTitle.updateMany(
-            { questions: questionId },
             { questions: questionId }, 
             { $pull: { questions: questionId } }
         );
 
-        res.redirect("/manageview");
+        
         res.redirect("/manageview"); 
     } catch (error) {
         console.error(error);
@@ -528,11 +527,23 @@ app.get('/profile', verifyToken, async (req, res) => {
         const performanceData = user.quizResults
             .slice(0, 10)
             .reverse()
-            .map(result => ({
-                quizName: result.quiz.title,
-                score: result.percentage,
-                date: result.completedAt
-            }));
+            .map(result => {
+                // Check if result.quiz exists before accessing its properties
+                if (result.quiz) {
+                    return {
+                        quizName: result.quiz.title,
+                        score: result.percentage,
+                        date: result.completedAt
+                    };
+                } else {
+                    // Handle cases where result.quiz is null or undefined
+                    return {
+                        quizName: 'Quiz not found',  // Fallback if quiz is missing
+                        score: result.percentage,
+                        date: result.completedAt
+                    };
+                }
+            });
 
         // Get latest quiz attempt
         const latestAttempt = user.quizResults[0];
