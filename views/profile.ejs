@@ -33,8 +33,8 @@
 
         .container {
             max-width: 1200px;
-            margin: 0 auto;
-            padding: var(--spacing-unit) * 2;
+            margin: 90px;
+            margin-left: 150px;
         }
 
         /* Navbar Styles */
@@ -68,20 +68,22 @@
 
         /* Button Styles */
         .btn {
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 0.4rem;
             border-radius: 0.5rem;
             display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
+            
+            gap: 0.1rem;
             transition: all 0.3s ease;
             cursor: pointer;
-            border: none;
-            font-size: 0.9rem;
+            border:#1e293b;
+            font-size: 0.8rem;
         }
 
         .btn-primary {
+            margin-top: 4px;
+            padding: 5px;
             background-color: var(--primary-color);
-            color: white;
+            color: rgb(255, 255, 255);
         }
 
         .btn-secondary {
@@ -93,7 +95,11 @@
             background-color: #ef4444;
             color: white;
         }
-
+        .btn-group{
+           margin-left: 30px;
+            display: flex;
+            gap: 0.8rem;
+        }
         /* Profile Grid Layout */
         .profile-grid {
             display: grid;
@@ -103,11 +109,22 @@
 
         /* Card Styles */
         .card {
-            background-color: var(--card-background);
+            background-color: azure;
             border-radius: 1rem;
             box-shadow: var(--card-shadow);
             padding: var(--spacing-unit) * 2;
             margin-bottom: var(--spacing-unit) * 2;
+            width: 500px;
+            margin-right: 20px;
+        }
+        .p-card{
+            background-color: var(--card-background);
+            background-color: beige;
+            border-radius: 1rem;
+            box-shadow: var(--card-shadow);
+            padding: var(--spacing-unit) * 2;
+            margin-bottom: var(--spacing-unit) * 2;
+            margin-right: 50px;
         }
 
         /* Profile Header */
@@ -116,26 +133,33 @@
             align-items: center;
             gap: var(--spacing-unit) * 2;
             margin-bottom: var(--spacing-unit) * 2;
+            justify-content: center; /* Centering the profile header */
         }
 
         .profile-avatar {
-            width: 80px;
-            height: 80px;
+            width: 80px; /* Increased size for better visibility */
+            height: 80px; /* Increased size for better visibility */
             border-radius: 50%;
             background-color: var(--primary-color);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 2.5rem; /* Increased font size */
             color: white;
+            margin-left: 35px;
+         
         }
 
         .profile-info {
             flex: 1;
+            padding-left: 30px;
+            padding-top:10px ;
+            /* Centering text in profile info */
         }
 
         /* Stats Grid */
         .stats-grid {
+          padding-top: 40PX;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: var(--spacing-unit);
@@ -143,10 +167,14 @@
         }
 
         .stat-card {
-            background-color: var(--background-color);
+            background-color:khaki;
             border-radius: 0.5rem;
             padding: var(--spacing-unit);
             text-align: center;
+        }
+        .p1{
+            display: flex;
+            margin-top: 2px;
         }
 
         .stat-number {
@@ -155,7 +183,7 @@
             color: var(--primary-color);
             margin: 0.5rem 0;
         }
-
+   
         /* Latest Attempt Card */
         .latest-attempt {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
@@ -168,7 +196,7 @@
         /* Performance Chart */
         .performance-header {
             display: flex;
-            justify-content: space-between;
+            justify-content: center; /* Centering the performance header */
             align-items: center;
             margin-bottom: var(--spacing-unit);
         }
@@ -229,7 +257,7 @@
             </form>
         </div>
     </nav>
-
+    
     <!-- Main Content -->
     <main class="container">
         <div class="profile-grid">
@@ -240,9 +268,10 @@
                         <%= (user.name || 'U')[0].toUpperCase() %>
                     </div>
                     <div class="profile-info">
-                        <h2><%= user.displayName || user.name %></h2>
-                        <p><%= user.email %></p>
-                        <span class="badge"><%= user.role %></span>
+                       <div class="p1"><h4>Name :  </h4><p><%=  user.displayName || user.name %></p></div> 
+                       <div class="p1"><h4>Email  :</h4><p> <%= user.email %></p></div>
+                       <div class="p1"><h4>Role : </h4><p><%= user.role %></p></div>
+                     
                         <p class="text-muted">
                             Joined <%= moment(user.joinDate).format('MMMM YYYY') %>
                         </p>
@@ -287,7 +316,7 @@
             </section>
 
             <!-- Performance Chart Card -->
-            <section class="card">
+            <section class="p-card">
                 <div class="performance-header">
                     <div>
                         <h2>Performance History</h2>
