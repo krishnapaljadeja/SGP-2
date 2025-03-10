@@ -600,9 +600,7 @@ app.post("/startQuiz", verifyToken, async (req, res) => {
                 correctcount++;
                 totalScore += q.points;
             }
-            else{
-                incorrectcount++;
-            }
+            
         });
 
         // Calculate total possible points and percentage
@@ -630,13 +628,30 @@ app.post("/startQuiz", verifyToken, async (req, res) => {
         });
 
         // Render quiz results
-        res.render('quizResult', { quiz, totalScore, totalPossiblePoints });
+        res.render('quizResult', { quiz, totalScore, totalPossiblePoints ,correctcount,totalquecount});
         
     } catch (error) {
         console.error("Error processing quiz:", error);
         res.status(500).send("Error processing quiz.");
     }
 });
+
+app.get('/quiz/:id', async (req, res) => {
+   
+    try {
+        const quiz = await QuizTitle.findById(req.params.id).populate('questions');
+        if (!quiz) {
+            console.log("Quiz not found in the database.");
+            return res.status(404).send('Quiz not found');
+        }
+        
+        res.render('startQuiz', { quiz }); 
+    } catch (error) {
+        console.error("Error fetching quiz:", error);
+        res.status(500).send("Error loading quiz");
+    }
+});
+
 
 // Start Server
 app.listen(port, () => {
