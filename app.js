@@ -503,12 +503,18 @@ app.post("/startQuiz", async (req, res) => {
 
         let totalScore = 0;
         let correctAnswers = {};
+        let correctcount=0,totalquecount=0;
 
         // Process each question
         quiz.questions.forEach((q) => {
+            totalquecount++;
             correctAnswers[q._id] = q.correct_answer;
             if (answers && answers[q._id] && answers[q._id] === q.correct_answer) {
+                correctcount++;
                 totalScore += q.points;
+            }
+            else{
+                incorrectcount++;
             }
         });
 
@@ -516,7 +522,7 @@ app.post("/startQuiz", async (req, res) => {
         const totalPossiblePoints = quiz.questions.reduce((sum, q) => sum + q.points, 0);
 
         // Render quiz results
-        res.render('quizResult', { quiz, totalScore, totalPossiblePoints });
+        res.render('quizResult', { quiz, totalScore, totalPossiblePoints ,correctcount,totalquecount});
         
     } catch (error) {
         console.error("Error processing quiz:", error);
