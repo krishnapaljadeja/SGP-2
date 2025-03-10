@@ -208,18 +208,19 @@
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <h1 class="logo">QUIZIFY</h1>
                 <div style="display: flex; gap: 1rem; align-items: center;">
-                    <button class="btn">
-                          <span class="material-symbols-outlined">person</span>
-                      </button>
-                      <form action="/logout" method="post">
-                        <button class="logout-btn">
+                    <a href="/profile" class="btn btn-primary" style="text-decoration: none;">
+                        <span class="material-symbols-outlined">person</span>
+                        Profile
+                    </a>
+                    <form action="/logout" method="post">
+                        <button class="logout-btn" style="padding: 0.75rem 1.5rem; width: auto;">
                             Logout
                         </button>
                     </form>
-                    
-                  </div>
-              </div>
-          </nav>
+                </div>
+            </div>
+        </div>
+    </nav>
           
     <main class="main-content">
         <div class="container">
@@ -250,34 +251,29 @@
             <div class="card fade-in">
                 <h2 style="font-size: 1.8rem; margin-bottom: 1.5rem;">Your Recent Results</h2>
                 <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <% if (typeof recentResults !== 'undefined' && recentResults.length > 0) { %>
+                        <% recentResults.forEach(function(result) { %>
                     <div class="result-card">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <div>
-                                <h4 style="font-size: 1.2rem; font-weight: 600;">Science Quiz</h4>
-                                <p style="color: #64748b;">Completed on May 15, 2023</p>
+                                        <h4 style="font-size: 1.2rem; font-weight: 600;"><%= result.quiz.title %></h4>
+                                        <p style="color: #64748b;">Completed on <%= new Date(result.completedAt).toLocaleDateString() %></p>
                       </div>
                             <div style="text-align: right;">
-                                <div class="score">80%</div>
-                                <p style="color: #10b981;">8/10 Correct</p>
+                                        <div class="score"><%= result.percentage.toFixed(1) %>%</div>
+                                        <p style="color: #10b981;"><%= result.score %>/<%= result.totalPossibleScore %> Points</p>
                             </div>
                           </div>
                           </div>
-
-                    <div class="result-card">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <h4 style="font-size: 1.2rem; font-weight: 600;">History Quiz</h4>
-                                <p style="color: #64748b;">Completed on May 15, 2023</p>
-                  </div>
-                            <div style="text-align: right;">
-                                <div class="score">90%</div>
-                                <p style="color: #10b981;">9/10 Correct</p>
-      </div>
-  </div>
-                    </div>
+                        <% }); %>
+                    <% } else { %>
+                        <div class="result-card">
+                            <p style="text-align: center; color: #64748b;">No quiz results yet. Start taking quizzes to see your results here!</p>
+                        </div>
+                    <% } %>
                 </div>
             </div>
-        </div>
+                    </div>
     </main>
   </body>
 </html>

@@ -1,31 +1,45 @@
-const mongoose = require('mongoose')
-const connect = mongoose.connect("mongodb+srv://jadejakrishnapal04:23ce043@quizify.zgpmu.mongodb.net/test?retryWrites=true&w=majority&appName=QuiziFY");
-
-connect.then(()=>{
-    console.log('Database connected')
-})
-.catch(()=>{
-    console.log('Database not connected')
-})
-
+const mongoose = require('mongoose');
 const loginSchema = new mongoose.Schema({
-    name:{
-        type:String,
-        required:true 
+    name: {
+        type: String,
+        required: true 
     },
-    password:{
-        type:String,
-        required:true
+    displayName: {
+        type: String,
+        default: function() { return this.name }
     },
-    email:{
-        type:String,
+    password: {
+        type: String,
         required: true
     },
-    role:{
-        type:String,
-        required:true
+    email: {
+        type: String,
+        required: true
+    },
+    role: {
+        type: String,
+        required: true
+    },
+    joinDate: {
+        type: Date,
+        default: Date.now
+    },
+    lastActive: {
+        type: Date,
+        default: Date.now
+    },
+    quizResults: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'QuizResult'
+    }],
+    totalQuizAttempts: {
+        type: Number,
+        default: 0
+    },
+    averageScore: {
+        type: Number,
+        default: 0
     }
-})
-
-const collection = new mongoose.model("users",loginSchema)
+});
+const collection = new mongoose.model("users", loginSchema);
 module.exports = collection;

@@ -3,13 +3,13 @@ const question = require('./question');
 const collection = require('./user');
 // const con=mongoose.connect("mongodb://localhost:27017/")
 
-// const con = mongoose.connect("mongodb+srv://jadejakrishnapal04:23ce043@quizify.zgpmu.mongodb.net/test?retryWrites=true&w=majority&appName=QuiziFY");
+const con = mongoose.connect("mongodb+srv://jadejakrishnapal04:23ce043@quizify.zgpmu.mongodb.net/test?retryWrites=true&w=majority&appName=QuiziFY");
 
-// con.then(()=>{
-//   console.log('Connected to MongoDB');
-// }).catch(()=>{
-//   console.log('Error connecting to MongoDB');
-// })
+con.then(()=>{
+  console.log('Connected to MongoDB');
+}).catch(()=>{
+  console.log('Error connecting to MongoDB');
+})
 
 
 const userSchema = new mongoose.Schema({
