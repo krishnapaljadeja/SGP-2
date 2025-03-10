@@ -271,21 +271,21 @@ app.get('/add', (req, res) => res.render('add'));
 app.get('/analytics', (req, res) => res.render('analytics'));
 
 // Create a new quiz
-app.post('/created', async (req, res) => {
+app.post('/created',verifyToken, async (req, res) => {
     const { title, que, time } = req.body;
 
     try {
         const existingQuiz = await QuizTitle.findOne({ title });
 
         if (existingQuiz) {
-            return res.send(`<script>alert("Quiz already exists!"); window.location.href = "/";</script>`);
+            return res.send(`<script>alert("Quiz already exists!"); window.location.href = "/admin-dashboard";</script>`);
         }
 
         await QuizTitle.create({ title, que, time });
-        res.send(`<script>alert("Quiz successfully created!"); window.location.href = "/";</script>`);
+        res.send(`<script>alert("Quiz successfully created!"); window.location.href = "/admin-dashboard";</script>`);
     } catch (err) {
         console.error(err);
-        res.send(`<script>alert("Error creating quiz."); window.location.href = "/";</script>`);
+        res.send(`<script>alert("Error creating quiz."); window.location.href = "/admin-dashboard";</script>`);
     }
 });
 
@@ -404,12 +404,11 @@ app.delete("/delete/:id", async (req, res) => {
         }
 
         await QuizTitle.updateMany(
-            { questions: questionId },
             { questions: questionId }, 
             { $pull: { questions: questionId } }
         );
 
-        res.redirect("/manageview");
+        
         res.redirect("/manageview"); 
     } catch (error) {
         console.error(error);
@@ -462,10 +461,12 @@ app.get('/manage', async (req, res) => {
 app.delete("/api/quiz/:quizId", async (req, res) => {
     try {
         const { quizId } = req.params;
-        const deletedQuiz = await QuizTitle.findByIdAndDelete(quizId);
+        const deletedQuiz = await QuizTitle.findById(quizId);
   
         if (!deletedQuiz) return res.status(404).json({ error: "Quiz not found" });
-  
+        await Question.deleteMany({ _id: { $in: deletedQuiz.questions } });
+        await QuizTitle.findByIdAndDelete(quizId);
+        
         res.json({ message: "Quiz deleted successfully" });
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -528,11 +529,23 @@ app.get('/profile', verifyToken, async (req, res) => {
         const performanceData = user.quizResults
             .slice(0, 10)
             .reverse()
-            .map(result => ({
-                quizName: result.quiz.title,
-                score: result.percentage,
-                date: result.completedAt
-            }));
+            .map(result => {
+                // Check if result.quiz exists before accessing its properties
+                if (result.quiz) {
+                    return {
+                        quizName: result.quiz.title,
+                        score: result.percentage,
+                        date: result.completedAt
+                    };
+                } else {
+                    // Handle cases where result.quiz is null or undefined
+                    return {
+                        quizName: 'Quiz not found',  // Fallback if quiz is missing
+                        score: result.percentage,
+                        date: result.completedAt
+                    };
+                }
+            });
 
         // Get latest quiz attempt
         const latestAttempt = user.quizResults[0];
@@ -590,13 +603,17 @@ app.post("/startQuiz", verifyToken, async (req, res) => {
 
         let totalScore = 0;
         let correctAnswers = {};
+        let correctcount=0,totalquecount=0;
 
         // Process each question
         quiz.questions.forEach((q) => {
+            totalquecount++;
             correctAnswers[q._id] = q.correct_answer;
             if (answers && answers[q._id] && answers[q._id] === q.correct_answer) {
+                correctcount++;
                 totalScore += q.points;
             }
+            
         });
 
         // Calculate total possible points and percentage
@@ -624,18 +641,30 @@ app.post("/startQuiz", verifyToken, async (req, res) => {
         });
 
         // Render quiz results
-        res.render('quizResult', { 
-            quiz, 
-            totalScore, 
-            totalPossiblePoints,
-            percentage 
-        });
+        res.render('quizResult', { quiz, totalScore, totalPossiblePoints ,correctcount,totalquecount});
         
     } catch (error) {
         console.error("Error processing quiz:", error);
         res.status(500).send("Error processing quiz.");
     }
 });
+
+app.get('/quiz/:id', async (req, res) => {
+   
+    try {
+        const quiz = await QuizTitle.findById(req.params.id).populate('questions');
+        if (!quiz) {
+            console.log("Quiz not found in the database.");
+            return res.status(404).send('Quiz not found');
+        }
+        
+        res.render('startQuiz', { quiz }); 
+    } catch (error) {
+        console.error("Error fetching quiz:", error);
+        res.status(500).send("Error loading quiz");
+    }
+});
+
 
 // Start Server
 app.listen(port, () => {

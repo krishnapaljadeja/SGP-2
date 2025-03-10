@@ -255,16 +255,19 @@
                         <% recentResults.forEach(function(result) { %>
                     <div class="result-card">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                        <h4 style="font-size: 1.2rem; font-weight: 600;"><%= result.quiz.title %></h4>
-                                        <p style="color: #64748b;">Completed on <%= new Date(result.completedAt).toLocaleDateString() %></p>
-                      </div>
+                            <div><% if (result.quiz) { %>
+                                <h4 style="font-size: 1.2rem; font-weight: 600;"><%= result.quiz.title %></h4>
+                                <p style="color: #64748b;">Completed on <%= new Date(result.completedAt).toLocaleDateString() %></p>
+                                <% } else { %>
+                                <h4 style="font-size: 1.2rem; font-weight: 600;">Quiz title not available</h4>
+                                <% } %>                            
+                            </div>
                             <div style="text-align: right;">
                                         <div class="score"><%= result.percentage.toFixed(1) %>%</div>
                                         <p style="color: #10b981;"><%= result.score %>/<%= result.totalPossibleScore %> Points</p>
                             </div>
-                          </div>
-                          </div>
+                        </div>
+                    </div>
                         <% }); %>
                     <% } else { %>
                         <div class="result-card">
@@ -273,7 +276,7 @@
                     <% } %>
                 </div>
             </div>
-                    </div>
+        </div>
     </main>
   </body>
 </html>

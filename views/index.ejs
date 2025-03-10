@@ -279,7 +279,11 @@
                             <% recentResults.forEach(function(result) { %>
                                 <div class="stats-card">
                                     <h4><%= result.userName %></h4>
-                                    <p><%= result.quiz.title %></p>
+                                    <% if (result.quiz && result.quiz.title) { %>
+                                        <p><%= result.quiz.title %></p>
+                                    <% } else { %>
+                                        <p>No quiz title available</p>
+                                    <% } %>
                                     <div class="stats-number"><%= result.percentage.toFixed(1) %>%</div>
                                     <p><%= result.score %>/<%= result.totalPossibleScore %> Points</p>
                                     <p style="font-size: 0.8rem; color: #64748b;">

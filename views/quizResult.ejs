@@ -235,7 +235,7 @@
                     <div class="stats-grid">
                         <div class="stat-card">
                             <div class="stat-label">Total Questions</div>
-                            <div class="stat-value">5</div>
+                            <div class="stat-value"><%= totalquecount %></div>
                                 </div>
                         <div class="stat-card">
                             <div class="stat-label">Time Taken</div>
@@ -243,11 +243,11 @@
                         </div>
                         <div class="stat-card">
                             <div class="stat-label">Correct Answers</div>
-                            <div class="stat-value" style="color: var(--success-color);">4</div>
+                            <div class="stat-value" style="color: var(--success-color);"><%= correctcount %></div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-label">Incorrect Answers</div>
-                            <div class="stat-value" style="color: var(--error-color);">1</div>
+                            <div class="stat-value" style="color: var(--error-color);"><%= totalquecount - correctcount %></div>
                                     </div>
                     </div>
                                     </div>
