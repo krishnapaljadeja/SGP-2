@@ -5,12 +5,14 @@ const QuizTitle = require("./models/title");
 const jwt = require("jsonwebtoken")
 const Question = require("./models/question");
 const title = require('./models/title');
-const collection = require('./models/user') 
+const collection = require('./models/user')
 const transporter = require("./otp");
 const verifyToken = require("./middlewares/authmiddleware")
+const trackActivity = require('./middlewares/activityMiddleware');
 const dotenv = require("dotenv").config();
 const bcrypt = require("bcrypt");
-
+const QuizResult = require('./models/quizResult');
+const moment = require('moment');
 
 const app = express();
 const port = 5000;
@@ -24,6 +26,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static('public'));
 
+app.use(trackActivity);
 
 ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -51,7 +54,6 @@ app.get("/signup", (req, res) => {
 app.get("/otp", (req, res) => {
     res.render("otp");
 });
-
 
 // Signup Route (POST)
 app.post("/signup", async (req, res) => {
@@ -130,30 +132,34 @@ app.post("/login", async (req, res) => {
 
         const isPasswordMatch = await bcrypt.compare(password, user.password);
         if (isPasswordMatch) {
-
-            const token = jwt.sign({id: user._id, role: user.role, name: user.name},process.env.ACCESS_TOKEN_SECRET_KEY)
-            
+            const token = jwt.sign(
+                {
+                    id: user._id,
+                    role: user.role,
+                    name: user.name,
+                    email: user.email
+                },
+                process.env.ACCESS_TOKEN_SECRET_KEY
+            );
 
             res.cookie("token", token, { httpOnly: true, secure: false });
 
-            // console.log("JWT Secret Key:", process.env.ACCESS_TOKEN_SECRET_KEY);
-
-             // Redirect based on user role
-             if (user.role === "admin") {
+            if (user.role === "admin") {
                 res.redirect("/admin-dashboard");
             } else if (user.role === "student") {
                 res.redirect("/student-dashboard");
             } else {
-                res.redirect("/home"); // Default fallback
+                res.redirect("/home");
             }
         } else {
             res.send(`<script>alert("Wrong username or password"); window.location.href = "/";</script>`);
         }
     } catch (error) {
-        console.error("Error during login:", error);
+        console.error("Login error:", error);
         res.status(500).send("Login error");
     }
 });
+
 
 // Forgot Password Routes
 app.get("/forgot", (req, res) => {
@@ -212,40 +218,52 @@ app.post("/reset-password", async (req, res) => {
     }
 });
 
-
-
-
-
-
-
-
-
 ////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-
-//admin dashboard
-//////////////////////////////////////////////////////////////////////////////////////////
-app.get("/admin-dashboard",verifyToken, async (req, res) => {
+//admin dashboard route
+app.get("/admin-dashboard", verifyToken, async (req, res) => {
     try {
-      let allQuizzes = await QuizTitle.find().populate('questions'); // Populate questions
-  
-      const totalQuizzes = await QuizTitle.countDocuments(); 
-  
-     
-      let quizzesWithStatus = allQuizzes.map(quiz => ({
-        ...quiz.toObject(), 
-        isComplete: quiz.questions.length === quiz.que 
-      }));
-  
-      res.render("index", { totalQuizzes, users: quizzesWithStatus }); 
+        // Verify admin role
+        if (req.user.role !== 'admin') {
+            return res.status(403).send("Access denied");
+        }
+
+        let allQuizzes = await QuizTitle.find().populate('questions');
+        const totalQuizzes = await QuizTitle.countDocuments();
+        
+        // Get recent results for all users
+        const recentResults = await QuizResult.find()
+            .populate('quiz')
+            .sort({ completedAt: -1 })
+            .limit(5);
+
+        // Get active users count (users who have taken quizzes in the last 30 days)
+        const activeUsers = await QuizResult.distinct('user', {
+            completedAt: { $gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) }
+        });
+
+        let quizzesWithStatus = allQuizzes.map(quiz => ({
+            ...quiz.toObject(),
+            isComplete: quiz.questions.length === quiz.que
+        }));
+
+        res.render("index", { 
+            totalQuizzes, 
+            users: quizzesWithStatus,
+            activeUsersCount: activeUsers.length,
+            recentResults: recentResults || []
+        });
     } catch (error) {
-      console.error("Error fetching quiz count:", error);
-      res.render("index", { totalQuizzes: 0, users: [] }); 
+        console.error("Admin dashboard error:", error);
+        res.render("index", { 
+            totalQuizzes: 0, 
+            users: [],
+            activeUsersCount: 0,
+            recentResults: []
+        });
     }
-  });
-  
+});
+
 // Add Quiz Page
 app.get('/add', (req, res) => res.render('add'));
 
@@ -280,8 +298,6 @@ app.get("/api/quiz-count", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
-module.exports = app;
 
 // Add a question to a quiz
 app.post('/submitque', async (req, res) => {
@@ -342,7 +358,6 @@ app.post('/submitque', async (req, res) => {
     }
 });
 
-
 // Manage Quizzes
 app.get('/manageview', async (req, res) => {
     let allQuizzes = await QuizTitle.find();
@@ -355,11 +370,13 @@ app.get('/api/questions/:quizId', async (req, res) => {
         const { quizId } = req.params;
         if (!mongoose.Types.ObjectId.isValid(quizId)) {
             console.error("Invalid Quiz ID:", quizId);
+            return res.status(400).json({ error: 'Invalid Quiz ID' });
         }
 
         const quiz = await QuizTitle.findById(quizId).populate('questions');
         if (!quiz) {
             console.error("Quiz not found", quizId);
+            return res.status(404).json({ error: 'Quiz not found' });
         }
 
         const formattedQuestions = quiz.questions.map(q => ({
@@ -367,7 +384,7 @@ app.get('/api/questions/:quizId', async (req, res) => {
             question: q.question,
             options: q.options,
             correct_answer: q.correct_answer,
-            points:q.points 
+            points: q.points
         }));
 
         res.json({ questions: formattedQuestions });
@@ -387,10 +404,12 @@ app.delete("/delete/:id", async (req, res) => {
         }
 
         await QuizTitle.updateMany(
+            { questions: questionId },
             { questions: questionId }, 
             { $pull: { questions: questionId } }
         );
 
+        res.redirect("/manageview");
         res.redirect("/manageview"); 
     } catch (error) {
         console.error(error);
@@ -405,6 +424,7 @@ app.get('/edit/:id', async (req, res) => {
         if (!question) {
             return res.status(404).send("Question not found");
         }
+        res.render("edit", { question });
         res.render("edit", { question }); 
     } catch (error) {
         console.error("Error fetching question:", error);
@@ -438,64 +458,131 @@ app.get('/manage', async (req, res) => {
     res.render('manage', { users: allQuizzes });
 });
 
+// Delete Quiz
 app.delete("/api/quiz/:quizId", async (req, res) => {
     try {
-      const { quizId } = req.params;
-      const deletedQuiz = await QuizTitle.findByIdAndDelete(quizId);
+        const { quizId } = req.params;
+        const deletedQuiz = await QuizTitle.findByIdAndDelete(quizId);
   
-      if (!deletedQuiz) return res.status(404).json({ error: "Quiz not found" });
+        if (!deletedQuiz) return res.status(404).json({ error: "Quiz not found" });
   
-      res.json({ message: "Quiz deleted successfully" });
+        res.json({ message: "Quiz deleted successfully" });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+        res.status(500).json({ error: err.message });
     }
-  });
+});
 
-
-////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-//student dashboard
-/////////////////////////////////////////////////////////////////////////////////////////
-
-app.get('/student-dashboard',verifyToken, async (req, res) => {
+// Student dashboard
+app.get('/student-dashboard', verifyToken, async (req, res) => {
     try {
-        let allQuizzes = await QuizTitle.find().populate('questions'); // Populate questions
-
-        // Filter quizzes where que matches the actual number of questions
+        const userId = req.user.id;
+        
+        // Get available quizzes
+        let allQuizzes = await QuizTitle.find().populate('questions');
         let validQuizzes = allQuizzes.filter(quiz => quiz.questions.length === quiz.que);
 
-        res.render('user', { users: validQuizzes }); // Send only valid quizzes
+        // Get user's recent results
+        const userResults = await QuizResult.find({ user: userId })
+            .populate('quiz')
+            .sort({ completedAt: -1 })
+            .limit(5);
+
+        res.render('user', { 
+            users: validQuizzes,
+            recentResults: userResults || []
+        });
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal Server Error');
+        res.status(500).render('user', {
+            users: [],
+            recentResults: []
+        });
     }
 });
 
-app.get('/quiz/:id', async (req, res) => {
-   
+app.get('/profile', verifyToken, async (req, res) => {
     try {
-        const quiz = await QuizTitle.findById(req.params.id).populate('questions');
-        if (!quiz) {
-            console.log("Quiz not found in the database.");
-            return res.status(404).send('Quiz not found');
+        // Get user details with populated quiz results
+        const user = await collection.findById(req.user.id)
+            .select('-password')
+            .populate({
+                path: 'quizResults',
+                populate: { path: 'quiz' },
+                options: { sort: { 'completedAt': -1 } }
+            });
+
+        if (!user) {
+            return res.status(404).send('User not found');
         }
+
+        // Calculate statistics
+        const totalAttempts = user.quizResults.length;
+        const completedQuizzes = user.quizResults.filter(result => result.score > 0);
+        const completionRate = (completedQuizzes.length / totalAttempts * 100) || 0;
         
-        res.render('startQuiz', { quiz });  
+        // Calculate average score
+        const averageScore = user.quizResults.length > 0
+            ? user.quizResults.reduce((acc, result) => acc + result.percentage, 0) / user.quizResults.length
+            : 0;
+
+        // Get performance data for chart (last 10 quizzes)
+        const performanceData = user.quizResults
+            .slice(0, 10)
+            .reverse()
+            .map(result => ({
+                quizName: result.quiz.title,
+                score: result.percentage,
+                date: result.completedAt
+            }));
+
+        // Get latest quiz attempt
+        const latestAttempt = user.quizResults[0];
+
+        res.render('profile', {
+            user,
+            stats: {
+                totalAttempts,
+                completionRate: completionRate.toFixed(1),
+                averageScore: averageScore.toFixed(1)
+            },
+            performanceData,
+            latestAttempt,
+            moment // Pass moment directly
+        });
+
     } catch (error) {
-        console.error("Error fetching quiz:", error);
-        res.status(500).send("Error loading quiz");
+        console.error('Profile page error:', error);
+        res.status(500).send('Error loading profile');
     }
 });
 
 
+// Update profile
+app.post('/profile/update', verifyToken, async (req, res) => {
+    try {
+        const { displayName } = req.body;
+        
+        const updatedUser = await collection.findByIdAndUpdate(
+            req.user.id,
+            { 
+                displayName,
+                lastActive: new Date()
+            },
+            { new: true }
+        );
 
-app.post("/startQuiz", async (req, res) => {
+        res.json({ success: true, user: updatedUser });
+    } catch (error) {
+        console.error('Profile update error:', error);
+        res.status(500).json({ success: false, message: 'Error updating profile' });
+    }
+});
+
+// Start Quiz
+app.post("/startQuiz", verifyToken, async (req, res) => {
     try {
         const { quizId, answers } = req.body;
         const quiz = await QuizTitle.findById(quizId).populate('questions');
+        const user = await collection.findById(req.user.id);
 
         if (!quiz) {
             return res.status(404).send("Quiz not found.");
@@ -512,11 +599,37 @@ app.post("/startQuiz", async (req, res) => {
             }
         });
 
-        // Ensure total possible points
+        // Calculate total possible points and percentage
         const totalPossiblePoints = quiz.questions.reduce((sum, q) => sum + q.points, 0);
+        const percentage = (totalScore / totalPossiblePoints) * 100;
+
+        // Create quiz result
+        const quizResult = await QuizResult.create({
+            user: req.user.id,
+            quiz: quizId,
+            score: totalScore,
+            totalPossibleScore: totalPossiblePoints,
+            percentage: percentage,
+            userName: req.user.name
+        });
+
+        // Update user statistics
+        const userResults = await QuizResult.find({ user: req.user.id });
+        const averageScore = userResults.reduce((acc, result) => acc + result.percentage, 0) / userResults.length;
+
+        await collection.findByIdAndUpdate(req.user.id, {
+            $push: { quizResults: quizResult._id },
+            $inc: { totalQuizAttempts: 1 },
+            averageScore: averageScore
+        });
 
         // Render quiz results
-        res.render('quizResult', { quiz, totalScore, totalPossiblePoints });
+        res.render('quizResult', { 
+            quiz, 
+            totalScore, 
+            totalPossiblePoints,
+            percentage 
+        });
         
     } catch (error) {
         console.error("Error processing quiz:", error);
@@ -524,19 +637,7 @@ app.post("/startQuiz", async (req, res) => {
     }
 });
 
-
-
-
-
-
-///////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
 // Start Server
 app.listen(port, () => {
-    console.log(` Server running on http://localhost:${port}`);
+    console.log(`Server running on http://localhost:${port}`);
 });

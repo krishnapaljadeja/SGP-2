@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuiziFY - Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #3b82f6;
+            --background-color: #f8fafc;
+            --text-color: #1e293b;
+            --card-background: #ffffff;
+            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --spacing-unit: 1rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-unit) * 2;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background-color: var(--card-background);
+            box-shadow: var(--card-shadow);
+            padding: var(--spacing-unit);
+            margin-bottom: var(--spacing-unit) * 2;
+        }
+
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .nav-group {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-unit);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0 var(--spacing-unit) * 2;
+        }
+
+        /* Button Styles */
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .btn-danger {
+            background-color: #ef4444;
+            color: white;
+        }
+
+        /* Profile Grid Layout */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: var(--spacing-unit) * 2;
+        }
+
+        /* Card Styles */
+        .card {
+            background-color: var(--card-background);
+            border-radius: 1rem;
+            box-shadow: var(--card-shadow);
+            padding: var(--spacing-unit) * 2;
+            margin-bottom: var(--spacing-unit) * 2;
+        }
+
+        /* Profile Header */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-unit) * 2;
+            margin-bottom: var(--spacing-unit) * 2;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-unit);
+            margin-top: var(--spacing-unit) * 2;
+        }
+
+        .stat-card {
+            background-color: var(--background-color);
+            border-radius: 0.5rem;
+            padding: var(--spacing-unit);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0.5rem 0;
+        }
+
+        /* Latest Attempt Card */
+        .latest-attempt {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 0.5rem;
+            padding: var(--spacing-unit) * 1.5;
+            margin-top: var(--spacing-unit) * 2;
+        }
+
+        /* Performance Chart */
+        .performance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-unit);
+        }
+
+        .chart-container {
+            height: 300px;
+            margin-top: var(--spacing-unit);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .performance-header {
+                flex-direction: column;
+                gap: var(--spacing-unit);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .nav-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="nav-group">
+                <a href="/student-dashboard" class="btn btn-secondary">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    Dashboard
+                </a>
+                <h1 class="logo">QUIZIFY</h1>
+            </div>
+            <form action="/logout" method="post">
+                <button class="btn btn-danger">
+                    <span class="material-symbols-outlined">logout</span>
+                    Logout
+                </button>
+            </form>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div class="profile-grid">
+            <!-- Profile Info Card -->
+            <section class="card">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <%= (user.name || 'U')[0].toUpperCase() %>
+                    </div>
+                    <div class="profile-info">
+                        <h2><%= user.displayName || user.name %></h2>
+                        <p><%= user.email %></p>
+                        <span class="badge"><%= user.role %></span>
+                        <p class="text-muted">
+                            Joined <%= moment(user.joinDate).format('MMMM YYYY') %>
+                        </p>
+                        <button class="btn btn-primary" onclick="toggleEditMode()">
+                            <span class="material-symbols-outlined">edit</span>
+                            Edit Profile
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Statistics -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="material-symbols-outlined">quiz</span>
+                        <div class="stat-number"><%= stats.totalAttempts %></div>
+                        <h4>Total Attempts</h4>
+                    </div>
+                    <div class="stat-card">
+                        <span class="material-symbols-outlined">task_alt</span>
+                        <div class="stat-number"><%= stats.completionRate %>%</div>
+                        <h4>Completion Rate</h4>
+                    </div>
+                    <div class="stat-card">
+                        <span class="material-symbols-outlined">grade</span>
+                        <div class="stat-number"><%= stats.averageScore %>%</div>
+                        <h4>Avg. Score</h4>
+                    </div>
+                </div>
+
+                <% if (latestAttempt) { %>
+                <div class="latest-attempt">
+                    <h3>Latest Quiz Attempt</h3>
+                    <p><%= latestAttempt.quiz.title %></p>
+                    <div class="stat-number">
+                        <%= latestAttempt.percentage.toFixed(1) %>%
+                    </div>
+                    <small>
+                        <%= moment(latestAttempt.completedAt).format('MMMM Do YYYY, h:mm a') %>
+                    </small>
+                </div>
+                <% } %>
+            </section>
+
+            <!-- Performance Chart Card -->
+            <section class="card">
+                <div class="performance-header">
+                    <div>
+                        <h2>Performance History</h2>
+                        <p class="text-muted">Your quiz scores over time</p>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary active" onclick="updateChartView('all')">All Time</button>
+                        <button class="btn btn-secondary" onclick="updateChartView('month')">This Month</button>
+                        <button class="btn btn-secondary" onclick="updateChartView('week')">This Week</button>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </section>
+        </div>
+    </main>
+    <script>
+        // Initialize chart with clean configuration
+        function initializeChart() {
+            const ctx = document.getElementById('performanceChart').getContext('2d');
+            const performanceData = <%- JSON.stringify(performanceData || []) %>;
+    
+            return new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: performanceData.map(d => d.quizName),
+                    datasets: [{
+                        label: 'Quiz Scores',
+                        data: performanceData.map(d => d.score),
+                        borderColor: getComputedStyle(document.documentElement)
+                            .getPropertyValue('--primary-color'),
+                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#6366f1',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#6366f1',
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                callback: value => `${value}%`
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 45
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                            titleColor: '#1e293b',
+                            bodyColor: '#1e293b',
+                            borderColor: '#e2e8f0',
+                            borderWidth: 1,
+                            padding: 10,
+                            callbacks: {
+                                label: context => `Score: ${context.parsed.y}%`
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    
+        // Profile edit functionality
+        function toggleEditMode() {
+            const profileInfo = document.querySelector('.profile-info');
+            const currentName = '<%= user.displayName || user.name %>';
+            
+            profileInfo.innerHTML = `
+                <form id="editProfileForm" onsubmit="updateProfile(event)" class="edit-form">
+                    <div class="form-group">
+                        <label for="displayName">Display Name</label>
+                        <input type="text"
+                               id="displayName"
+                               name="displayName"
+                               value="${currentName}"
+                               required
+                               minlength="2"
+                               maxlength="50"
+                               class="form-input">
+                    </div>
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary">
+                            <span class="material-symbols-outlined">save</span>
+                            Save
+                        </button>
+                        <button type="button" 
+                                onclick="location.reload()" 
+                                class="btn btn-secondary">
+                            <span class="material-symbols-outlined">close</span>
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            `;
+        }
+    
+        // Update chart view based on time period
+        function updateChartView(period) {
+            const buttons = document.querySelectorAll('.btn-group .btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+    
+            const performanceData = <%- JSON.stringify(performanceData || []) %>;
+            let filteredData = [];
+    
+            const now = new Date();
+            switch(period) {
+                case 'week':
+                    const weekAgo = new Date(now - 7 * 24 * 60 * 60 * 1000);
+                    filteredData = performanceData.filter(d => 
+                        new Date(d.date) > weekAgo
+                    );
+                    break;
+                case 'month':
+                    const monthAgo = new Date(now.setMonth(now.getMonth() - 1));
+                    filteredData = performanceData.filter(d => 
+                        new Date(d.date) > monthAgo
+                    );
+                    break;
+                default:
+                    filteredData = performanceData;
+            }
+    
+            // Update chart with filtered data
+            chart.data.labels = filteredData.map(d => d.quizName);
+            chart.data.datasets[0].data = filteredData.map(d => d.score);
+            chart.update();
+        }
+    
+        // Profile update functionality
+        async function updateProfile(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+    
+            try {
+                const response = await fetch('/profile/update', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(Object.fromEntries(formData))
+                });
+    
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Show success message
+                    showNotification('Profile updated successfully', 'success');
+                    setTimeout(() => location.reload(), 1500);
+                } else {
+                    showNotification(data.message || 'Update failed', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Error updating profile', 'error');
+            }
+        }
+    
+        // Notification helper
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+    
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize chart
+            const chart = initializeChart();
+    
+            // Add smooth scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href'))
+                        .scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+    
+            // Add notification styles
+            const style = document.createElement('style');
+            style.textContent = `
+                .notification {
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    padding: 15px 25px;
+                    border-radius: 5px;
+                    color: white;
+                    z-index: 1000;
+                    animation: slideIn 0.3s ease-out;
+                }
+                .notification.success {
+                    background-color: #10b981;
+                }
+                .notification.error {
+                    background-color: #ef4444;
+                }
+                @keyframes slideIn {
+                    from { transform: translateX(100%); }
+                    to { transform: translateX(0); }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+    
+</body>
+</html>

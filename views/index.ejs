@@ -67,6 +67,7 @@
             box-shadow: var(--card-shadow);
             transition: all 0.3s ease;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            height: fit-content;
         }
 
         .card:hover {
@@ -130,6 +131,8 @@
             padding: 1.5rem;
             text-align: center;
             transition: all 0.3s ease;
+            flex-shrink: 0;
+            margin-bottom: 0;
         }
 
         .stats-number {
@@ -146,7 +149,7 @@
         padding: 1rem;
         border: none;
         border-radius: 12px;
-        background: linear-gradient(135deg, #ef4444, #dc2626); /* Red gradient */
+            background: linear-gradient(135deg, #ef4444, #dc2626);
         color: white;
         font-weight: 600;
         cursor: pointer;
@@ -174,13 +177,57 @@
             grid-template-columns: repeat(3, 1fr);
         }
 
+        .results-container {
+            height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+            margin-right: -10px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            position: relative;
+            scroll-behavior: smooth;
+            }
+
+        .results-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .results-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .results-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .results-container::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .results-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,0));
+            pointer-events: none;
+        }
+
+        .grid[style*="grid-template-columns: 2fr 1fr"] {
+            align-items: start;
+        }
+
         @media (max-width: 768px) {
             .grid-cols-2, .grid-cols-3 {
                 grid-template-columns: 1fr;
             }
         }
 
-        /* Custom animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -188,25 +235,6 @@
 
         .fade-in {
             animation: fadeIn 0.5s ease-out;
-        }
-
-        /* Scrollbar styling */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
         }
     </style>
   </head>
@@ -216,18 +244,16 @@
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <h1 class="logo">QUIZIFY</h1>
                 <div style="display: flex; gap: 1rem; align-items: center;">
-                    <button class="btn">
-                <span class="material-symbols-outlined">person</span>
-              </button>
+                    
               <form action="/logout" method="post">
                 <button class="logout-btn">
                     Logout
                 </button>
             </form>
-            
             </div>
           </div>
-        </nav>
+        </div>
+    </nav>
     
     <main class="main-content">
         <div class="container">
@@ -245,23 +271,28 @@
                 </div>
               </div>
 
-                <!-- Results Section -->
+                <!-- Recent Results Section -->
                 <div class="card fade-in">
                     <h2 style="font-size: 1.8rem; margin-bottom: 1.5rem;">Recent Results</h2>
-                    <div style="display: flex; flex-direction: column; gap: 1rem;">
-                        <div class="stats-card">
-                            <h4>Science Quiz</h4>
-                            <div class="stats-number">80%</div>
-                            <p>8/10 Correct</p>
+                    <div class="results-container">
+                        <% if (recentResults && recentResults.length > 0) { %>
+                            <% recentResults.forEach(function(result) { %>
+                                <div class="stats-card">
+                                    <h4><%= result.userName %></h4>
+                                    <p><%= result.quiz.title %></p>
+                                    <div class="stats-number"><%= result.percentage.toFixed(1) %>%</div>
+                                    <p><%= result.score %>/<%= result.totalPossibleScore %> Points</p>
+                                    <p style="font-size: 0.8rem; color: #64748b;">
+                                        <%= new Date(result.completedAt).toLocaleDateString() %>
+                                    </p>
             </div>
-                        <div class="stats-card">
-                            <h4>History Quiz</h4>
-                            <div class="stats-number">90%</div>
-                            <p>9/10 Correct</p>
+                            <% }); %>
+                        <% } else { %>
+                            <p>No quiz results available yet.</p>
+                        <% } %>
                   </div>
                   </div>
                 </div>
-            </div>
 
             <!-- Admin Controls -->
             <div class="grid grid-cols-2" style="margin-top: 2rem;">
@@ -279,35 +310,37 @@
                     <span class="material-symbols-outlined">edit</span>
                                 Manage Quiz
                   </button>
-                </form>
-                        <form action="/analytics" method="get">
-                            <button class="btn btn-primary" style="width: 100%;">
-                  <span class="material-symbols-outlined">analytics</span>
-                                View Analytics
-                            </button>
-                        </form>
-              </div>
+                </button>
+            </form>
+            <form action="/analytics" method="get">
+                <button class="btn btn-primary" style="width: 100%;">
+                    <span class="material-symbols-outlined">analytics</span>
+                    View Analytics
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card fade-in">
+        <h2 style="font-size: 1.8rem; margin-bottom: 1.5rem;">Quick Stats</h2>
+        <div class="grid grid-cols-3">
+            <div class="stats-card">
+                <h4>Total Quizzes</h4>
+                <div class="stats-number"><%= totalQuizzes %></div>
             </div>
-    
-                <div class="card fade-in">
-                    <h2 style="font-size: 1.8rem; margin-bottom: 1.5rem;">Quick Stats</h2>
-                    <div class="grid grid-cols-3">
-                        <div class="stats-card">
-                            <h4>Total Quizzes</h4>
-                            <div class="stats-number"><%= totalQuizzes %></div>
-                  </div>
-                        <div class="stats-card">
-                            <h4>Active Users</h4>
-                            <div class="stats-number">156</div>
-                </div>
-                        <div class="stats-card">
-                            <h4>Completion Rate</h4>
-                            <div class="stats-number">87%</div>
-                </div>
-                </div>
-              </div>
+            <div class="stats-card">
+                <h4>Active Users</h4>
+                <div class="stats-number"><%= activeUsersCount %></div>
             </div>
-          </div>
-        </main>
-  </body>
+            <div class="stats-card">
+                <h4>Completion Rate</h4>
+                <div class="stats-number">87%</div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</main>
+</body>
 </html>
+
