@@ -461,10 +461,12 @@ app.get('/manage', async (req, res) => {
 app.delete("/api/quiz/:quizId", async (req, res) => {
     try {
         const { quizId } = req.params;
-        const deletedQuiz = await QuizTitle.findByIdAndDelete(quizId);
+        const deletedQuiz = await QuizTitle.findById(quizId);
   
         if (!deletedQuiz) return res.status(404).json({ error: "Quiz not found" });
-  
+        await Question.deleteMany({ _id: { $in: deletedQuiz.questions } });
+        await QuizTitle.findByIdAndDelete(quizId);
+        
         res.json({ message: "Quiz deleted successfully" });
     } catch (err) {
         res.status(500).json({ error: err.message });
