@@ -271,21 +271,21 @@ app.get('/add', (req, res) => res.render('add'));
 app.get('/analytics', (req, res) => res.render('analytics'));
 
 // Create a new quiz
-app.post('/created', async (req, res) => {
+app.post('/created',verifyToken, async (req, res) => {
     const { title, que, time } = req.body;
 
     try {
         const existingQuiz = await QuizTitle.findOne({ title });
 
         if (existingQuiz) {
-            return res.send(`<script>alert("Quiz already exists!"); window.location.href = "/";</script>`);
+            return res.send(`<script>alert("Quiz already exists!"); window.location.href = "/admin-dashboard";</script>`);
         }
 
         await QuizTitle.create({ title, que, time });
-        res.send(`<script>alert("Quiz successfully created!"); window.location.href = "/";</script>`);
+        res.send(`<script>alert("Quiz successfully created!"); window.location.href = "/admin-dashboard";</script>`);
     } catch (err) {
         console.error(err);
-        res.send(`<script>alert("Error creating quiz."); window.location.href = "/";</script>`);
+        res.send(`<script>alert("Error creating quiz."); window.location.href = "/admin-dashboard";</script>`);
     }
 });
 
