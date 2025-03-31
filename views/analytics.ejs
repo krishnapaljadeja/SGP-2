@@ -220,25 +220,25 @@
                 <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2rem;">
                     <div class="stats-card" style="background: #eff6ff;">
                         <span class="material-symbols-outlined stats-icon" style="color: #3b82f6;">group</span>
-                        <div class="stats-number">156</div>
+                        <div class="stats-number" id="totalParticipants">0</div>
                         <div>Total Participants</div>
                     </div>
 
                     <div class="stats-card" style="background: #f5f3ff;">
                         <span class="material-symbols-outlined stats-icon" style="color: #8b5cf6;">quiz</span>
-                        <div class="stats-number">85%</div>
+                        <div class="stats-number" id="averageScore">0%</div>
                         <div>Average Score</div>
                     </div>
 
                     <div class="stats-card" style="background: #ecfdf5;">
                         <span class="material-symbols-outlined stats-icon" style="color: #10b981;">verified</span>
-                        <div class="stats-number">92</div>
+                        <div class="stats-number" id="passedTests">0</div>
                         <div>Passed Tests</div>
                     </div>
 
                     <div class="stats-card" style="background: #fef2f2;">
                         <span class="material-symbols-outlined stats-icon" style="color: #ef4444;">cancel</span>
-                        <div class="stats-number">64</div>
+                        <div class="stats-number" id="failedTests">0</div>
                         <div>Failed Tests</div>
                     </div>
                 </div>
@@ -255,33 +255,49 @@
                                 <th>Status</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>Krishnapal Jadeja</td>
-                                <td>95%</td>
-                                <td>25 mins</td>
-                                <td>2025-01-01</td>
-                                <td><span class="status-badge status-passed">Passed</span></td>
-                            </tr>
-                            <tr>
-                                <td>Prince Diyora</td>
-                                <td>78%</td>
-                                <td>30 mins</td>
-                                <td>2025-01-05</td>
-                                <td><span class="status-badge status-passed">Passed</span></td>
-                            </tr>
-                            <tr>
-                                <td>Rudra Dudhat</td>
-                                <td>28%</td>
-                                <td>28 mins</td>
-                                <td>2025-01-10</td>
-                                <td><span class="status-badge status-failed">Failed</span></td>
-                            </tr>
+                        <tbody id="recentResults">
+                            <!-- Results will be populated dynamically -->
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </main>
+
+    <script>
+        async function fetchAnalyticsData() {
+            try {
+                const response = await fetch('/api/analytics');
+                const data = await response.json();
+
+                // Update stats cards
+                document.getElementById('totalParticipants').textContent = data.totalParticipants;
+                document.getElementById('averageScore').textContent = `${Math.round(data.averageScore)}%`;
+                document.getElementById('passedTests').textContent = data.passedTests;
+                document.getElementById('failedTests').textContent = data.failedTests;
+
+                // Update recent results table
+                const tbody = document.getElementById('recentResults');
+                tbody.innerHTML = data.recentResults.map(result => `
+                    <tr>
+                        <td>${result.studentName}</td>
+                        <td>${result.score}</td>
+                        <td>${result.timeTaken}</td>
+                        <td>${result.date}</td>
+                        <td>
+                            <span class="status-badge ${result.status === 'Passed' ? 'status-passed' : 'status-failed'}">
+                                ${result.status}
+                            </span>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error("Error fetching analytics data:", error);
+            }
+        }
+
+        // Fetch data when page loads
+        document.addEventListener('DOMContentLoaded', fetchAnalyticsData);
+    </script>
   </body>
 </html>

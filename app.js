@@ -665,6 +665,40 @@ app.get('/quiz/:id', async (req, res) => {
     }
 });
 
+//analytics
+
+app.get('/api/analytics', async (req, res) => {
+    try {
+        const totalParticipants = await collection.countDocuments();
+        const averageScore = await QuizResult.aggregate([
+            { $group: { _id: null, avgScore: { $avg: "$percentage" } } }
+        ]);
+        const passedTests = await QuizResult.countDocuments({ percentage: { $gte: 50 } });
+        const failedTests = await QuizResult.countDocuments({ percentage: { $lt: 50 } });
+        const recentResults = await QuizResult.find()
+            .populate('quiz')
+            .sort({ completedAt: -1 })
+            .limit(5);
+
+        res.json({
+            totalParticipants,
+            averageScore: averageScore[0]?.avgScore || 0,
+            passedTests,
+            failedTests,
+            recentResults: recentResults.map(result => ({
+                studentName: result.userName,
+                score: `${result.percentage}%`,
+                timeTaken: `${result.timeTaken || 'N/A'} mins`,
+                date: result.completedAt.toISOString().split('T')[0],
+                status: result.percentage >= 50 ? 'Passed' : 'Failed'
+            }))
+        });
+    } catch (error) {
+        console.error("Error fetching analytics data:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
 
 // Start Server
 app.listen(port, () => {
