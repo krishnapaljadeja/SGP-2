@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const quizResultSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'users',
+        ref: 'User',
         required: true
     },
     quiz: {
@@ -23,13 +23,21 @@ const quizResultSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    completedAt: {
-        type: Date,
-        default: Date.now
-    },
     userName: {
         type: String,
         required: true
+    },
+    timeTaken: {
+        type: Number,
+        default: 0
+    },
+    timeLimit: {
+        type: Number,
+        required: true
+    },
+    completedAt: {
+        type: Date,
+        default: Date.now
     }
 });
 

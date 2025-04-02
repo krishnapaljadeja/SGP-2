@@ -593,7 +593,7 @@ app.post('/profile/update', verifyToken, async (req, res) => {
 // Start Quiz
 app.post("/startQuiz", verifyToken, async (req, res) => {
     try {
-        const { quizId, answers } = req.body;
+        const { quizId, answers, timeTaken } = req.body;
         const quiz = await QuizTitle.findById(quizId).populate('questions');
         const user = await collection.findById(req.user.id);
 
@@ -603,7 +603,7 @@ app.post("/startQuiz", verifyToken, async (req, res) => {
 
         let totalScore = 0;
         let correctAnswers = {};
-        let correctcount=0,totalquecount=0;
+        let correctcount = 0, totalquecount = 0;
 
         // Process each question
         quiz.questions.forEach((q) => {
@@ -613,21 +613,23 @@ app.post("/startQuiz", verifyToken, async (req, res) => {
                 correctcount++;
                 totalScore += q.points;
             }
-            
         });
 
         // Calculate total possible points and percentage
         const totalPossiblePoints = quiz.questions.reduce((sum, q) => sum + q.points, 0);
         const percentage = (totalScore / totalPossiblePoints) * 100;
 
-        // Create quiz result
+        // Create quiz result with time information
         const quizResult = await QuizResult.create({
             user: req.user.id,
             quiz: quizId,
             score: totalScore,
             totalPossibleScore: totalPossiblePoints,
             percentage: percentage,
-            userName: req.user.name
+            userName: req.user.name,
+            timeTaken: timeTaken || 0,
+            timeLimit: quiz.time || 0,
+            completedAt: new Date()
         });
 
         // Update user statistics
@@ -641,7 +643,15 @@ app.post("/startQuiz", verifyToken, async (req, res) => {
         });
 
         // Render quiz results
-        res.render('quizResult', { quiz, totalScore, totalPossiblePoints ,correctcount,totalquecount});
+        res.render('quizResult', { 
+            quiz, 
+            totalScore, 
+            totalPossiblePoints,
+            correctcount,
+            totalquecount,
+            timeTaken,
+            timeLimit: quiz.time
+        });
         
     } catch (error) {
         console.error("Error processing quiz:", error);
@@ -675,6 +685,20 @@ app.get('/api/analytics', async (req, res) => {
         ]);
         const passedTests = await QuizResult.countDocuments({ percentage: { $gte: 50 } });
         const failedTests = await QuizResult.countDocuments({ percentage: { $lt: 50 } });
+        
+        // Calculate average time taken
+        const averageTime = await QuizResult.aggregate([
+            { $group: { _id: null, avgTime: { $avg: "$timeTaken" } } }
+        ]);
+
+        // Calculate completion rate (quizzes completed within time limit)
+        const totalQuizzes = await QuizResult.countDocuments();
+        const completedOnTime = await QuizResult.countDocuments({ 
+            timeTaken: { $exists: true },
+            $expr: { $lte: ["$timeTaken", "$timeLimit"] }
+        });
+        const completionRate = totalQuizzes > 0 ? (completedOnTime / totalQuizzes) * 100 : 0;
+
         const recentResults = await QuizResult.find()
             .populate('quiz')
             .sort({ completedAt: -1 })
@@ -685,10 +709,13 @@ app.get('/api/analytics', async (req, res) => {
             averageScore: averageScore[0]?.avgScore || 0,
             passedTests,
             failedTests,
+            averageTime: averageTime[0]?.avgTime || 0,
+            completionRate: completionRate,
             recentResults: recentResults.map(result => ({
                 studentName: result.userName,
                 score: `${result.percentage}%`,
                 timeTaken: `${result.timeTaken || 'N/A'} mins`,
+                timeLimit: result.timeLimit || 'N/A',
                 date: result.completedAt.toISOString().split('T')[0],
                 status: result.percentage >= 50 ? 'Passed' : 'Failed'
             }))

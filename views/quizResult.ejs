@@ -108,32 +108,80 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1.5rem;
-            margin: 2rem 0;
-            }
+            margin-bottom: 2rem;
+        }
 
         .stat-card {
-            background: white;
-            padding: 1.5rem;
+            background: #f8fafc;
             border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
             transition: all 0.3s ease;
-            border: 1px solid #e5e7eb;
-            }
+        }
 
         .stat-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            }
+            transform: translateY(-5px);
+            box-shadow: var(--card-shadow);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #3b82f6;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
 
         .stat-label {
             color: #64748b;
-            font-size: 0.9rem;
-            margin-bottom: 0.5rem;
-            }
+            font-size: 0.875rem;
+        }
 
-        .stat-value {
-            font-size: 1.8rem;
+        .time-info {
+            background: #f0f9ff;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .time-detail {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .time-icon {
+            color: #0ea5e9;
+        }
+
+        .time-value {
             font-weight: 600;
-            }
+            font-size: 1.1rem;
+        }
+
+        .time-status {
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .time-status.ontime {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .time-status.overtime {
+            background: #fee2e2;
+            color: #991b1b;
+        }
 
         .btn {
             padding: 0.75rem 1.5rem;
@@ -142,20 +190,20 @@
             font-weight: 500;
             cursor: pointer;
             display: inline-flex;
-                align-items: center;
+            align-items: center;
             gap: 0.5rem;
             transition: all 0.3s ease;
-            }
-
-        .btn-outline {
-            border: 2px solid #6366f1;
-            color: #6366f1;
-            background: transparent;
+            text-decoration: none;
         }
 
-        .btn-outline:hover {
-            background: #f5f3ff;
+        .btn-primary {
+            background: var(--primary-gradient);
+            color: white;
+        }
+
+        .btn:hover {
             transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
         .fade-in {
@@ -234,26 +282,59 @@
                     <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1.5rem;">Quiz Summary</h2>
                     <div class="stats-grid">
                         <div class="stat-card">
-                            <div class="stat-label">Total Questions</div>
-                            <div class="stat-value"><%= totalquecount %></div>
-                                </div>
-                        <div class="stat-card">
-                            <div class="stat-label">Time Taken</div>
-                            <div class="stat-value">11:15</div>
+                            <span class="material-symbols-outlined stat-icon">score</span>
+                            <div class="stat-number"><%= Math.round((totalScore / totalPossiblePoints) * 100) %>%</div>
+                            <div class="stat-label"> Total Score</div>
                         </div>
                         <div class="stat-card">
+                            <span class="material-symbols-outlined stat-icon">check_circle</span>
+                            <div class="stat-number"><%= correctcount %>/<%= totalquecount %></div>
                             <div class="stat-label">Correct Answers</div>
-                            <div class="stat-value" style="color: var(--success-color);"><%= correctcount %></div>
                         </div>
                         <div class="stat-card">
+                            <span class="material-symbols-outlined stat-icon">cancel</span>
+                            <div class="stat-number"><%= totalquecount - correctcount %>/<%= totalquecount %></div>
                             <div class="stat-label">Incorrect Answers</div>
-                            <div class="stat-value" style="color: var(--error-color);"><%= totalquecount - correctcount %></div>
-                                    </div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="material-symbols-outlined stat-icon">timer</span>
+                            <div class="stat-number">
+                                <% 
+                                    const minutes = Math.floor(timeTaken);
+                                    const seconds = Math.floor((timeTaken % 1) * 60);
+                                    if (minutes === 0) { 
+                                        if (seconds < 10) {
+                                %>
+                                    <%= seconds %>s
+                                <% } else { %>
+                                    <%= seconds %>s
+                                <% } %>
+                                <% } else { %>
+                                    <%= minutes %>:<%= seconds.toString().padStart(2, '0') %>
+                                <% } %>
+                            </div>
+                            <div class="stat-label">Time Taken</div>
+                        </div>
                     </div>
                                     </div>
 
+                <div class="time-info">
+                    <div class="time-detail">
+                        <span class="material-symbols-outlined time-icon">timer</span>
+                        <div>
+                            <div class="time-value">
+                                Time Taken: <%= Math.ceil(timeTaken) %> minutes
+                            </div>
+                            <div class="stat-label">Time Limit: <%= timeLimit %> minutes</div>
+                        </div>
+                    </div>
+                    <div class="time-status <%= timeTaken <= timeLimit ? 'ontime' : 'overtime' %>">
+                        <%= timeTaken <= timeLimit ? 'Completed On Time' : 'Time Exceeded' %>
+                    </div>
+                </div>
+
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 2rem;">
-                    <a href="/student-dashboard" class="btn btn-outline">
+                    <a href="/student-dashboard" class="btn btn-primary">
                                     <span class="material-symbols-outlined">arrow_back</span>
                         Back to Quizzes
                     </a>

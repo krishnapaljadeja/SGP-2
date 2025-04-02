@@ -243,6 +243,20 @@
                     </div>
                 </div>
 
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 2rem;">
+                    <div class="stats-card" style="background: #f0f9ff;">
+                        <span class="material-symbols-outlined stats-icon" style="color: #0ea5e9;">timer</span>
+                        <div class="stats-number" id="averageTime">0 mins</div>
+                        <div>Average Time Taken</div>
+                    </div>
+
+                    <div class="stats-card" style="background: #fff7ed;">
+                        <span class="material-symbols-outlined stats-icon" style="color: #f97316;">speed</span>
+                        <div class="stats-number" id="completionRate">0%</div>
+                        <div>On-Time Completion Rate</div>
+                    </div>
+                </div>
+
                 <div class="table-container">
                     <h3 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1.5rem;">Recent Test Results</h3>
                     <table>
@@ -251,6 +265,7 @@
                                 <th>Student Name</th>
                                 <th>Score</th>
                                 <th>Time Taken</th>
+                                <th>Time Limit</th>
                                 <th>Date</th>
                                 <th>Status</th>
                             </tr>
@@ -275,6 +290,8 @@
                 document.getElementById('averageScore').textContent = `${Math.round(data.averageScore)}%`;
                 document.getElementById('passedTests').textContent = data.passedTests;
                 document.getElementById('failedTests').textContent = data.failedTests;
+                document.getElementById('averageTime').textContent = `${Math.round(data.averageTime)} mins`;
+                document.getElementById('completionRate').textContent = `${Math.round(data.completionRate)}%`;
 
                 // Update recent results table
                 const tbody = document.getElementById('recentResults');
@@ -283,6 +300,7 @@
                         <td>${result.studentName}</td>
                         <td>${result.score}</td>
                         <td>${result.timeTaken}</td>
+                        <td>${result.timeLimit} mins</td>
                         <td>${result.date}</td>
                         <td>
                             <span class="status-badge ${result.status === 'Passed' ? 'status-passed' : 'status-failed'}">
