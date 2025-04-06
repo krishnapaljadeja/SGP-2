@@ -23,13 +23,16 @@
         }
 
         body {
-            background: var(--background-gradient);
+            background: url('/assets/blob-scene-haikei.svg') no-repeat center center fixed;
+            background-size: cover;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             color: #1e293b;
         }
+        
+        
 
         .login-container {
             width: 100%;
@@ -38,19 +41,23 @@
         }
 
         .login-card {
-            background: white;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 2.5rem;
-            box-shadow: var(--card-shadow);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             transition: all 0.3s ease;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            color: #1e293b;
         }
-
+        
         .login-card:hover {
-            transform: var(--hover-transform);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px); /* gentle lift effect */
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2); /* deeper glass-like shadow */
+            background: rgba(255, 255, 255, 0.2); /* slight lightening on hover */
+            border: 1px solid rgba(255, 255, 255, 0.4);
         }
+        
 
         .logo {
             font-size: 2.5rem;
@@ -158,7 +165,7 @@
         .register-text {
             text-align: center;
             margin-top: 1.5rem;
-            color: #64748b;
+            color: #d7dde5;
         }
 
         .register-link {

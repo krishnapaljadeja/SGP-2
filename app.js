@@ -32,6 +32,10 @@ app.use(trackActivity);
 
 // app.get("/home", (req, res) => {
 //     res.render("home");
+
+app.use('/assets', express.static(__dirname + '/assets'));
+
+
 // });
 
 // Home Route

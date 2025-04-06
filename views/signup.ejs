@@ -16,13 +16,15 @@
         }
 
         * {
-                margin: 0;
+            margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
         }
+
         body {
-            background: var(--background-gradient);
+            background: url('/assets/blob-scene-haikei.svg') no-repeat center center fixed;
+            background-size: cover;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -37,12 +39,15 @@
         }
 
         .signup-card {
-            background: white;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-radius: 20px;
             padding: 2.5rem;
             box-shadow: var(--card-shadow);
             transition: all 0.3s ease;
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            animation: fadeInScale 0.5s ease-out;
         }
 
         .signup-card:hover {
@@ -73,13 +78,11 @@
         .input-group {
             position: relative;
             margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
         }
 
         .input-group input {
             width: 100%;
-            padding: 1rem 3rem;
+            padding: 1rem 3rem 1rem 1rem;
             border: 1px solid #e2e8f0;
             border-radius: 12px;
             background: #f8fafc;
@@ -95,12 +98,34 @@
             box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
         }
 
-        .input-group .material-symbols-outlined {
+        .input-group label {
             position: absolute;
             left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #f8fafc;
+            padding: 0 0.25rem;
             color: #64748b;
-            font-size: 1.25rem;
+            transition: 0.3s ease;
             pointer-events: none;
+            font-size: 1rem;
+        }
+
+        .input-group input:focus + label,
+        .input-group input:not(:placeholder-shown) + label {
+            top: -0.6rem;
+            left: 0.75rem;
+            font-size: 0.75rem;
+            background: white;
+        }
+
+        .input-group .material-symbols-outlined {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            cursor: pointer;
         }
 
         .signup-btn {
@@ -138,13 +163,9 @@
             color: #818cf8;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .fade-in {
-            animation: fadeIn 0.5s ease-out;
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         @media (max-width: 480px) {
@@ -162,59 +183,49 @@
         }
     </style>
 </head>
-    <body>
+<body>
     <div class="signup-container">
-        <form action="/signup" method="post" class="signup-card fade-in">
+        <form action="/signup" method="post" class="signup-card">
             <h1 class="logo">QUIZIFY</h1>
             <h2 class="title">Create Account</h2>
-            <div class="input-group">
-                <span class="material-symbols-outlined">person</span>
-                <input type="text" 
-                       name="username" 
-                            placeholder="Username"
-                       required>
-                    </div>
-            <div class="input-group">
-                <span class="material-symbols-outlined">mail</span>
-                <input type="email" 
-                       name="email" 
-                            placeholder="Email"
-                       required>
-                    </div>
-            <div class="input-group">
-                <span class="material-symbols-outlined">lock</span>
-                <input type="password" 
-                       name="password" 
-                       id="password"
-                       placeholder="Password"
-                       required>
-                    </div>
 
-            <button type="submit" class="signup-btn">
-                Create Account
-            </button>
+            <div class="input-group">
+                <input type="text" name="username" placeholder=" " required>
+                <label>Username</label>
+            </div>
+
+            <div class="input-group">
+                <input type="email" name="email" placeholder=" " required>
+                <label>Email</label>
+            </div>
+
+            <div class="input-group">
+                <input type="password" name="password" id="password" placeholder=" " required>
+                <label>Password</label>
+                <span class="material-symbols-outlined toggle-password" onclick="togglePassword()">visibility_off</span>
+            </div>
+
+            <button type="submit" class="signup-btn">Create Account</button>
 
             <p class="login-text">
-                Already have an account? 
+                Already have an account?
                 <a href="/" class="login-link">Login</a>
             </p>
         </form>
     </div>
 
-        <script>
-        // Add password visibility toggle if needed
+    <script>
         function togglePassword() {
             const passwordInput = document.getElementById('password');
-            const toggleButton = document.querySelector('.toggle-password');
-            
+            const toggleIcon = document.querySelector('.toggle-password');
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
-                toggleButton.textContent = 'visibility';
+                toggleIcon.textContent = 'visibility';
             } else {
                 passwordInput.type = 'password';
-                toggleButton.textContent = 'visibility_off';
+                toggleIcon.textContent = 'visibility_off';
             }
         }
-        </script>
-    </body>
+    </script>
+</body>
 </html>
