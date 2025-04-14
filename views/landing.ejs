@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quizify - Interactive Learning Platform</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-color: #6366f1;
+        --secondary-color: #8b5cf6;
+        --accent-color: #3b82f6;
+        --text-color: #1e293b;
+        --light-bg: #f8fafc;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        background-color: var(--light-bg);
+        color: var(--text-color);
+      }
+
+      .navbar {
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 1rem 2rem;
+      }
+
+      .logo {
+        font-size: 2rem;
+        font-weight: 700;
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--secondary-color)
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        letter-spacing: -1px;
+        margin: 0;
+      }
+
+      .nav-btn {
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--secondary-color)
+        );
+        color: white;
+        padding: 0.5rem 1.5rem;
+        border-radius: 25px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: none;
+        font-weight: 500;
+      }
+
+      .nav-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+        color: white;
+      }
+
+      .hero-section {
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--secondary-color)
+        );
+        color: white;
+        padding: 5rem 0;
+        text-align: center;
+        margin-bottom: 4rem;
+      }
+
+      .hero-title {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+        opacity: 0.9;
+      }
+
+      .feature-section {
+        padding: 4rem 0;
+      }
+
+      .feature-card {
+        background: white;
+        border-radius: 15px;
+        padding: 2.5rem;
+        margin: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        height: 100%;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .feature-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+        color: var(--primary-color);
+      }
+
+      .feature-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--text-color);
+      }
+
+      .feature-text {
+        color: #64748b;
+        line-height: 1.6;
+      }
+
+      .about-section {
+        background: linear-gradient(
+          135deg,
+          var(--secondary-color),
+          var(--primary-color)
+        );
+        color: white;
+        padding: 4rem 0;
+        margin-top: 4rem;
+      }
+
+      .about-content {
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      .about-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+      }
+
+      .about-text {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+        opacity: 0.9;
+      }
+
+      @media (max-width: 768px) {
+        .hero-title {
+          font-size: 2.5rem;
+        }
+
+        .hero-subtitle {
+          font-size: 1.2rem;
+        }
+
+        .feature-card {
+          padding: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand" href="/">
+          <h3 class="logo">QUIZIFY</h3>
+        </a>
+        <div class="ms-auto">
+          <a href="/signup" class="nav-btn" style="margin-right: 1rem"
+            >Sign Up</a
+          >
+          <a href="/login" class="nav-btn">Login</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container">
+        <h1 class="hero-title">Welcome to Quizify</h1>
+        <p class="hero-subtitle">Your Interactive Learning Platform</p>
+        <p class="hero-subtitle" style="font-size: 1.2rem">
+          Engage, Learn, and Excel with our comprehensive quiz system
+        </p>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="feature-section">
+      <div class="container">
+        <h2
+          class="text-center mb-5"
+          style="color: var(--text-color); font-size: 2.5rem"
+        >
+          Why Choose Quizify?
+        </h2>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="feature-card text-center">
+              <div class="feature-icon">📚</div>
+              <h3 class="feature-title">Interactive Learning</h3>
+              <p class="feature-text">
+                Engage with dynamic quizzes that make learning fun and
+                effective.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="feature-card text-center">
+              <div class="feature-icon">📊</div>
+              <h3 class="feature-title">Real-time Analytics</h3>
+              <p class="feature-text">
+                Track your progress with detailed performance analytics.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="feature-card text-center">
+              <div class="feature-icon">🎯</div>
+              <h3 class="feature-title">Personalized Experience</h3>
+              <p class="feature-text">
+                Customized quizzes tailored to your learning needs.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section">
+      <div class="container">
+        <div class="about-content">
+          <h2 class="about-title">About Us</h2>
+          <p class="about-text">
+            Quizify is dedicated to revolutionizing the way people learn and
+            assess their knowledge. Our platform provides an engaging and
+            interactive environment for both students and educators.
+          </p>
+          <p class="about-text">
+            We believe in making learning accessible, enjoyable, and effective
+            for everyone. Join us in our mission to transform education through
+            technology.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer
+      style="
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--secondary-color)
+        );
+        color: white;
+        padding: 2rem 0;
+        margin-top: 4rem;
+      "
+    >
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 2rem;
+        "
+      >
+        <div
+          style="
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: white;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+          "
+        >
+          QUIZIFY
+        </div>
+        <div style="display: flex; gap: 1.5rem">
+          <div
+            style="
+              background: rgba(255, 255, 255, 0.1);
+              padding: 0.5rem 1rem;
+              border-radius: 20px;
+              font-size: 0.9rem;
+              transition: all 0.3s ease;
+            "
+          >
+            23CE043
+          </div>
+          <div
+            style="
+              background: rgba(255, 255, 255, 0.1);
+              padding: 0.5rem 1rem;
+              border-radius: 20px;
+              font-size: 0.9rem;
+              transition: all 0.3s ease;
+            "
+          >
+            23CE028
+          </div>
+          <div
+            style="
+              background: rgba(255, 255, 255, 0.1);
+              font-size: 0.9rem;
+              padding: 0.5rem 1rem;
+              border-radius: 20px;
+              transition: all 0.3s ease;
+            "
+          >
+            23CE031
+          </div>
+          <div
+            style="
+              background: rgba(255, 255, 255, 0.1);
+              padding: 0.5rem 1rem;
+              border-radius: 20px;
+              font-size: 0.9rem;
+              transition: all 0.3s ease;
+            "
+          >
+            23CE024
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

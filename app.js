@@ -39,13 +39,13 @@ app.use("/assets", express.static(__dirname + "/assets"));
 
 // Home Route
 app.get("/", (req, res) => {
-  res.render("login");
+  res.render("landing");
 });
 
 //logout route
 app.post("/logout", (req, res) => {
   res.clearCookie("token");
-  res.render("login");
+  res.redirect("/");
 });
 
 // Signup Route (GET)
@@ -134,7 +134,12 @@ app.post("/otp", async (req, res) => {
   }
 });
 
-// Login Route
+// Login Route (GET)
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
+// Login Route (POST)
 app.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -144,7 +149,7 @@ app.post("/login", async (req, res) => {
 
     if (!user) {
       return res.send(
-        `<script>alert("User not found"); window.location.href = "/";</script>`
+        `<script>alert("User not found"); window.location.href = "/login";</script>`
       );
     }
 
@@ -171,7 +176,7 @@ app.post("/login", async (req, res) => {
       }
     } else {
       res.send(
-        `<script>alert("Wrong username or password"); window.location.href = "/";</script>`
+        `<script>alert("Wrong username or password"); window.location.href = "/login";</script>`
       );
     }
   } catch (error) {
@@ -539,25 +544,23 @@ app.delete("/api/quiz/:quizId", async (req, res) => {
 app.get("/student-dashboard", verifyToken, async (req, res) => {
   try {
     const userId = req.user.id;
-
-    // Get available quizzes
+    const user = await collection.findById(userId);
     let allQuizzes = await QuizTitle.find().populate("questions");
     let validQuizzes = allQuizzes.filter(
       (quiz) => quiz.questions.length === quiz.que
     );
-
-    // Get user's recent results
     const userResults = await QuizResult.find({ user: userId })
       .populate("quiz")
       .sort({ completedAt: -1 })
       .limit(5);
-
     res.render("user", {
+      user: user,
       users: validQuizzes,
       recentResults: userResults || [],
     });
   } catch (error) {
     res.status(500).render("user", {
+      user: null,
       users: [],
       recentResults: [],
     });
@@ -690,7 +693,7 @@ app.post("/startQuiz", verifyToken, async (req, res) => {
     );
     const percentage = (totalScore / totalPossiblePoints) * 100;
 
-    // Create quiz result with time information
+    // Create quiz result with time information and answers
     const quizResult = await QuizResult.create({
       user: req.user.id,
       quiz: quizId,
@@ -701,6 +704,7 @@ app.post("/startQuiz", verifyToken, async (req, res) => {
       timeTaken: timeTaken || 0,
       timeLimit: quiz.time || 0,
       completedAt: new Date(),
+      answers: answers, // Store the user's answers
     });
 
     // Update user statistics
@@ -799,6 +803,71 @@ app.get("/api/analytics", async (req, res) => {
   } catch (error) {
     console.error("Error fetching analytics data:", error);
     res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// User dashboard route
+app.get("/user", verifyToken, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const user = await collection.findById(userId);
+    let allQuizzes = await QuizTitle.find().populate("questions");
+    let validQuizzes = allQuizzes.filter(
+      (quiz) => quiz.questions.length === quiz.que
+    );
+    const userResults = await QuizResult.find({ user: userId })
+      .populate("quiz")
+      .sort({ completedAt: -1 })
+      .limit(5);
+    res.render("user", {
+      user: user,
+      users: validQuizzes,
+      recentResults: userResults || [],
+    });
+  } catch (error) {
+    res.status(500).render("user", {
+      user: null,
+      users: [],
+      recentResults: [],
+    });
+  }
+});
+
+// Get quiz history
+app.get("/api/quiz-history/:resultId", verifyToken, async (req, res) => {
+  try {
+    const resultId = req.params.resultId;
+    const quizResult = await QuizResult.findById(resultId).populate({
+      path: "quiz",
+      populate: {
+        path: "questions",
+      },
+    });
+
+    if (!quizResult) {
+      return res.status(404).json({ error: "Quiz result not found" });
+    }
+
+    // Format the response
+    const formattedResult = {
+      quizTitle: quizResult.quiz.title,
+      questions: quizResult.quiz.questions.map((question) => ({
+        question: question.question,
+        userAnswer: quizResult.answers
+          ? quizResult.answers[question._id] || "Not answered"
+          : "Not answered",
+        correctAnswer: question.correct_answer,
+        isCorrect: quizResult.answers
+          ? quizResult.answers[question._id] === question.correct_answer
+          : false,
+        points: question.points,
+      })),
+    };
+
+    res.json(formattedResult);
+  } catch (error) {
+    console.error("Error fetching quiz history:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
