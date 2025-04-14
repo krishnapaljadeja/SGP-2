@@ -242,6 +242,7 @@
         justify-content: space-between;
         color: #64748b;
         font-size: 0.9rem;
+        margin-top: 0.5rem;
       }
 
       /* Results Section */
@@ -393,6 +394,18 @@
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
       }
+
+      .quiz-info .warning {
+        color: #ef4444;
+        background-color: #fee2e2;
+        padding: 4px 8px;
+        border-radius: 4px;
+        margin-top: 4px;
+      }
+
+      .quiz-info .warning .material-symbols-outlined {
+        color: #ef4444;
+      }
     </style>
   </head>
   <body>
@@ -502,7 +515,7 @@
           </div>
           <h3 class="quiz-title"><%= quiz.title %></h3>
           <div class="quiz-meta">
-            <span><%= quiz.questions.length %> questions</span>
+            <span><%= quiz.questions.length %>/<%= quiz.que %> questions</span>
             <span><%= quiz.time %> minutes</span>
           </div>
         </div>
@@ -519,10 +532,12 @@
           <div class="result-item">
             <div class="result-info">
               <span class="material-symbols-outlined">person</span>
-              <div>
-                <div><%= result.userName %></div>
-                <div style="color: #64748b; font-size: 0.9rem">
-                  <%= result.quiz.title %>
+              <div class="flex items-center space-x-4">
+                <div class="flex-1">
+                  <div><%= result.userName %></div>
+                  <div style="color: #64748b; font-size: 0.9rem">
+                    <%= result.quiz ? result.quiz.title : 'Quiz Deleted' %>
+                  </div>
                 </div>
               </div>
             </div>

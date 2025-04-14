@@ -267,7 +267,7 @@
         margin-left: 1rem;
       }
 
-      /* Quiz History Modal */
+      /* Quiz Modal Styles */
       .modal {
         display: none;
         position: fixed;
@@ -288,6 +288,8 @@
         width: 90%;
         max-width: 800px;
         position: relative;
+        max-height: 90vh;
+        overflow-y: auto;
       }
 
       .close-modal {
@@ -299,6 +301,40 @@
         font-size: 1.5rem;
         cursor: pointer;
         color: #64748b;
+      }
+
+      #aiQuizForm {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+
+      #aiQuizQuestions {
+        max-height: 70vh;
+        overflow-y: auto;
+        padding-right: 1rem;
+      }
+
+      #aiQuizResults {
+        text-align: center;
+        padding: 2rem;
+      }
+
+      #aiQuizResults h3 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        color: #1e293b;
+      }
+
+      #aiQuizScore {
+        font-size: 2rem;
+        font-weight: 700;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
       }
 
       .quiz-history-item {
@@ -331,6 +367,79 @@
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
       }
+
+      /* AI Quiz Form Styles */
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #1e293b;
+        font-weight: 500;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+      }
+
+      .form-group input:focus {
+        outline: none;
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      }
+
+      .form-row {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .form-row .form-group {
+        flex: 1;
+        margin-bottom: 0;
+      }
+
+      /* Loading Animation */
+      .loading-container {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        text-align: center;
+      }
+
+      .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #6366f1;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: 1rem;
+      }
+
+      .loading-text {
+        color: #64748b;
+        font-size: 1.1rem;
+        margin-top: 1rem;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
     </style>
   </head>
   <body>
@@ -346,7 +455,12 @@
           <span class="material-symbols-outlined">person</span>
           Profile
         </a>
-        <form action="/logout" method="post" style="margin-top: auto">
+        <form
+          action="/logout"
+          method="post"
+          style="margin-top: auto"
+          onsubmit="handleLogout(event)"
+        >
           <button
             type="submit"
             class="nav-item"
@@ -376,6 +490,19 @@
 
       <!-- Available Quizzes Section -->
       <div class="quiz-grid" id="quizContainer">
+        <!-- AI Quiz Card -->
+        <div class="quiz-card fade-in" data-title="ai quiz">
+          <h3 class="quiz-title">AI Generated Quiz</h3>
+          <div class="quiz-meta">
+            <span>10 Questions</span>
+            <span>Custom Topic</span>
+          </div>
+          <button onclick="showAIQuizModal()" class="btn btn-primary">
+            <span class="material-symbols-outlined">smart_toy</span>
+            Start AI Quiz
+          </button>
+        </div>
+
         <% users.forEach(function(e) { %>
         <div
           class="quiz-card fade-in"
@@ -394,6 +521,60 @@
           </form>
         </div>
         <% }); %>
+      </div>
+
+      <!-- AI Quiz Modal -->
+      <div id="aiQuizModal" class="modal">
+        <div class="modal-content">
+          <button class="close-modal" onclick="closeAIQuizModal()">
+            &times;
+          </button>
+          <h2>AI Generated Quiz</h2>
+          <div id="aiQuizContent">
+            <div id="aiQuizForm">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="quizTitle">Enter Quiz Topic:</label>
+                  <input
+                    type="text"
+                    id="quizTitle"
+                    placeholder="e.g., JavaScript, History, Science..."
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="questionCount">Number of Questions:</label>
+                  <input
+                    type="number"
+                    id="questionCount"
+                    min="1"
+                    max="20"
+                    value="10"
+                    required
+                  />
+                </div>
+              </div>
+              <button
+                onclick="startAIQuiz()"
+                class="btn btn-primary"
+                id="generateBtn"
+              >
+                Generate Quiz
+              </button>
+            </div>
+            <div id="loadingContainer" class="loading-container">
+              <div class="loading-spinner"></div>
+              <div class="loading-text">Generating your quiz...</div>
+            </div>
+            <div id="aiQuizQuestions" style="display: none"></div>
+            <div id="aiQuizResults" style="display: none">
+              <h3>Your Score: <span id="aiQuizScore"></span></h3>
+              <button onclick="submitAIQuizScore()" class="btn btn-primary">
+                Submit Score
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Recent Results Section -->
@@ -514,10 +695,221 @@
       // Close modal when clicking outside
       window.onclick = function (event) {
         const modal = document.getElementById("quizHistoryModal");
+        const aiModal = document.getElementById("aiQuizModal");
         if (event.target == modal) {
           modal.style.display = "none";
         }
+        if (event.target == aiModal) {
+          aiModal.style.display = "none";
+        }
       };
+
+      // AI Quiz functionality
+      let currentAIQuiz = null;
+      let userAnswers = {};
+
+      function showAIQuizModal() {
+        document.getElementById("aiQuizModal").style.display = "block";
+        document.getElementById("aiQuizForm").style.display = "block";
+        document.getElementById("aiQuizQuestions").style.display = "none";
+        document.getElementById("aiQuizResults").style.display = "none";
+      }
+
+      async function startAIQuiz() {
+        const title = document.getElementById("quizTitle").value.trim();
+        const questionCount = document.getElementById("questionCount").value;
+        const generateBtn = document.getElementById("generateBtn");
+        const loadingContainer = document.getElementById("loadingContainer");
+
+        if (!title) {
+          alert("Please enter a quiz topic");
+          return;
+        }
+
+        if (questionCount < 1 || questionCount > 20) {
+          alert("Please enter a number of questions between 1 and 20");
+          return;
+        }
+
+        // Show loading state
+        document.getElementById("aiQuizForm").style.display = "none";
+        loadingContainer.style.display = "flex";
+        generateBtn.disabled = true;
+
+        try {
+          // Get token from localStorage
+          const token = localStorage.getItem("token");
+          console.log(
+            "Token from localStorage:",
+            token ? "Present" : "Missing"
+          );
+
+          if (!token) {
+            alert("Please log in again");
+            window.location.href = "/login";
+            return;
+          }
+
+          const response = await fetch(
+            `/ai-quiz?title=${encodeURIComponent(
+              title
+            )}&count=${questionCount}`,
+            {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          console.log("Response status:", response.status);
+
+          if (response.status === 401) {
+            // Clear token and redirect to login
+            localStorage.removeItem("token");
+            alert("Session expired. Please log in again.");
+            window.location.href = "/login";
+            return;
+          }
+
+          const data = await response.json();
+          console.log("Response data:", data);
+
+          if (data.success) {
+            currentAIQuiz = data.quiz;
+            userAnswers = {};
+            loadingContainer.style.display = "none";
+            displayAIQuiz();
+          } else {
+            const errorMessage =
+              data.error ||
+              data.message ||
+              "Failed to generate quiz. Please try again.";
+            alert(
+              `Error: ${errorMessage}\n\nIf this persists, please try a different topic or try again later.`
+            );
+            console.error("Quiz generation error:", data);
+            // Reset form state
+            document.getElementById("aiQuizForm").style.display = "block";
+            loadingContainer.style.display = "none";
+            generateBtn.disabled = false;
+          }
+        } catch (error) {
+          console.error("Error starting AI quiz:", error);
+          alert(
+            "Error connecting to the server. Please check your internet connection and try again."
+          );
+          // Reset form state
+          document.getElementById("aiQuizForm").style.display = "block";
+          loadingContainer.style.display = "none";
+          generateBtn.disabled = false;
+        }
+      }
+
+      function displayAIQuiz() {
+        const container = document.getElementById("aiQuizQuestions");
+        container.style.display = "block";
+        container.innerHTML = "";
+
+        currentAIQuiz.forEach((question, index) => {
+          const questionDiv = document.createElement("div");
+          questionDiv.className = "quiz-history-item";
+          questionDiv.style.marginBottom = "2rem";
+          questionDiv.style.padding = "1.5rem";
+          questionDiv.style.backgroundColor = "#f8fafc";
+          questionDiv.style.borderRadius = "10px";
+
+          questionDiv.innerHTML = `
+            <h4 style="margin-bottom: 1rem; color: #1e293b;">Question ${
+              index + 1
+            }: ${question.question}</h4>
+            <div class="options" style="display: flex; flex-direction: column; gap: 0.5rem;">
+              ${question.options
+                .map(
+                  (option, i) => `
+                <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; 
+                           background: white; border-radius: 8px; cursor: pointer;
+                           transition: background-color 0.3s ease;">
+                  <input type="radio" name="q${index}" value="${option}" 
+                         onchange="updateAnswer(${index}, '${option}')"
+                         style="margin: 0;">
+                  ${option}
+                </label>
+              `
+                )
+                .join("")}
+            </div>
+          `;
+          container.appendChild(questionDiv);
+        });
+
+        // Add submit button
+        const submitButton = document.createElement("button");
+        submitButton.className = "btn btn-primary";
+        submitButton.style.marginTop = "2rem";
+        submitButton.textContent = "Submit Quiz";
+        submitButton.onclick = calculateAIQuizScore;
+        container.appendChild(submitButton);
+      }
+
+      function updateAnswer(questionIndex, answer) {
+        userAnswers[questionIndex] = answer;
+      }
+
+      function calculateAIQuizScore() {
+        let correctAnswers = 0;
+        const totalQuestions = currentAIQuiz.length;
+
+        currentAIQuiz.forEach((question, index) => {
+          if (userAnswers[index] === question.correctAnswer) {
+            correctAnswers++;
+          }
+        });
+
+        document.getElementById("aiQuizQuestions").style.display = "none";
+        document.getElementById("aiQuizResults").style.display = "block";
+        document.getElementById(
+          "aiQuizScore"
+        ).textContent = `${correctAnswers}/${totalQuestions}`;
+      }
+
+      async function submitAIQuizScore() {
+        try {
+          const scoreText = document.getElementById("aiQuizScore").textContent;
+          const [correctAnswers, totalQuestions] = scoreText
+            .split("/")
+            .map((num) => parseInt(num));
+          const percentage = Math.round(
+            (correctAnswers / totalQuestions) * 100
+          );
+
+          const response = await fetch("/ai-quiz/marks", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ score: percentage }),
+          });
+
+          const data = await response.json();
+          if (data.success) {
+            alert(data.message);
+            closeAIQuizModal();
+            // Refresh the page to show updated results
+            window.location.reload();
+          } else {
+            alert("Failed to submit score. Please try again.");
+          }
+        } catch (error) {
+          console.error("Error submitting score:", error);
+          alert("Error submitting score. Please try again.");
+        }
+      }
+
+      function closeAIQuizModal() {
+        document.getElementById("aiQuizModal").style.display = "none";
+      }
     </script>
   </body>
 </html>

@@ -13,6 +13,7 @@ const dotenv = require("dotenv").config();
 const bcrypt = require("bcrypt");
 const QuizResult = require("./models/quizResult");
 const moment = require("moment");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const app = express();
 const port = 5000;
@@ -162,18 +163,27 @@ app.post("/login", async (req, res) => {
           name: user.name,
           email: user.email,
         },
-        process.env.ACCESS_TOKEN_SECRET_KEY
+        process.env.ACCESS_TOKEN_SECRET_KEY,
+        { expiresIn: "24h" }
       );
 
-      res.cookie("token", token, { httpOnly: true, secure: false });
+      // Set cookie with proper options
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      });
 
-      if (user.role === "admin") {
-        res.redirect("/admin-dashboard");
-      } else if (user.role === "student") {
-        res.redirect("/student-dashboard");
-      } else {
-        res.redirect("/home");
-      }
+      // Send token in response for localStorage
+      res.send(`
+        <script>
+          localStorage.setItem('token', '${token}');
+          window.location.href = '${
+            user.role === "admin" ? "/admin-dashboard" : "/student-dashboard"
+          }';
+        </script>
+      `);
     } else {
       res.send(
         `<script>alert("Wrong username or password"); window.location.href = "/login";</script>`
@@ -271,11 +281,14 @@ app.get("/admin-dashboard", verifyToken, async (req, res) => {
 
     // Calculate completion rate
     const totalQuizAttempts = await QuizResult.countDocuments();
-    const totalPossibleAttempts =
-      (await collection.countDocuments()) * totalQuizzes;
+    const totalUsers = await collection.countDocuments();
+    const totalPossibleAttempts = totalUsers * totalQuizzes;
     const completionRate =
       totalPossibleAttempts > 0
-        ? Math.round((totalQuizAttempts / totalPossibleAttempts) * 100)
+        ? Math.min(
+            Math.round((totalQuizAttempts / totalPossibleAttempts) * 100),
+            100
+          )
         : 0;
 
     let quizzesWithStatus = allQuizzes.map((quiz) => ({
@@ -531,11 +544,19 @@ app.delete("/api/quiz/:quizId", async (req, res) => {
     const deletedQuiz = await QuizTitle.findById(quizId);
 
     if (!deletedQuiz) return res.status(404).json({ error: "Quiz not found" });
+
+    // Delete all questions associated with the quiz
     await Question.deleteMany({ _id: { $in: deletedQuiz.questions } });
+
+    // Delete all quiz results associated with the quiz
+    await QuizResult.deleteMany({ quiz: quizId });
+
+    // Finally delete the quiz itself
     await QuizTitle.findByIdAndDelete(quizId);
 
     res.json({ message: "Quiz deleted successfully" });
   } catch (err) {
+    console.error("Error deleting quiz:", err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -868,6 +889,112 @@ app.get("/api/quiz-history/:resultId", verifyToken, async (req, res) => {
   } catch (error) {
     console.error("Error fetching quiz history:", error);
     res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// AI Quiz Route
+app.get("/ai-quiz", verifyToken, async (req, res) => {
+  try {
+    const { title, count = 5 } = req.query;
+    if (!title) {
+      return res.status(400).json({
+        error: "Quiz title is required",
+        success: false,
+      });
+    }
+
+    // Check if API key exists
+    if (!process.env.GOOGLE_API_KEY) {
+      console.error("GOOGLE_API_KEY is not set in environment variables");
+      return res.status(500).json({
+        error: "API key not configured",
+        success: false,
+      });
+    }
+
+    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash",
+      systemInstruction:
+        "IMPORTANT: give different question instead of repeating previous question",
+    });
+
+    const prompt = `Create a ${count} question quiz with options and answers about ${title}. Format the response as a JSON array of objects, where each object has the following structure:
+    {
+      "question": "The question text",
+      "options": ["Option 1", "Option 2", "Option 3", "Option 4"],
+      "correctAnswer": "The correct option"
+    }`;
+
+    const result = await model.generateContent(prompt);
+
+    if (!result || !result.response || !result.response.text()) {
+      console.error("Invalid response from Gemini API");
+      return res.status(500).json({
+        error: "Invalid response from AI service",
+        success: false,
+      });
+    }
+
+    const quizData = result.response.text();
+
+    try {
+      const cleanQuizDataString = quizData
+        .replace(/```json\n|\n```/g, "")
+        .trim();
+      const parsedQuizData = JSON.parse(cleanQuizDataString);
+
+      if (!Array.isArray(parsedQuizData) || parsedQuizData.length === 0) {
+        console.error("Invalid quiz data format");
+        return res.status(500).json({
+          error: "Invalid quiz data format",
+          success: false,
+        });
+      }
+
+      return res.status(200).json({
+        quiz: parsedQuizData,
+        success: true,
+      });
+    } catch (parseError) {
+      console.error("Error parsing quiz data:", parseError);
+      return res.status(500).json({
+        error: "Error parsing quiz data",
+        success: false,
+      });
+    }
+  } catch (err) {
+    console.error("AI Quiz Error:", err);
+    return res.status(500).json({
+      message: "Internal server error",
+      error: err.message,
+      success: false,
+    });
+  }
+});
+
+// AI Quiz Score Update Route
+app.post("/ai-quiz/marks", verifyToken, async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { score } = req.body;
+
+    const user = await collection.findById(userId);
+    if (!user.aiQuizScore || user.aiQuizScore < score) {
+      user.aiQuizScore = score;
+      await user.save();
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: `Your max score is ${user.aiQuizScore}`,
+    });
+  } catch (err) {
+    console.error("AI Quiz Score Update Error:", err);
+    return res.status(500).json({
+      message: "Internal server error",
+      success: false,
+    });
   }
 });
 
