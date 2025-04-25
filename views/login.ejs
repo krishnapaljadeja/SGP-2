@@ -113,7 +113,7 @@
 
       .toggle-password {
         position: absolute;
-        right: 1rem;
+        right: 1.5rem;
         top: 50%;
         transform: translateY(-50%);
         color: #64748b;
@@ -218,6 +218,14 @@
             placeholder="Password"
             required
           />
+        <button
+          type="button"
+          class="toggle-password"
+          onclick="togglePasswordVisibility()"
+          aria-label="Toggle password visibility"
+        >
+          <span class="material-symbols-outlined" id="toggle-icon">visibility_off</span>
+        </button>
         </div>
 
         <a href="/forgot" class="forgot-link">Forgot password?</a>
@@ -233,5 +241,16 @@
         </p>
       </form>
     </div>
+    <script>
+      function togglePasswordVisibility() {
+        const passwordInput = document.getElementById("password");
+        const toggleIcon = document.getElementById("toggle-icon");
+        const isVisible = passwordInput.type === "password";
+    
+        passwordInput.type = isVisible ? "text" : "password";
+        toggleIcon.textContent = isVisible ? "visibility" : "visibility_off";
+      }
+    </script>
+    
   </body>
 </html>
