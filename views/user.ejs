@@ -71,20 +71,20 @@
       }
 
       .nav-item:where(a, button) {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 1rem;
-      border-radius: 12px;
-      color: #64748b;
-      text-decoration: none;
-      background: none;
-      border: none;
-      width: 100%;
-      text-align: left;
-      transition: all 0.3s ease;
-      font: inherit;
-      cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        border-radius: 12px;
+        color: #64748b;
+        text-decoration: none;
+        background: none;
+        border: none;
+        width: 100%;
+        text-align: left;
+        transition: all 0.3s ease;
+        font: inherit;
+        cursor: pointer;
       }
 
       .nav-item:where(a, button):hover,
@@ -92,7 +92,6 @@
         background: var(--primary-gradient);
         color: white;
       }
-
 
       .nav-item span {
         font-size: 1.5rem;
@@ -325,23 +324,82 @@
       }
 
       #aiQuizResults {
-        text-align: center;
         padding: 2rem;
+        background: #f8fafc;
+        border-radius: 15px;
+        margin-top: 2rem;
       }
 
-      #aiQuizResults h3 {
+      .results-summary {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .score-display {
+        display: inline-block;
+        padding: 1rem 2rem;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .score-label {
+        font-size: 1.2rem;
+        color: #64748b;
+        margin-right: 0.5rem;
+      }
+
+      .score-value {
         font-size: 1.5rem;
-        margin-bottom: 1.5rem;
+        font-weight: 700;
         color: #1e293b;
       }
 
-      #aiQuizScore {
-        font-size: 2rem;
-        font-weight: 700;
-        background: var(--primary-gradient);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
+      .detailed-results {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .question-result {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      .question-result h4 {
+        margin-bottom: 1rem;
+        color: #1e293b;
+      }
+
+      .answer-details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .answer-details p {
+        margin: 0;
+        font-size: 1rem;
+      }
+
+      .correct-answer {
+        color: #10b981;
+        font-weight: 500;
+      }
+
+      .wrong-answer {
+        color: #ef4444;
+        font-weight: 500;
+      }
+
+      .correct {
+        border-left: 4px solid #10b981;
+      }
+
+      .incorrect {
+        border-left: 4px solid #ef4444;
       }
 
       .quiz-history-item {
@@ -349,14 +407,6 @@
         border-radius: 10px;
         padding: 1rem;
         margin-bottom: 1rem;
-      }
-
-      .correct-answer {
-        color: #10b981;
-      }
-
-      .wrong-answer {
-        color: #ef4444;
       }
 
       .view-history-btn {
@@ -867,18 +917,48 @@
       function calculateAIQuizScore() {
         let correctAnswers = 0;
         const totalQuestions = currentAIQuiz.length;
-
-        currentAIQuiz.forEach((question, index) => {
-          if (userAnswers[index] === question.correctAnswer) {
-            correctAnswers++;
-          }
-        });
-
-        document.getElementById("aiQuizQuestions").style.display = "none";
-        document.getElementById("aiQuizResults").style.display = "block";
+        const resultsContainer = document.getElementById("aiQuizResults");
+        resultsContainer.style.display = "block";
+        resultsContainer.innerHTML = `
+          <h3>Quiz Results</h3>
+          <div class="results-summary">
+            <div class="score-display">
+              <span class="score-label">Your Score:</span>
+              <span id="aiQuizScore" class="score-value">0/${totalQuestions}</span>
+            </div>
+          </div>
+          <div class="detailed-results">
+            ${currentAIQuiz
+              .map((question, index) => {
+                const userAnswer = userAnswers[index] || "Not answered";
+                const isCorrect = userAnswer === question.correctAnswer;
+                if (isCorrect) correctAnswers++;
+                return `
+                <div class="question-result ${
+                  isCorrect ? "correct" : "incorrect"
+                }">
+                  <h4>Question ${index + 1}: ${question.question}</h4>
+                  <div class="answer-details">
+                    <p><strong>Your Answer:</strong> <span class="${
+                      isCorrect ? "correct-answer" : "wrong-answer"
+                    }">${userAnswer}</span></p>
+                    <p><strong>Correct Answer:</strong> <span class="correct-answer">${
+                      question.correctAnswer
+                    }</span></p>
+                  </div>
+                </div>
+              `;
+              })
+              .join("")}
+          </div>
+          <button onclick="submitAIQuizScore()" class="btn btn-primary">
+            Submit Score
+          </button>
+        `;
         document.getElementById(
           "aiQuizScore"
         ).textContent = `${correctAnswers}/${totalQuestions}`;
+        document.getElementById("aiQuizQuestions").style.display = "none";
       }
 
       async function submitAIQuizScore() {
