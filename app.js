@@ -123,12 +123,20 @@ app.post("/otp", async (req, res) => {
     });
     await newUser.save();
 
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: newUser._id, role: newUser.role, name: newUser.name },
+      process.env.ACCESS_TOKEN_SECRET_KEY
+    );
+
+    // Set token in cookie
+    res.cookie("token", token, { httpOnly: true, secure: false });
+
     otpStore.delete(emailFound);
     tempUserStore.delete(emailFound);
 
-    res.send(
-      `<script>alert("Signup successful! You can now log in."); window.location.href = "/";</script>`
-    );
+    // Redirect to student dashboard
+    res.redirect("/student-dashboard");
   } catch (error) {
     console.error("Error verifying OTP:", error);
     res.status(500).send("Error verifying OTP");
