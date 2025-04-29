@@ -177,7 +177,7 @@
         }
 
         .timer-container {
-            position: fixed;
+            /* position: fixed; */
             top: 20px;
             right: 20px;
             background: white;
@@ -215,23 +215,25 @@
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <h1 class="logo">QUIZIFY</h1>
                 <div style="display: flex; gap: 1rem; align-items: center;">
-                    <button class="btn">
+                    <div class="timer-container">
+                        <span class="material-symbols-outlined timer-icon">timer</span>
+                        <div class="timer" id="timer"><%= quiz.time %>:00</div>
+                    </div>
+                    <!-- <button class="btn">
                         <span class="material-symbols-outlined">person</span>
-                            </button>
+                            </button> -->
                             <form action="/logout" method="post">
                                 <button class="logout-btn">
                                     Logout
                                 </button>
                             </form>
+                            
                         </div>
             </div>
                                 </div>
     </nav>
 
-    <div class="timer-container">
-        <span class="material-symbols-outlined timer-icon">timer</span>
-        <div class="timer" id="timer"><%= quiz.time %>:00</div>
-    </div>
+    
 
     <main class="main-content">
         <div class="container">
