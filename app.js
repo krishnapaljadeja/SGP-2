@@ -280,7 +280,7 @@ app.get("/admin-dashboard", verifyToken, async (req, res) => {
     const recentResults = await QuizResult.find()
       .populate("quiz")
       .sort({ completedAt: -1 })
-      .limit(5);
+      .limit(10);
 
     // Get active users count (users who have taken quizzes in the last 30 days)
     const activeUsers = await QuizResult.distinct("user", {
@@ -512,7 +512,7 @@ app.get("/edit/:id", async (req, res) => {
       return res.status(404).send("Question not found");
     }
     res.render("edit", { question });
-    res.render("edit", { question });
+    
   } catch (error) {
     console.error("Error fetching question:", error);
     res.status(500).send("Internal Server Error");
@@ -581,7 +581,7 @@ app.get("/student-dashboard", verifyToken, async (req, res) => {
     const userResults = await QuizResult.find({ user: userId })
       .populate("quiz")
       .sort({ completedAt: -1 })
-      .limit(5);
+      .limit(10);
     res.render("user", {
       user: user,
       users: validQuizzes,
@@ -900,10 +900,12 @@ app.get("/api/quiz-history/:resultId", verifyToken, async (req, res) => {
   }
 });
 
+app.get('/health', (req, res) => res.sendStatus(200));
+
 // AI Quiz Route
 app.get("/ai-quiz", verifyToken, async (req, res) => {
   try {
-    const { title, count = 5 } = req.query;
+    const { title, count = 10 } = req.query;
     if (!title) {
       return res.status(400).json({
         error: "Quiz title is required",
