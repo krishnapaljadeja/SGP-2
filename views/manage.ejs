@@ -1,313 +1,310 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>QuiziFY - Manage Questions</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuiziFY - Add Questions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <link
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
       rel="stylesheet"
     />
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'inter': ['Inter', 'sans-serif'],
+            },
+            colors: {
+              primary: {
+                50: '#f0f9ff',
+                500: '#0ea5e9',
+                600: '#0284c7',
+                700: '#0369a1',
+              },
+              secondary: {
+                500: '#d946ef',
+                600: '#c026d3',
+              },
+              dark: {
+                50: '#f8fafc',
+                300: '#cbd5e1',
+                400: '#94a3b8',
+                500: '#64748b',
+                600: '#475569',
+                700: '#334155',
+                800: '#1e293b',
+                900: '#0f172a',
+              }
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.5s ease-out',
+              'slide-up': 'slideUp 0.6s ease-out',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0', transform: 'translateY(10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              slideUp: {
+                '0%': { opacity: '0', transform: 'translateY(30px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
     <style>
-      :root {
-        --primary-gradient: linear-gradient(135deg, #6366f1, #8b5cf6);
-        --secondary-gradient: linear-gradient(135deg, #3b82f6, #2dd4bf);
-        --background-gradient: linear-gradient(135deg, #f8fafc, #e2e8f0);
-        --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        --hover-transform: translateY(-5px);
-      }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Poppins", sans-serif;
-      }
-
       body {
-        background: var(--background-gradient);
-        min-height: 100vh;
-        color: #1e293b;
+        font-family: 'Inter', sans-serif;
       }
-
-      .navbar {
-        background: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(10px);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        position: fixed;
-        width: 100%;
-        top: 0;
-        z-index: 1000;
-        padding: 1rem 0;
-      }
-
-      .logo {
-        font-size: 2.5rem;
-        font-weight: 700;
-        background: var(--primary-gradient);
+      .gradient-text {
+        background: linear-gradient(135deg, #0ea5e9, #d946ef);
         -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
         background-clip: text;
-        color: transparent;
-        letter-spacing: -1px;
       }
-
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 2rem;
-      }
-
-      .main-content {
-        margin-top: 100px;
-        padding: 2rem 0;
-      }
-
-      .card {
-        background: white;
-        border-radius: 20px;
-        padding: 2rem;
-        box-shadow: var(--card-shadow);
-        transition: all 0.3s ease;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        max-width: 900px;
-        margin: 0 auto;
-      }
-
-      .form-group {
-        margin-bottom: 1.5rem;
-      }
-
-      .form-label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: 500;
-        color: #1e293b;
-      }
-
-      .form-input {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        transition: all 0.3s ease;
-        font-size: 1rem;
-      }
-
-      .form-input:focus {
-        outline: none;
-        border-color: #8b5cf6;
-        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
-      }
-
-      .select-quiz {
-        padding: 0.75rem 1.5rem;
-        border-radius: 12px;
-        border: 1px solid #e2e8f0;
-        background: white;
-        font-size: 1rem;
-        min-width: 200px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
-
-      .select-quiz:focus {
-        outline: none;
-        border-color: #8b5cf6;
-        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
-      }
-
-      .btn {
-        padding: 0.75rem 1.5rem;
-        border-radius: 12px;
-        border: none;
-        font-weight: 500;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        transition: all 0.3s ease;
-      }
-
-      .btn-primary {
-        background: var(--primary-gradient);
-        color: white;
-      }
-
-      .btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      }
-
-      .grid {
-        display: grid;
-        gap: 1.5rem;
-      }
-
-      .grid-cols-2 {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      @media (max-width: 768px) {
-        .grid-cols-2 {
-          grid-template-columns: 1fr;
-        }
-      }
-
-      .fade-in {
-        animation: fadeIn 0.5s ease-out;
-      }
-
-      .logout-btn {
-        width: 100%;
-        padding: 1rem;
-        border: none;
-        border-radius: 12px;
-        background: linear-gradient(
-          135deg,
-          #ef4444,
-          #dc2626
-        ); /* Red gradient */
-        color: white;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-size: 1rem;
-        box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
-      }
-
-      .logout-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(220, 38, 38, 0.4);
-        background: linear-gradient(135deg, #dc2626, #b91c1c);
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .header-actions {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 2rem;
-      }
-
-      .points-input {
-        max-width: 200px;
+      .glass-effect {
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
       }
     </style>
-  </head>
-  <body>
-    <nav class="navbar">
-      <div class="container">
-        <div
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          "
-        >
-          <h1 class="logo">QUIZIFY</h1>
-          <div style="display: flex; gap: 1rem; align-items: center">
-            <!-- <button class="btn">
-              <span class="material-symbols-outlined">person</span>
-            </button> -->
+</head>
+<body class="bg-dark-900 text-white transition-colors duration-300">
+    <!-- Theme Toggle Script -->
+    <script>
+      function initializeTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        const theme = savedTheme || 'dark';
+        
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+          document.body.classList.add('dark');
+          document.body.className = 'bg-dark-900 text-white transition-colors duration-300';
+        } else {
+          document.documentElement.classList.remove('dark');
+          document.body.classList.remove('dark');
+          document.body.className = 'bg-gray-50 text-gray-900 transition-colors duration-300';
+        }
+        
+        localStorage.setItem('theme', theme);
+      }
+      
+      initializeTheme();
+    </script>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-effect bg-dark-800/80 border-b border-dark-700">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center space-x-4">
+            <a href="/admin-dashboard" class="flex items-center space-x-2 text-primary-400 hover:text-primary-300 transition-colors duration-200">
+              <span class="material-symbols-outlined">arrow_back</span>
+              <span class="hidden sm:inline">Dashboard</span>
+            </a>
+            <div class="flex items-center space-x-2">
+              <div class="w-8 h-8 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
+                <span class="material-symbols-outlined text-white text-lg">quiz</span>
+              </div>
+              <h1 class="text-xl md:text-2xl font-bold gradient-text">QUIZIFY</h1>
+            </div>
+          </div>
+          
+          <div class="flex items-center space-x-2">
+            <a href="/manageview" 
+               class="px-3 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors duration-200 text-sm">
+              <span class="material-symbols-outlined mr-1 text-sm">visibility</span>
+              <span class="hidden sm:inline">View Questions</span>
+            </a>
             <form action="/logout" method="post">
-              <button class="logout-btn">Logout</button>
+              <button class="px-3 md:px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors duration-200 text-sm md:text-base">
+                <span class="material-symbols-outlined md:mr-2">logout</span>
+                <span class="hidden md:inline">Logout</span>
+              </button>
             </form>
           </div>
         </div>
       </div>
     </nav>
 
-    <main class="main-content">
-      <div class="container">
-        <div class="card fade-in">
-          <form method="POST" action="/submitque">
-            <div class="header-actions">
-              <div style="display: flex; align-items: center; gap: 1rem">
-                <h2 style="font-size: 1.8rem; font-weight: 600">
-                  Add Question
-                </h2>
-                <select name="quiz_title" class="select-quiz">
-                  <option selected disabled>Select Quiz</option>
-                  <% users.forEach(function(e) { %>
-                  <option><%= e.title %></option>
-                  <% }); %>
+    <!-- Main Content -->
+    <main class="pt-20 pb-8 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl mx-auto">
+        <div class="glass-effect bg-dark-800/50 border border-dark-700 rounded-2xl p-6 md:p-8 animate-fade-in">
+          <!-- Header -->
+          <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 space-y-4 md:space-y-0">
+            <div>
+              <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">Add Question</h2>
+              <p class="text-dark-300">Create engaging questions for your quiz</p>
+            </div>
+            
+            <!-- Quiz Selector -->
+            <div class="w-full md:w-auto">
+              <label for="quiz_title" class="block text-sm font-medium text-white mb-2">Select Quiz</label>
+              <select name="quiz_title" 
+                      id="quiz_title"
+                      class="w-full md:w-64 px-4 py-3 bg-dark-700 border border-dark-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                      required>
+                <option value="" disabled selected>Choose a quiz</option>
+                <% users.forEach(function(e) { %>
+                  <option value="<%= e.title %>"><%= e.title %></option>
+                <% }); %>
+              </select>
+            </div>
+          </div>
+
+          <!-- Form -->
+          <form method="POST" action="/submitque" class="space-y-6">
+            <input type="hidden" name="quiz_title" id="hidden_quiz_title">
+            
+            <!-- Question -->
+            <div class="space-y-2">
+              <label for="question" class="block text-sm font-medium text-white">
+                Question <span class="text-red-400">*</span>
+              </label>
+              <textarea name="question" 
+                        id="question"
+                        rows="3"
+                        class="w-full px-4 py-3 bg-dark-700/50 border border-dark-600 rounded-xl text-white placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 resize-none" 
+                        placeholder="Enter your question here..."
+                        required></textarea>
+              <p class="text-xs text-dark-400">Write a clear, concise question</p>
+            </div>
+
+            <!-- Options Grid -->
+            <div class="space-y-4">
+              <h3 class="text-lg font-semibold text-white flex items-center">
+                <span class="material-symbols-outlined mr-2 text-primary-400">list</span>
+                Answer Options
+              </h3>
+              
+              <div class="grid md:grid-cols-2 gap-4">
+                <div class="space-y-2">
+                  <label for="option1" class="block text-sm font-medium text-white">
+                    Option A <span class="text-red-400">*</span>
+                  </label>
+                  <input type="text" 
+                         name="option1" 
+                         id="option1"
+                         class="w-full px-4 py-3 bg-dark-700/50 border border-dark-600 rounded-xl text-white placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200" 
+                         placeholder="First option"
+                         required>
+                </div>
+
+                <div class="space-y-2">
+                  <label for="option2" class="block text-sm font-medium text-white">
+                    Option B <span class="text-red-400">*</span>
+                  </label>
+                  <input type="text" 
+                         name="option2" 
+                         id="option2"
+                         class="w-full px-4 py-3 bg-dark-700/50 border border-dark-600 rounded-xl text-white placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200" 
+                         placeholder="Second option"
+                         required>
+                </div>
+
+                <div class="space-y-2">
+                  <label for="option3" class="block text-sm font-medium text-white">
+                    Option C <span class="text-red-400">*</span>
+                  </label>
+                  <input type="text" 
+                         name="option3" 
+                         id="option3"
+                         class="w-full px-4 py-3 bg-dark-700/50 border border-dark-600 rounded-xl text-white placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200" 
+                         placeholder="Third option"
+                         required>
+                </div>
+
+                <div class="space-y-2">
+                  <label for="option4" class="block text-sm font-medium text-white">
+                    Option D <span class="text-red-400">*</span>
+                  </label>
+                  <input type="text" 
+                         name="option4" 
+                         id="option4"
+                         class="w-full px-4 py-3 bg-dark-700/50 border border-dark-600 rounded-xl text-white placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200" 
+                         placeholder="Fourth option"
+                         required>
+                </div>
+              </div>
+            </div>
+
+            <!-- Correct Answer and Points -->
+            <div class="grid md:grid-cols-2 gap-6">
+              <div class="space-y-2">
+                <label for="correct_answer" class="block text-sm font-medium text-white">
+                  Correct Answer <span class="text-red-400">*</span>
+                </label>
+                <select name="correct_answer" 
+                        id="correct_answer"
+                        class="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                        required>
+                  <option value="" disabled selected>Select correct answer</option>
+                  <option value="">Option A</option>
+                  <option value="">Option B</option>
+                  <option value="">Option C</option>
+                  <option value="">Option D</option>
                 </select>
               </div>
-              <div style="display: flex; gap: 1rem">
-                <a href="/admin-dashboard" class="btn btn-primary">
-                  <span class="material-symbols-outlined">home</span>
-                  Home
-                </a>
-                <a href="/manageview" class="btn btn-primary">
-                  <span class="material-symbols-outlined">visibility</span>
-                  View Questions
-                </a>
+
+              <div class="space-y-2">
+                <label for="points" class="block text-sm font-medium text-white">
+                  Points <span class="text-red-400">*</span>
+                </label>
+                <input type="number" 
+                       name="points" 
+                       id="points"
+                       min="1"
+                       max="100"
+                       value="1"
+                       class="w-full px-4 py-3 bg-dark-700/50 border border-dark-600 rounded-xl text-white placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200" 
+                       placeholder="Points for this question"
+                       required>
+                <p class="text-xs text-dark-400">Points awarded for correct answer</p>
               </div>
             </div>
 
-            <div class="form-group">
-              <label class="form-label">Question</label>
-              <input type="text" name="question" class="form-input" required />
+            <!-- Question Preview -->
+            <div class="bg-dark-700/30 rounded-xl p-4 border border-dark-600">
+              <h3 class="text-lg font-semibold text-white mb-3 flex items-center">
+                <span class="material-symbols-outlined mr-2 text-primary-400">preview</span>
+                Question Preview
+              </h3>
+              <div id="question-preview" class="space-y-3">
+                <div class="text-white font-medium" id="preview-question">Your question will appear here...</div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                  <div class="p-2 bg-dark-600/50 rounded-lg text-sm" id="preview-option1">A. Option A</div>
+                  <div class="p-2 bg-dark-600/50 rounded-lg text-sm" id="preview-option2">B. Option B</div>
+                  <div class="p-2 bg-dark-600/50 rounded-lg text-sm" id="preview-option3">C. Option C</div>
+                  <div class="p-2 bg-dark-600/50 rounded-lg text-sm" id="preview-option4">D. Option D</div>
+                </div>
+                <div class="text-sm text-dark-300">
+                  <span>Correct Answer: </span>
+                  <span id="preview-correct" class="text-green-400">-</span>
+                  <span class="ml-4">Points: </span>
+                  <span id="preview-points" class="text-primary-400">1</span>
+                </div>
+              </div>
             </div>
 
-            <div class="grid grid-cols-2">
-              <div class="form-group">
-                <label class="form-label">Option 1</label>
-                <input type="text" name="option1" class="form-input" required />
-              </div>
-              <div class="form-group">
-                <label class="form-label">Option 2</label>
-                <input type="text" name="option2" class="form-input" required />
-              </div>
-              <div class="form-group">
-                <label class="form-label">Option 3</label>
-                <input type="text" name="option3" class="form-input" required />
-              </div>
-              <div class="form-group">
-                <label class="form-label">Option 4</label>
-                <input type="text" name="option4" class="form-input" required />
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Correct Answer</label>
-              <input
-                type="text"
-                name="correct_answer"
-                class="form-input"
-                required
-              />
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">Points</label>
-              <input
-                type="number"
-                name="points"
-                class="form-input points-input"
-                required
-              />
-            </div>
-
-            <div
-              style="display: flex; justify-content: flex-end; margin-top: 2rem"
-            >
-              <button type="submit" class="btn btn-primary">
-                <span class="material-symbols-outlined">add_circle</span>
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 pt-6">
+              <button type="button" 
+                      onclick="clearForm()"
+                      class="flex-1 px-6 py-3 bg-dark-600 hover:bg-dark-500 text-white rounded-xl font-medium transition-colors duration-200">
+                <span class="material-symbols-outlined mr-2">refresh</span>
+                Clear Form
+              </button>
+              <button type="submit" 
+                      class="flex-1 px-6 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 text-white rounded-xl font-semibold transition-all duration-200 transform hover:scale-105">
+                <span class="material-symbols-outlined mr-2">add_circle</span>
                 Add Question
               </button>
             </div>
@@ -317,63 +314,112 @@
     </main>
 
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const form = document.getElementById("questionForm");
-        const quizSelect = document.getElementById("quizSelect");
+      document.addEventListener('DOMContentLoaded', function() {
+        const quizSelect = document.getElementById('quiz_title');
+        const hiddenQuizTitle = document.getElementById('hidden_quiz_title');
+        const questionInput = document.getElementById('question');
+        const option1Input = document.getElementById('option1');
+        const option2Input = document.getElementById('option2');
+        const option3Input = document.getElementById('option3');
+        const option4Input = document.getElementById('option4');
+        const correctAnswerSelect = document.getElementById('correct_answer');
+        const pointsInput = document.getElementById('points');
 
-        // Store selected quiz in URL when changed
-        quizSelect.addEventListener("change", function () {
-          const selectedQuiz = this.value;
-          if (selectedQuiz) {
-            window.history.replaceState(
-              {},
-              "",
-              `?quiz_title=${encodeURIComponent(selectedQuiz)}`
-            );
-          }
+        // Update hidden field when quiz is selected
+        quizSelect.addEventListener('change', function() {
+          hiddenQuizTitle.value = this.value;
         });
 
-        // Handle form submission
-        form.addEventListener("submit", async function (e) {
-          e.preventDefault();
+        // Update correct answer options when options change
+        function updateCorrectAnswerOptions() {
+          const options = [option1Input.value, option2Input.value, option3Input.value, option4Input.value];
+          const currentValue = correctAnswerSelect.value;
+          
+          correctAnswerSelect.innerHTML = '<option value="" disabled>Select correct answer</option>';
+          
+          options.forEach((option, index) => {
+            if (option.trim()) {
+              const optionElement = document.createElement('option');
+              optionElement.value = option;
+              optionElement.textContent = `Option ${String.fromCharCode(65 + index)}: ${option}`;
+              correctAnswerSelect.appendChild(optionElement);
+            }
+          });
+          
+          // Restore selection if it still exists
+          if (currentValue && options.includes(currentValue)) {
+            correctAnswerSelect.value = currentValue;
+          }
+        }
 
-          const formData = new FormData(form);
-          const quizTitle = formData.get("quiz_title");
+        // Update preview
+        function updatePreview() {
+          document.getElementById('preview-question').textContent = questionInput.value || 'Your question will appear here...';
+          document.getElementById('preview-option1').textContent = `A. ${option1Input.value || 'Option A'}`;
+          document.getElementById('preview-option2').textContent = `B. ${option2Input.value || 'Option B'}`;
+          document.getElementById('preview-option3').textContent = `C. ${option3Input.value || 'Option C'}`;
+          document.getElementById('preview-option4').textContent = `D. ${option4Input.value || 'Option D'}`;
+          document.getElementById('preview-correct').textContent = correctAnswerSelect.value || '-';
+          document.getElementById('preview-points').textContent = pointsInput.value || '1';
+        }
 
-          try {
-            const response = await fetch("/submitque", {
-              method: "POST",
-              body: formData,
-            });
+        // Add event listeners
+        [option1Input, option2Input, option3Input, option4Input].forEach(input => {
+          input.addEventListener('input', function() {
+            updateCorrectAnswerOptions();
+            updatePreview();
+          });
+        });
 
-            const result = await response.text();
+        [questionInput, correctAnswerSelect, pointsInput].forEach(input => {
+          input.addEventListener('input', updatePreview);
+          input.addEventListener('change', updatePreview);
+        });
 
-            // Show success message
-            alert("Question added successfully!");
+        // Clear form function
+        window.clearForm = function() {
+          if (confirm('Are you sure you want to clear all fields?')) {
+            document.querySelector('form').reset();
+            updateCorrectAnswerOptions();
+            updatePreview();
+          }
+        };
 
-            // Clear form but keep selected quiz
-            form.reset();
-            quizSelect.value = quizTitle;
+        // Form validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+          if (!quizSelect.value) {
+            e.preventDefault();
+            alert('Please select a quiz first');
+            quizSelect.focus();
+            return;
+          }
 
-            // Update URL with selected quiz
-            window.history.replaceState(
-              {},
-              "",
-              `?quiz_title=${encodeURIComponent(quizTitle)}`
-            );
-          } catch (error) {
-            console.error("Error:", error);
-            alert("Error adding question. Please try again.");
+          if (!correctAnswerSelect.value) {
+            e.preventDefault();
+            alert('Please select the correct answer');
+            correctAnswerSelect.focus();
+            return;
+          }
+
+          // Check for duplicate options
+          const options = [option1Input.value, option2Input.value, option3Input.value, option4Input.value];
+          const uniqueOptions = [...new Set(options.map(opt => opt.trim().toLowerCase()))];
+          
+          if (uniqueOptions.length !== options.length) {
+            e.preventDefault();
+            alert('Please ensure all options are unique');
+            return;
           }
         });
 
         // Get quiz title from URL on page load
         const urlParams = new URLSearchParams(window.location.search);
-        const quizTitle = urlParams.get("quiz_title");
+        const quizTitle = urlParams.get('quiz_title');
         if (quizTitle) {
           quizSelect.value = quizTitle;
+          hiddenQuizTitle.value = quizTitle;
         }
       });
     </script>
-  </body>
+</body>
 </html>

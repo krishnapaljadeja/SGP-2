@@ -85,9 +85,23 @@
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
       }
+      
+      /* Mobile sidebar styles */
+      @media (max-width: 768px) {
+        .sidebar {
+          transform: translateX(-100%);
+          transition: transform 0.3s ease-in-out;
+        }
+        .sidebar.open {
+          transform: translateX(0);
+        }
+        .main-content {
+          margin-left: 0 !important;
+        }
+      }
     </style>
   </head>
-  <body class="bg-gray-50 dark:bg-dark-900 text-gray-900 dark:text-white transition-colors duration-300">
+  <body class="bg-dark-900 text-white transition-colors duration-300">
     <!-- Theme Toggle Script -->
     <script>
       function initializeTheme() {
@@ -107,28 +121,17 @@
         localStorage.setItem('theme', theme);
       }
       
-      function toggleTheme() {
-        const isDark = document.documentElement.classList.contains('dark');
-        
-        if (isDark) {
-          document.documentElement.classList.remove('dark');
-          document.body.classList.remove('dark');
-          document.body.className = 'bg-gray-50 text-gray-900 transition-colors duration-300';
-          localStorage.setItem('theme', 'light');
-        } else {
-          document.documentElement.classList.add('dark');
-          document.body.classList.add('dark');
-          document.body.className = 'bg-dark-900 text-white transition-colors duration-300';
-          localStorage.setItem('theme', 'dark');
-        }
-      }
-      
       initializeTheme();
     </script>
 
     <div class="flex min-h-screen">
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-btn" class="md:hidden fixed top-4 left-4 z-50 p-2 bg-dark-800 rounded-lg">
+        <span class="material-symbols-outlined text-white">menu</span>
+      </button>
+
       <!-- Sidebar -->
-      <aside class="w-64 glass-effect bg-white/50 dark:bg-dark-800/50 border-r border-gray-200 dark:border-dark-700 fixed h-full z-40">
+      <aside class="sidebar w-64 glass-effect bg-dark-800/50 border-r border-dark-700 fixed h-full z-40 md:translate-x-0">
         <div class="p-6">
           <!-- Logo -->
           <div class="flex items-center space-x-3 mb-8">
@@ -146,7 +149,7 @@
               <span>Dashboard</span>
             </a>
             <a href="/profile" 
-               class="flex items-center space-x-3 px-4 py-3 text-gray-600 dark:text-dark-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-dark-700 rounded-xl font-medium transition-all duration-200">
+               class="flex items-center space-x-3 px-4 py-3 text-dark-300 hover:text-white hover:bg-dark-700 rounded-xl font-medium transition-all duration-200">
               <span class="material-symbols-outlined">person</span>
               <span>Profile</span>
             </a>
@@ -154,7 +157,7 @@
 
           <!-- Logout Button -->
           <div class="absolute bottom-6 left-6 right-6">
-            <form action="/logout" method="post" onsubmit="handleLogout(event)">
+            <form action="/logout" method="post">
               <button type="submit" 
                       class="w-full flex items-center space-x-3 px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl font-medium transition-colors duration-200">
                 <span class="material-symbols-outlined">logout</span>
@@ -166,64 +169,67 @@
       </aside>
 
       <!-- Main Content -->
-      <main class="flex-1 ml-64">
+      <main class="main-content flex-1 md:ml-64">
         <!-- Header -->
-        <header class="glass-effect bg-white/50 dark:bg-dark-800/50 border-b border-gray-200 dark:border-dark-700 px-8 py-6">
+        <header class="glass-effect bg-dark-800/50 border-b border-dark-700 px-4 md:px-8 py-6">
           <div class="flex justify-between items-center">
-            <div>
-              <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Welcome back!</h2>
-              <p class="text-gray-600 dark:text-dark-300 mt-1">Ready to continue your learning journey?</p>
+            <div class="ml-12 md:ml-0">
+              <h2 class="text-2xl md:text-3xl font-bold text-white">Welcome back!</h2>
+              <p class="text-dark-300 mt-1 text-sm md:text-base">Ready to continue your learning journey?</p>
             </div>
             
-            <div class="flex items-center space-x-4">
-              <!-- Search Bar -->
-              <div class="relative">
+            <div class="flex items-center space-x-2 md:space-x-4">
+              <!-- Search Bar - Hidden on mobile -->
+              <div class="relative hidden md:block">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <span class="material-symbols-outlined text-gray-500 dark:text-dark-400">search</span>
+                  <span class="material-symbols-outlined text-dark-400">search</span>
                 </div>
                 <input type="text" 
                        id="quizSearch" 
                        placeholder="Search quizzes..." 
-                       class="pl-10 pr-4 py-2 bg-white dark:bg-dark-700 border border-gray-300 dark:border-dark-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 w-64">
+                       class="pl-10 pr-4 py-2 bg-dark-700 border border-dark-600 rounded-lg text-white placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 w-64">
               </div>
-              
-              <!-- Theme Toggle -->
-              <button onclick="toggleTheme()" 
-                      class="p-2 rounded-lg bg-gray-100 dark:bg-dark-700 hover:bg-gray-200 dark:hover:bg-dark-600 transition-colors duration-200"
-                      aria-label="Toggle theme">
-                <span class="material-symbols-outlined dark:hidden text-gray-700">dark_mode</span>
-                <span class="material-symbols-outlined hidden dark:block text-white">light_mode</span>
-              </button>
             </div>
           </div>
         </header>
 
         <!-- Content -->
-        <div class="p-8">
+        <div class="p-4 md:p-8">
           <!-- Available Quizzes Section -->
           <section class="mb-12">
-            <div class="flex items-center justify-between mb-6">
-              <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Available Quizzes</h3>
-              <div class="text-sm text-gray-600 dark:text-dark-300">
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 space-y-4 md:space-y-0">
+              <h3 class="text-xl md:text-2xl font-bold text-white">Available Quizzes</h3>
+              <div class="text-sm text-dark-300">
                 <%= users.length + 1 %> quizzes available
               </div>
             </div>
             
-            <div class="grid lg:grid-cols-3 md:grid-cols-2 gap-6" id="quizContainer">
+            <!-- Mobile Search -->
+            <div class="relative md:hidden mb-6">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <span class="material-symbols-outlined text-dark-400">search</span>
+              </div>
+              <input type="text" 
+                     id="mobileQuizSearch" 
+                     placeholder="Search quizzes..." 
+                     class="w-full pl-10 pr-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6" id="quizContainer">
               <!-- AI Quiz Card -->
               <div class="quiz-card group cursor-pointer animate-fade-in" data-title="ai quiz">
-                <div class="glass-effect bg-white/50 dark:bg-dark-800/50 border border-gray-200 dark:border-dark-700 rounded-2xl p-6 hover:border-primary-500/50 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl">
-                  <div class="flex items-center space-x-4 mb-4">
-                    <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <span class="material-symbols-outlined text-white text-xl">smart_toy</span>
+                <div class="glass-effect bg-dark-800/50 border border-dark-700 rounded-2xl p-4 md:p-6 hover:border-primary-500/50 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl">
+                  <div class="flex items-center space-x-3 md:space-x-4 mb-4">
+                    <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <span class="material-symbols-outlined text-white text-lg md:text-xl">smart_toy</span>
                     </div>
                     <div>
-                      <h4 class="text-lg font-semibold text-gray-900 dark:text-white">AI Generated Quiz</h4>
-                      <p class="text-sm text-gray-600 dark:text-dark-300">Custom Topic</p>
+                      <h4 class="text-base md:text-lg font-semibold text-white">AI Generated Quiz</h4>
+                      <p class="text-xs md:text-sm text-dark-300">Custom Topic</p>
                     </div>
                   </div>
                   
-                  <div class="flex items-center justify-between text-sm text-gray-500 dark:text-dark-400 mb-4">
+                  <div class="flex items-center justify-between text-xs md:text-sm text-dark-400 mb-4">
                     <span class="flex items-center">
                       <span class="material-symbols-outlined mr-1 text-xs">quiz</span>
                       10 Questions
@@ -235,9 +241,9 @@
                   </div>
                   
                   <button onclick="showAIQuizModal()" 
-                          class="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-xl font-medium transition-all duration-200 transform group-hover:scale-105">
+                          class="w-full py-2 md:py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-xl font-medium transition-all duration-200 transform group-hover:scale-105 flex items-center justify-center">
                     <span class="material-symbols-outlined mr-2">play_arrow</span>
-                    Start AI Quiz
+                    <span class="text-sm md:text-base">Start AI Quiz</span>
                   </button>
                 </div>
               </div>
@@ -247,18 +253,18 @@
               <div class="quiz-card group cursor-pointer animate-fade-in" 
                    data-title="<%= e.title.toLowerCase() %>" 
                    style="animation-delay: <%= (index + 1) * 0.1 %>s;">
-                <div class="glass-effect bg-white/50 dark:bg-dark-800/50 border border-gray-200 dark:border-dark-700 rounded-2xl p-6 hover:border-primary-500/50 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl">
-                  <div class="flex items-center space-x-4 mb-4">
-                    <div class="w-12 h-12 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <span class="material-symbols-outlined text-white text-xl">quiz</span>
+                <div class="glass-effect bg-dark-800/50 border border-dark-700 rounded-2xl p-4 md:p-6 hover:border-primary-500/50 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl">
+                  <div class="flex items-center space-x-3 md:space-x-4 mb-4">
+                    <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <span class="material-symbols-outlined text-white text-lg md:text-xl">quiz</span>
                     </div>
-                    <div class="flex-1">
-                      <h4 class="text-lg font-semibold text-gray-900 dark:text-white truncate"><%= e.title %></h4>
-                      <p class="text-sm text-gray-600 dark:text-dark-300">Academic Quiz</p>
+                    <div class="flex-1 min-w-0">
+                      <h4 class="text-base md:text-lg font-semibold text-white truncate"><%= e.title %></h4>
+                      <p class="text-xs md:text-sm text-dark-300">Academic Quiz</p>
                     </div>
                   </div>
                   
-                  <div class="flex items-center justify-between text-sm text-gray-500 dark:text-dark-400 mb-4">
+                  <div class="flex items-center justify-between text-xs md:text-sm text-dark-400 mb-4">
                     <span class="flex items-center">
                       <span class="material-symbols-outlined mr-1 text-xs">quiz</span>
                       <%= e.que %> Questions
@@ -271,9 +277,9 @@
                   
                   <form action="/quiz/<%= e._id %>" method="get">
                     <button type="submit" 
-                            class="w-full py-3 bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 text-white rounded-xl font-medium transition-all duration-200 transform group-hover:scale-105">
+                            class="w-full py-2 md:py-3 bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 text-white rounded-xl font-medium transition-all duration-200 transform group-hover:scale-105 flex items-center justify-center">
                       <span class="material-symbols-outlined mr-2">play_arrow</span>
-                      Start Quiz
+                      <span class="text-sm md:text-base">Start Quiz</span>
                     </button>
                   </form>
                 </div>
@@ -284,41 +290,41 @@
 
           <!-- Recent Results Section -->
           <section class="animate-fade-in" style="animation-delay: 0.5s;">
-            <div class="flex items-center justify-between mb-6">
-              <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Recent Results</h3>
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 space-y-4 md:space-y-0">
+              <h3 class="text-xl md:text-2xl font-bold text-white">Recent Results</h3>
               <a href="/profile" class="text-primary-400 hover:text-primary-300 text-sm font-medium transition-colors duration-200">
                 View All Results
               </a>
             </div>
             
-            <div class="glass-effect bg-white/50 dark:bg-dark-800/50 border border-gray-200 dark:border-dark-700 rounded-2xl p-6">
+            <div class="glass-effect bg-dark-800/50 border border-dark-700 rounded-2xl p-4 md:p-6">
               <% if (typeof recentResults !== 'undefined' && recentResults.length > 0) { %>
                 <div class="space-y-4">
                   <% recentResults.forEach(function(result, index) { %>
-                  <div class="flex items-center justify-between p-4 bg-gray-50/50 dark:bg-dark-700/50 rounded-xl hover:bg-gray-100/50 dark:hover:bg-dark-600/50 transition-colors duration-200">
+                  <div class="flex flex-col md:flex-row md:items-center justify-between p-4 bg-dark-700/50 rounded-xl hover:bg-dark-600/50 transition-colors duration-200 space-y-4 md:space-y-0">
                     <div class="flex items-center space-x-4">
                       <div class="w-10 h-10 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
                         <span class="material-symbols-outlined text-white text-sm">quiz</span>
                       </div>
                       <div>
-                        <h4 class="font-medium text-gray-900 dark:text-white">
+                        <h4 class="font-medium text-white">
                           <%= result.quiz ? result.quiz.title : 'Quiz Deleted' %>
                         </h4>
-                        <p class="text-sm text-gray-600 dark:text-dark-300">
+                        <p class="text-sm text-dark-300">
                           Completed on <%= new Date(result.completedAt).toLocaleDateString() %>
                         </p>
                       </div>
                     </div>
                     
-                    <div class="flex items-center space-x-4">
+                    <div class="flex items-center justify-between md:justify-end space-x-4">
                       <div class="text-right">
-                        <div class="text-2xl font-bold gradient-text">
+                        <div class="text-xl md:text-2xl font-bold gradient-text">
                           <%= result.percentage.toFixed(1) %>%
                         </div>
-                        <div class="text-xs text-gray-500 dark:text-dark-400">Score</div>
+                        <div class="text-xs text-dark-400">Score</div>
                       </div>
                       <button onclick="showQuizHistory('<%= result._id %>')" 
-                              class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm font-medium transition-colors duration-200">
+                              class="px-3 md:px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-xs md:text-sm font-medium transition-colors duration-200">
                         View Details
                       </button>
                     </div>
@@ -327,11 +333,11 @@
                 </div>
               <% } else { %>
                 <div class="text-center py-12">
-                  <div class="w-16 h-16 bg-gray-100 dark:bg-dark-700 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span class="material-symbols-outlined text-gray-500 dark:text-dark-400 text-2xl">quiz</span>
+                  <div class="w-16 h-16 bg-dark-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="material-symbols-outlined text-dark-400 text-2xl">quiz</span>
                   </div>
-                  <h4 class="text-lg font-medium text-gray-900 dark:text-white mb-2">No quiz results yet</h4>
-                  <p class="text-gray-600 dark:text-dark-300">Start taking quizzes to see your results here!</p>
+                  <h4 class="text-lg font-medium text-white mb-2">No quiz results yet</h4>
+                  <p class="text-dark-300">Start taking quizzes to see your results here!</p>
                 </div>
               <% } %>
             </div>
@@ -343,35 +349,35 @@
     <!-- AI Quiz Modal -->
     <div id="aiQuizModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
       <div class="flex items-center justify-center min-h-screen p-4">
-        <div class="glass-effect bg-white/90 dark:bg-dark-800/90 rounded-2xl p-8 w-full max-w-2xl border border-gray-200 dark:border-dark-700 max-h-[90vh] overflow-y-auto">
+        <div class="glass-effect bg-dark-800/90 rounded-2xl p-6 md:p-8 w-full max-w-2xl border border-dark-700 max-h-[90vh] overflow-y-auto">
           <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-bold gradient-text">AI Generated Quiz</h2>
+            <h2 class="text-xl md:text-2xl font-bold gradient-text">AI Generated Quiz</h2>
             <button onclick="closeAIQuizModal()" 
-                    class="p-2 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors duration-200">
-              <span class="material-symbols-outlined text-gray-500 dark:text-dark-400">close</span>
+                    class="p-2 hover:bg-dark-700 rounded-lg transition-colors duration-200">
+              <span class="material-symbols-outlined text-dark-400">close</span>
             </button>
           </div>
           
           <div id="aiQuizContent">
             <!-- Quiz Form -->
             <div id="aiQuizForm" class="space-y-6">
-              <div class="grid md:grid-cols-2 gap-4">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label for="quizTitle" class="block text-sm font-medium text-gray-900 dark:text-white mb-2">Quiz Topic</label>
+                  <label for="quizTitle" class="block text-sm font-medium text-white mb-2">Quiz Topic</label>
                   <input type="text" 
                          id="quizTitle" 
                          placeholder="e.g., JavaScript, History, Science..." 
-                         class="w-full px-4 py-3 bg-white dark:bg-dark-700 border border-gray-300 dark:border-dark-600 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                         class="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
                          required>
                 </div>
                 <div>
-                  <label for="questionCount" class="block text-sm font-medium text-gray-900 dark:text-white mb-2">Number of Questions</label>
+                  <label for="questionCount" class="block text-sm font-medium text-white mb-2">Number of Questions</label>
                   <input type="number" 
                          id="questionCount" 
                          min="1" 
                          max="20" 
                          value="10" 
-                         class="w-full px-4 py-3 bg-white dark:bg-dark-700 border border-gray-300 dark:border-dark-600 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                         class="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
                          required>
                 </div>
               </div>
@@ -387,8 +393,8 @@
             <!-- Loading State -->
             <div id="loadingContainer" class="hidden text-center py-12">
               <div class="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-              <div class="text-lg font-medium text-gray-900 dark:text-white mb-2">Generating your quiz...</div>
-              <div class="text-gray-600 dark:text-dark-300">This may take a few moments</div>
+              <div class="text-lg font-medium text-white mb-2">Generating your quiz...</div>
+              <div class="text-dark-300">This may take a few moments</div>
             </div>
             
             <!-- Quiz Questions -->
@@ -404,12 +410,12 @@
     <!-- Quiz History Modal -->
     <div id="quizHistoryModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
       <div class="flex items-center justify-center min-h-screen p-4">
-        <div class="glass-effect bg-white/90 dark:bg-dark-800/90 rounded-2xl p-8 w-full max-w-4xl border border-gray-200 dark:border-dark-700 max-h-[90vh] overflow-y-auto">
+        <div class="glass-effect bg-dark-800/90 rounded-2xl p-6 md:p-8 w-full max-w-4xl border border-dark-700 max-h-[90vh] overflow-y-auto">
           <div class="flex justify-between items-center mb-6">
-            <h2 id="modalQuizTitle" class="text-2xl font-bold text-gray-900 dark:text-white"></h2>
+            <h2 id="modalQuizTitle" class="text-xl md:text-2xl font-bold text-white"></h2>
             <button onclick="closeModal()" 
-                    class="p-2 hover:bg-gray-100 dark:hover:bg-dark-700 rounded-lg transition-colors duration-200">
-              <span class="material-symbols-outlined text-gray-500 dark:text-dark-400">close</span>
+                    class="p-2 hover:bg-dark-700 rounded-lg transition-colors duration-200">
+              <span class="material-symbols-outlined text-dark-400">close</span>
             </button>
           </div>
           <div id="quizHistoryContent" class="space-y-4"></div>
@@ -418,20 +424,46 @@
     </div>
 
     <script>
-      // Search functionality
-      document.getElementById("quizSearch").addEventListener("input", function (e) {
-        const searchTerm = e.target.value.toLowerCase();
-        const quizCards = document.querySelectorAll(".quiz-card");
-
-        quizCards.forEach((card) => {
-          const title = card.getAttribute("data-title");
-          if (title.includes(searchTerm)) {
-            card.style.display = "block";
-          } else {
-            card.style.display = "none";
-          }
-        });
+      // Mobile menu functionality
+      document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+        const sidebar = document.querySelector('.sidebar');
+        sidebar.classList.toggle('open');
       });
+
+      // Close sidebar when clicking outside on mobile
+      document.addEventListener('click', function(e) {
+        const sidebar = document.querySelector('.sidebar');
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        
+        if (window.innerWidth < 768 && !sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+          sidebar.classList.remove('open');
+        }
+      });
+
+      // Search functionality for both desktop and mobile
+      function setupSearch(inputId) {
+        document.getElementById(inputId).addEventListener("input", function (e) {
+          const searchTerm = e.target.value.toLowerCase();
+          const quizCards = document.querySelectorAll(".quiz-card");
+
+          quizCards.forEach((card) => {
+            const title = card.getAttribute("data-title");
+            if (title.includes(searchTerm)) {
+              card.style.display = "block";
+            } else {
+              card.style.display = "none";
+            }
+          });
+        });
+      }
+
+      // Setup search for both inputs
+      if (document.getElementById("quizSearch")) {
+        setupSearch("quizSearch");
+      }
+      if (document.getElementById("mobileQuizSearch")) {
+        setupSearch("mobileQuizSearch");
+      }
 
       // Quiz history functionality
       async function showQuizHistory(resultId) {
@@ -448,21 +480,21 @@
 
           data.questions.forEach((question, index) => {
             const questionDiv = document.createElement("div");
-            questionDiv.className = `p-6 bg-gray-50/50 dark:bg-dark-700/50 rounded-xl border-l-4 ${question.isCorrect ? 'border-green-500' : 'border-red-500'}`;
+            questionDiv.className = `p-4 md:p-6 bg-dark-700/50 rounded-xl border-l-4 ${question.isCorrect ? 'border-green-500' : 'border-red-500'}`;
             questionDiv.innerHTML = `
-              <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Question ${index + 1}: ${question.question}</h4>
+              <h4 class="text-base md:text-lg font-semibold text-white mb-3">Question ${index + 1}: ${question.question}</h4>
               <div class="space-y-2">
                 <p class="text-sm">
-                  <span class="text-gray-600 dark:text-dark-300">Your Answer:</span> 
-                  <span class="${question.isCorrect ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'} font-medium">${question.userAnswer}</span>
+                  <span class="text-dark-300">Your Answer:</span> 
+                  <span class="${question.isCorrect ? 'text-green-400' : 'text-red-400'} font-medium">${question.userAnswer}</span>
                 </p>
                 <p class="text-sm">
-                  <span class="text-gray-600 dark:text-dark-300">Correct Answer:</span> 
-                  <span class="text-green-600 dark:text-green-400 font-medium">${question.correctAnswer}</span>
+                  <span class="text-dark-300">Correct Answer:</span> 
+                  <span class="text-green-400 font-medium">${question.correctAnswer}</span>
                 </p>
                 <p class="text-sm">
-                  <span class="text-gray-600 dark:text-dark-300">Points:</span> 
-                  <span class="text-gray-900 dark:text-white font-medium">${question.points}</span>
+                  <span class="text-dark-300">Points:</span> 
+                  <span class="text-white font-medium">${question.points}</span>
                 </p>
               </div>
             `;
@@ -487,8 +519,9 @@
       function showAIQuizModal() {
         document.getElementById("aiQuizModal").classList.remove("hidden");
         document.getElementById("aiQuizForm").style.display = "block";
-        document.getElementById("aiQuizQuestions").style.display = "none";
-        document.getElementById("aiQuizResults").style.display = "none";
+        document.getElementById("loadingContainer").classList.add("hidden");
+        document.getElementById("aiQuizQuestions").classList.add("hidden");
+        document.getElementById("aiQuizResults").classList.add("hidden");
       }
 
       async function startAIQuiz() {
@@ -515,18 +548,12 @@
         try {
           const token = localStorage.getItem("token");
           
-          if (!token) {
-            alert("Please log in again");
-            window.location.href = "/login";
-            return;
-          }
-
           const response = await fetch(
             `/ai-quiz?title=${encodeURIComponent(title)}&count=${questionCount}`,
             {
               method: "GET",
               headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: token ? `Bearer ${token}` : '',
                 "Content-Type": "application/json",
               },
             }
@@ -541,7 +568,7 @@
 
           const data = await response.json();
 
-          if (data.success) {
+          if (data.success && data.quiz) {
             currentAIQuiz = data.quiz;
             userAnswers = {};
             loadingContainer.classList.add("hidden");
@@ -567,20 +594,28 @@
         container.classList.remove("hidden");
         container.innerHTML = "";
 
+        if (!currentAIQuiz || !Array.isArray(currentAIQuiz)) {
+          alert("Error: Invalid quiz data received");
+          return;
+        }
+
         currentAIQuiz.forEach((question, index) => {
           const questionDiv = document.createElement("div");
-          questionDiv.className = "p-6 bg-gray-50/50 dark:bg-dark-700/50 rounded-xl border border-gray-200 dark:border-dark-600";
+          questionDiv.className = "p-4 md:p-6 bg-dark-700/50 rounded-xl border border-dark-600";
+          
+          const optionsHtml = question.options.map((option, i) => `
+            <label class="flex items-center p-3 bg-dark-600/50 hover:bg-dark-500/50 rounded-lg cursor-pointer transition-colors duration-200">
+              <input type="radio" name="q${index}" value="${option.replace(/"/g, '&quot;')}" 
+                     onchange="updateAnswer(${index}, '${option.replace(/'/g, "\\'").replace(/"/g, '&quot;')}')"
+                     class="w-4 h-4 text-primary-500 bg-dark-700 border-dark-500 focus:ring-primary-500 focus:ring-2 mr-3">
+              <span class="text-white">${option}</span>
+            </label>
+          `).join("");
+
           questionDiv.innerHTML = `
-            <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Question ${index + 1}: ${question.question}</h4>
+            <h4 class="text-base md:text-lg font-semibold text-white mb-4">Question ${index + 1}: ${question.question}</h4>
             <div class="space-y-3">
-              ${question.options.map((option, i) => `
-                <label class="flex items-center p-3 bg-white/50 dark:bg-dark-600/50 hover:bg-gray-100/50 dark:hover:bg-dark-500/50 rounded-lg cursor-pointer transition-colors duration-200">
-                  <input type="radio" name="q${index}" value="${option}" 
-                         onchange="updateAnswer(${index}, '${option}')"
-                         class="w-4 h-4 text-primary-500 bg-white dark:bg-dark-700 border-gray-300 dark:border-dark-500 focus:ring-primary-500 focus:ring-2 mr-3">
-                  <span class="text-gray-900 dark:text-white">${option}</span>
-                </label>
-              `).join("")}
+              ${optionsHtml}
             </div>
           `;
           container.appendChild(questionDiv);
@@ -606,9 +641,9 @@
         resultsContainer.classList.remove("hidden");
         resultsContainer.innerHTML = `
           <div class="text-center mb-8">
-            <h3 class="text-2xl font-bold gradient-text mb-4">Quiz Results</h3>
-            <div class="inline-flex items-center justify-center w-32 h-32 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full mb-4">
-              <div class="text-3xl font-bold text-white" id="aiQuizScore">0/${totalQuestions}</div>
+            <h3 class="text-xl md:text-2xl font-bold gradient-text mb-4">Quiz Results</h3>
+            <div class="inline-flex items-center justify-center w-24 h-24 md:w-32 md:h-32 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full mb-4">
+              <div class="text-2xl md:text-3xl font-bold text-white" id="aiQuizScore">0/${totalQuestions}</div>
             </div>
           </div>
           <div class="space-y-4">
@@ -617,11 +652,11 @@
               const isCorrect = userAnswer === question.correctAnswer;
               if (isCorrect) correctAnswers++;
               return `
-                <div class="p-4 bg-gray-50/50 dark:bg-dark-700/50 rounded-xl border-l-4 ${isCorrect ? 'border-green-500' : 'border-red-500'}">
-                  <h4 class="font-semibold text-gray-900 dark:text-white mb-2">Question ${index + 1}: ${question.question}</h4>
+                <div class="p-4 bg-dark-700/50 rounded-xl border-l-4 ${isCorrect ? 'border-green-500' : 'border-red-500'}">
+                  <h4 class="font-semibold text-white mb-2">Question ${index + 1}: ${question.question}</h4>
                   <div class="space-y-1 text-sm">
-                    <p><span class="text-gray-600 dark:text-dark-300">Your Answer:</span> <span class="${isCorrect ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'} font-medium">${userAnswer}</span></p>
-                    <p><span class="text-gray-600 dark:text-dark-300">Correct Answer:</span> <span class="text-green-600 dark:text-green-400 font-medium">${question.correctAnswer}</span></p>
+                    <p><span class="text-dark-300">Your Answer:</span> <span class="${isCorrect ? 'text-green-400' : 'text-red-400'} font-medium">${userAnswer}</span></p>
+                    <p><span class="text-dark-300">Correct Answer:</span> <span class="text-green-400 font-medium">${question.correctAnswer}</span></p>
                   </div>
                 </div>
               `;
@@ -634,7 +669,7 @@
         `;
         
         document.getElementById("aiQuizScore").textContent = `${correctAnswers}/${totalQuestions}`;
-        document.getElementById("aiQuizQuestions").style.display = "none";
+        document.getElementById("aiQuizQuestions").classList.add("hidden");
       }
 
       async function submitAIQuizScore() {

@@ -3,261 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuiziFY - Manage Quiz</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>QuiziFY - View Questions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'inter': ['Inter', 'sans-serif'],
+            },
+            colors: {
+              primary: {
+                50: '#f0f9ff',
+                500: '#0ea5e9',
+                600: '#0284c7',
+                700: '#0369a1',
+              },
+              secondary: {
+                500: '#d946ef',
+                600: '#c026d3',
+              },
+              dark: {
+                50: '#f8fafc',
+                300: '#cbd5e1',
+                400: '#94a3b8',
+                500: '#64748b',
+                600: '#475569',
+                700: '#334155',
+                800: '#1e293b',
+                900: '#0f172a',
+              }
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.5s ease-out',
+              'slide-up': 'slideUp 0.6s ease-out',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0', transform: 'translateY(10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              slideUp: {
+                '0%': { opacity: '0', transform: 'translateY(30px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
     <style>
-        :root {
-            --primary-gradient: linear-gradient(135deg, #6366f1, #8b5cf6);
-            --secondary-gradient: linear-gradient(135deg, #3b82f6, #2dd4bf);
-            --background-gradient: linear-gradient(135deg, #f8fafc, #e2e8f0);
-            --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            --hover-transform: translateY(-5px);
-            --danger-color: #ef4444;
-            --danger-hover: #dc2626;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        body {
-            background: var(--background-gradient);
-            min-height: 100vh;
-            color: #1e293b;
-        }
-
-        .navbar {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            padding: 1rem 0;
-        }
-
-        .logo {
-            font-size: 2.5rem;
-            font-weight: 700;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: -1px;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .main-content {
-            margin-top: 100px;
-            padding: 2rem 0;
-        }
-
-        .card {
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: var(--card-shadow);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .question-card {
-            background: #f8fafc;
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .question-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 12px;
-            border: none;
-            font-weight: 500;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary {
-            background: var(--primary-gradient);
-            color: white;
-        }
-
-        .btn-danger {
-            background: var(--danger-color);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: var(--danger-hover);
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .select-quiz {
-            padding: 0.75rem 1.5rem;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
-            background: white;
-            font-size: 1rem;
-            min-width: 200px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .select-quiz:focus {
-            outline: none;
-            border-color: #8b5cf6;
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
-        }
-
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin: 1rem 0;
-        }
-
-        .option-item {
-            background: white;
-            padding: 1rem;
-            border-radius: 10px;
-            border: 1px solid #e2e8f0;
-        }
-
-        .correct-answer {
-            color: #10b981;
-            font-weight: 600;
-            margin-top: 0.5rem;
-        }
-
-        .points {
-            color: #3b82f6;
-            font-weight: 600;
-            margin-top: 0.5rem;
-        }
-
-        .actions-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-
-        .logout-btn {
-        width: 100%;
-        padding: 1rem;
-        border: none;
-        border-radius: 12px;
-        background: linear-gradient(135deg, #ef4444, #dc2626); /* Red gradient */
-        color: white;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-size: 1rem;
-        box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
-    }
-
-    .logout-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(220, 38, 38, 0.4);
-        background: linear-gradient(135deg, #dc2626, #b91c1c);
-    }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .fade-in {
-            animation: fadeIn 0.5s ease-out;
-        }
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+      .gradient-text {
+        background: linear-gradient(135deg, #0ea5e9, #d946ef);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .glass-effect {
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+      }
     </style>
 </head>
-<body>
-    <nav class="navbar">
-        <div class="container">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h1 class="logo">QUIZIFY</h1>
-                <div style="display: flex; gap: 1rem; align-items: center;">
-                    <!-- <button class="btn">
-                        <span class="material-symbols-outlined">person</span>
-                    </button> -->
-                    <form action="/logout" method="post">
-                        <button class="logout-btn">
-                            Logout
-                        </button>
-                    </form>
-                                </div>
-                            </div>
+<body class="bg-dark-900 text-white transition-colors duration-300">
+    <!-- Theme Toggle Script -->
+    <script>
+      function initializeTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        const theme = savedTheme || 'dark';
+        
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+          document.body.classList.add('dark');
+          document.body.className = 'bg-dark-900 text-white transition-colors duration-300';
+        } else {
+          document.documentElement.classList.remove('dark');
+          document.body.classList.remove('dark');
+          document.body.className = 'bg-gray-50 text-gray-900 transition-colors duration-300';
+        }
+        
+        localStorage.setItem('theme', theme);
+      }
+      
+      initializeTheme();
+    </script>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-effect bg-dark-800/80 border-b border-dark-700">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center space-x-4">
+            <a href="/admin-dashboard" class="flex items-center space-x-2 text-primary-400 hover:text-primary-300 transition-colors duration-200">
+              <span class="material-symbols-outlined">arrow_back</span>
+              <span class="hidden sm:inline">Dashboard</span>
+            </a>
+            <div class="flex items-center space-x-2">
+              <div class="w-8 h-8 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
+                <span class="material-symbols-outlined text-white text-lg">quiz</span>
+              </div>
+              <h1 class="text-xl md:text-2xl font-bold gradient-text">QUIZIFY</h1>
+            </div>
+          </div>
+          
+          <div class="flex items-center space-x-2">
+            <a href="/manage" 
+               class="px-3 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors duration-200 text-sm">
+              <span class="material-symbols-outlined mr-1 text-sm">add</span>
+              <span class="hidden sm:inline">Add Question</span>
+            </a>
+            <form action="/logout" method="post">
+              <button class="px-3 md:px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors duration-200 text-sm md:text-base">
+                <span class="material-symbols-outlined md:mr-2">logout</span>
+                <span class="hidden md:inline">Logout</span>
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
     </nav>
 
-    <main class="main-content">
-        <div class="container">
-            <div class="card fade-in">
-                <div class="actions-bar">
-                    <h2 style="font-size: 1.8rem; font-weight: 600;">Manage Quiz</h2>
-                    
-                    <select id="quizSelect" name="quiz_title" class="select-quiz">
-                        <option selected disabled>Select Quiz</option>
-                        <% users.forEach(function(e) { %>
-                            <option value="<%= e._id %>"><%= e.title %></option>
-                        <% }); %>
-                    </select>
-
-                    <div style="display: flex; gap: 1rem;">
-                        <button onclick="deleteQuiz()" class="btn btn-danger">
-                            <span class="material-symbols-outlined">delete</span>
-                            Delete Quiz
-                        </button>
-                        <a href="/admin-dashboard" class="btn btn-primary">
-                            <span class="material-symbols-outlined">home</span>
-                            Home
-                        </a>
-                        <a href="/manage" class="btn btn-primary">
-                            <span class="material-symbols-outlined">add</span>
-                            Add Question
-                        </a>
-                    </div>
-                </div>
-
-                <div id="questionsList" class="fade-in">
-                    <p style="text-align: center; color: #64748b;">Select a quiz to view questions.</p>
-                </div>
+    <!-- Main Content -->
+    <main class="pt-20 pb-8 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto">
+        <div class="glass-effect bg-dark-800/50 border border-dark-700 rounded-2xl p-6 md:p-8 animate-fade-in">
+          <!-- Header -->
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between mb-8 space-y-4 lg:space-y-0">
+            <div>
+              <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">Question Management</h2>
+              <p class="text-dark-300">View and manage quiz questions</p>
             </div>
+            
+            <div class="flex flex-col sm:flex-row gap-4">
+              <!-- Quiz Selector -->
+              <div class="w-full sm:w-auto">
+                <select id="quizSelect" 
+                        class="w-full sm:w-64 px-4 py-3 bg-dark-700 border border-dark-600 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
+                  <option value="" disabled selected>Select Quiz</option>
+                  <% users.forEach(function(e) { %>
+                    <option value="<%= e._id %>"><%= e.title %></option>
+                  <% }); %>
+                </select>
+              </div>
+
+              <!-- Delete Quiz Button -->
+              <button onclick="deleteQuiz()" 
+                      id="deleteQuizBtn"
+                      class="px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl font-medium transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                      disabled>
+                <span class="material-symbols-outlined mr-2">delete</span>
+                <span class="hidden sm:inline">Delete Quiz</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Questions List -->
+          <div id="questionsList" class="space-y-4">
+            <div class="text-center py-12">
+              <div class="w-16 h-16 bg-dark-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span class="material-symbols-outlined text-dark-400 text-2xl">quiz</span>
+              </div>
+              <h3 class="text-lg font-medium text-white mb-2">No Quiz Selected</h3>
+              <p class="text-dark-300">Select a quiz from the dropdown to view its questions</p>
+            </div>
+          </div>
         </div>
+      </div>
     </main>
 
     <script>
         $(document).ready(function() {
+            const deleteQuizBtn = document.getElementById('deleteQuizBtn');
+            
             $("#quizSelect").change(function() {
                 let quizId = $(this).val();
-                if (!quizId) return;
+                if (!quizId) {
+                    deleteQuizBtn.disabled = true;
+                    return;
+                }
 
-                $("#questionsList").html("<p style='text-align: center; color: #64748b;'>Loading questions...</p>");
+                deleteQuizBtn.disabled = false;
+                $("#questionsList").html(`
+                    <div class="text-center py-12">
+                        <div class="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+                        <p class="text-white">Loading questions...</p>
+                    </div>
+                `);
 
                 $.ajax({
                     url: `/api/questions/${quizId}`,
@@ -265,50 +208,119 @@
                     success: function(data) {
                         let questionsHTML = "";
                         if (!data.questions || data.questions.length === 0) {
-                            questionsHTML = "<p style='text-align: center; color: #64748b;'>No questions available for this quiz.</p>";
+                            questionsHTML = `
+                                <div class="text-center py-12">
+                                    <div class="w-16 h-16 bg-dark-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                                        <span class="material-symbols-outlined text-dark-400 text-2xl">quiz</span>
+                                    </div>
+                                    <h3 class="text-lg font-medium text-white mb-2">No Questions Found</h3>
+                                    <p class="text-dark-300">This quiz doesn't have any questions yet.</p>
+                                    <a href="/manage" class="mt-4 inline-flex items-center px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors duration-200">
+                                        <span class="material-symbols-outlined mr-2">add</span>
+                                        Add First Question
+                                    </a>
+                                </div>
+                            `;
                         } else {
                             data.questions.forEach((q, index) => {
                                 let optionsHTML = q.options
-                                    .map(option => `<div class="option-item">${option}</div>`)
+                                    .map((option, i) => `
+                                        <div class="flex items-center p-3 bg-dark-600/50 rounded-lg">
+                                            <div class="w-6 h-6 bg-dark-500 rounded-full flex items-center justify-center text-xs font-medium text-dark-300 mr-3">
+                                                ${String.fromCharCode(65 + i)}
+                                            </div>
+                                            <span class="text-white">${option}</span>
+                                            ${option === q.correct_answer ? '<span class="ml-auto text-green-400 text-sm">✓ Correct</span>' : ''}
+                                        </div>
+                                    `)
                                     .join("");
 
                                 questionsHTML += `
-                                    <div class="question-card">
-                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                                            <h3 style="font-size: 1.2rem; font-weight: 500;">${q.question}</h3>
-                                            <div style="display: flex; gap: 0.5rem;">
-                                                <button onclick="editQuestion('${q._id}')" class="btn btn-primary">Edit</button>
-                                                <button onclick="deleteQuestion('${q._id}')" class="btn btn-danger">Delete</button>
+                                    <div class="bg-dark-700/30 rounded-xl p-6 border border-dark-600 hover:border-dark-500 transition-colors duration-200">
+                                        <div class="flex flex-col lg:flex-row lg:items-start justify-between mb-4 space-y-4 lg:space-y-0">
+                                            <div class="flex-1">
+                                                <div class="flex items-center mb-3">
+                                                    <div class="w-8 h-8 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center mr-3">
+                                                        <span class="text-white font-bold text-sm">${index + 1}</span>
+                                                    </div>
+                                                    <h3 class="text-lg font-semibold text-white">${q.question}</h3>
+                                                </div>
+                                            </div>
+                                            <div class="flex space-x-2">
+                                                <button onclick="editQuestion('${q._id}')" 
+                                                        class="px-3 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors duration-200 text-sm">
+                                                    <span class="material-symbols-outlined mr-1 text-sm">edit</span>
+                                                    Edit
+                                                </button>
+                                                <button onclick="deleteQuestion('${q._id}')" 
+                                                        class="px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors duration-200 text-sm">
+                                                    <span class="material-symbols-outlined mr-1 text-sm">delete</span>
+                                                    Delete
+                                                </button>
                                             </div>
                                         </div>
-                                        <div class="options-grid">${optionsHTML}</div>
-                                        <div class="correct-answer">Correct Answer: ${q.correct_answer}</div>
-                                        <div class="points">Points: ${q.points}</div>
-                                    </div>`;
+                                        
+                                        <div class="grid md:grid-cols-2 gap-3 mb-4">
+                                            ${optionsHTML}
+                                        </div>
+                                        
+                                        <div class="flex flex-col sm:flex-row sm:items-center justify-between pt-4 border-t border-dark-600 space-y-2 sm:space-y-0">
+                                            <div class="flex items-center space-x-4 text-sm">
+                                                <span class="text-dark-300">Correct Answer:</span>
+                                                <span class="text-green-400 font-medium">${q.correct_answer}</span>
+                                            </div>
+                                            <div class="flex items-center space-x-2">
+                                                <span class="material-symbols-outlined text-yellow-400 text-sm">grade</span>
+                                                <span class="text-yellow-400 font-medium">${q.points} points</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
                             });
                         }
                         $("#questionsList").html(questionsHTML);
                     },
                     error: function(xhr) {
-                        $("#questionsList").html("<p style='text-align: center; color: #ef4444;'>Error fetching questions. Please try again.</p>");
+                        $("#questionsList").html(`
+                            <div class="text-center py-12">
+                                <div class="w-16 h-16 bg-red-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <span class="material-symbols-outlined text-red-400 text-2xl">error</span>
+                                </div>
+                                <h3 class="text-lg font-medium text-white mb-2">Error Loading Questions</h3>
+                                <p class="text-dark-300">Please try again later</p>
+                                <button onclick="location.reload()" class="mt-4 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors duration-200">
+                                    <span class="material-symbols-outlined mr-2">refresh</span>
+                                    Retry
+                                </button>
+                            </div>
+                        `);
                     }
                 });
             });
         });
 
         function deleteQuestion(questionId) {
-            if (confirm("Are you sure you want to delete this question?")) {
+            if (confirm("Are you sure you want to delete this question? This action cannot be undone.")) {
                 fetch(`/delete/${questionId}`, { method: "DELETE" })
-                    .then(() => {
-                        alert("Question deleted successfully!");
-                        location.reload();
+                    .then(response => {
+                        if (response.ok) {
+                            // Refresh the questions list
+                            $("#quizSelect").trigger('change');
+                            showNotification("Question deleted successfully", "success");
+                        } else {
+                            showNotification("Failed to delete question", "error");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        showNotification("Error deleting question", "error");
                     });
             }
         }
 
         function editQuestion(questionId) {
             if (!questionId || questionId.trim() === "") {
-                alert("Invalid Question ID");
+                showNotification("Invalid Question ID", "error");
                 return;
             }
             window.location.href = `/edit/${encodeURIComponent(questionId)}`;
@@ -317,26 +329,39 @@
         function deleteQuiz() {
             let quizId = $("#quizSelect").val();
             if (!quizId) {
-                alert("Please select a quiz to delete.");
+                showNotification("Please select a quiz to delete", "error");
                 return;
             }
 
-            if (confirm("Are you sure you want to delete this entire quiz? This action cannot be undone!")) {
+            const quizTitle = $("#quizSelect option:selected").text();
+            if (confirm(`Are you sure you want to delete the entire quiz "${quizTitle}"? This will delete all questions and cannot be undone!`)) {
                 fetch(`/api/quiz/${quizId}`, { method: "DELETE" })
                     .then((response) => {
                         if (response.ok) {
-                            alert("Quiz deleted successfully!");
-                            location.reload();
+                            showNotification("Quiz deleted successfully", "success");
+                            setTimeout(() => location.reload(), 1500);
                         } else {
-                            alert("Error deleting quiz. Please try again.");
+                            showNotification("Error deleting quiz", "error");
                         }
                     })
                     .catch((error) => {
-                        console.error("❌ Error deleting quiz:", error);
-                        alert("An error occurred while deleting the quiz.");
+                        console.error("Error deleting quiz:", error);
+                        showNotification("An error occurred while deleting the quiz", "error");
                     });
             }
         }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg text-white z-50 ${type === 'success' ? 'bg-green-600' : 'bg-red-600'}`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
     </script>
-  </body>
+</body>
 </html>

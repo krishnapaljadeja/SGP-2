@@ -4,346 +4,231 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QuiziFY - Profile</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'inter': ['Inter', 'sans-serif'],
+            },
+            colors: {
+              primary: {
+                50: '#f0f9ff',
+                500: '#0ea5e9',
+                600: '#0284c7',
+                700: '#0369a1',
+              },
+              secondary: {
+                500: '#d946ef',
+                600: '#c026d3',
+              },
+              dark: {
+                50: '#f8fafc',
+                300: '#cbd5e1',
+                400: '#94a3b8',
+                500: '#64748b',
+                600: '#475569',
+                700: '#334155',
+                800: '#1e293b',
+                900: '#0f172a',
+              }
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.5s ease-out',
+              'slide-up': 'slideUp 0.6s ease-out',
+              'float': 'float 3s ease-in-out infinite',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0', transform: 'translateY(10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              slideUp: {
+                '0%': { opacity: '0', transform: 'translateY(30px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0px)' },
+                '50%': { transform: 'translateY(-10px)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
     <style>
-        :root {
-            --primary-color: #6366f1;
-            --secondary-color: #3b82f6;
-            --background-color: #f8fafc;
-            --text-color: #1e293b;
-            --card-background: #ffffff;
-            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --spacing-unit: 1rem;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        body {
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 90px;
-            margin-left: 150px;
-        }
-
-        /* Navbar Styles */
-        .navbar {
-            background-color: var(--card-background);
-            box-shadow: var(--card-shadow);
-            padding: var(--spacing-unit);
-            margin-bottom: var(--spacing-unit) * 2;
-        }
-
-        .navbar-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .nav-group {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-unit);
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin: 0 var(--spacing-unit) * 2;
-        }
-
-        /* Button Styles */
-        .btn {
-            padding: 0.5rem 0.4rem;
-            border-radius: 0.5rem;
-            display: inline-flex;
-            
-            gap: 0.1rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border:#1e293b;
-            font-size: 0.8rem;
-        }
-
-        .btn-primary {
-            margin-top: 4px;
-            padding: 5px;
-            background-color: var(--primary-color);
-            color: rgb(255, 255, 255);
-        }
-
-        .btn-secondary {
-            background-color: var(--background-color);
-            color: var(--text-color);
-        }
-        
-        .btn-secondary:hover {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        .btn-danger {
-            background-color: #ef4444;
-            color: white;
-        }
-        .btn-group{
-           margin-left: 30px;
-            display: flex;
-            gap: 0.8rem;
-        }
-        /* Profile Grid Layout */
-        .profile-grid {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: var(--spacing-unit) * 2;
-        }
-
-        /* Card Styles */
-        .card {
-            background-color: azure;
-            border-radius: 1rem;
-            box-shadow: var(--card-shadow);
-            padding: var(--spacing-unit) * 2;
-            margin-bottom: var(--spacing-unit) * 2;
-            width: 500px;
-            margin-right: 15px;
-            margin-left: 50px;
-        }
-        .p-card{
-            background-color: var(--card-background);
-            background-color: beige;
-            border-radius: 1rem;
-            box-shadow: var(--card-shadow);
-            padding: var(--spacing-unit) * 2;
-            margin-bottom: var(--spacing-unit) * 2;
-            margin-right: 50px;
-        }
-
-        /* Profile Header */
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-unit) * 2;
-            margin-bottom: var(--spacing-unit) * 2;
-            justify-content: center; /* Centering the profile header */
-        }
-
-        .profile-avatar {
-            width: 80px; /* Increased size for better visibility */
-            height: 80px; /* Increased size for better visibility */
-            border-radius: 50%;
-            background-color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem; /* Increased font size */
-            color: white;
-            margin-left: 35px;
-         
-        }
-
-        .profile-info {
-            flex: 1;
-            padding-left: 30px;
-            padding-top:10px ;
-            /* Centering text in profile info */
-        }
-
-        /* Stats Grid */
-        .stats-grid {
-          padding-top: 40PX;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: var(--spacing-unit);
-            margin-top: var(--spacing-unit) * 2;
-        }
-
-        .stat-card {
-            background-color:khaki;
-            border-radius: 0.5rem;
-            padding: var(--spacing-unit);
-            text-align: center;
-        }
-        .p1{
-            display: flex;
-            margin-top: 2px;
-        }
-
-        .stat-number {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #1e293b;
-            margin: 0.5rem 0;
-        }
-   
-        /* Latest Attempt Card */
-        .latest-attempt {
-
-            background-color:rgb(119, 121, 238);
-            color:white;
-            justify-content: center;
-            border-radius: 0.5rem;
-            padding: var(--spacing-unit) * 1.5;
-            margin-top:10px;
-            padding-left: 10px;
-            
-        }
-
-        /* Performance Chart */
-        .performance-header {
-            display: flex;
-            justify-content: center; /* Centering the performance header */
-            align-items: center;
-            margin-bottom: var(--spacing-unit);
-        }
-
-        .chart-container {
-            height: 300px;
-            margin-top: var(--spacing-unit);
-        }
-       
-        
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .profile-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .performance-header {
-                flex-direction: column;
-                gap: var(--spacing-unit);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .profile-header {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .nav-group {
-                flex-direction: column;
-            }
-        }
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+      .gradient-text {
+        background: linear-gradient(135deg, #0ea5e9, #d946ef);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .glass-effect {
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+      }
     </style>
 </head>
-<body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="navbar-content">
-            <div class="nav-group">
-                <a href="/student-dashboard" class="btn btn-secondary">
-                    <span class="material-symbols-outlined">arrow_back</span>
-                    Dashboard
-                </a>
-                <h1 class="logo">QUIZIFY</h1>
+<body class="bg-dark-900 text-white transition-colors duration-300">
+    <!-- Theme Toggle Script -->
+    <script>
+      function initializeTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        const theme = savedTheme || 'dark';
+        
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+          document.body.classList.add('dark');
+          document.body.className = 'bg-dark-900 text-white transition-colors duration-300';
+        } else {
+          document.documentElement.classList.remove('dark');
+          document.body.classList.remove('dark');
+          document.body.className = 'bg-gray-50 text-gray-900 transition-colors duration-300';
+        }
+        
+        localStorage.setItem('theme', theme);
+      }
+      
+      initializeTheme();
+    </script>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-effect bg-dark-800/80 border-b border-dark-700">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center space-x-4">
+            <a href="/student-dashboard" class="flex items-center space-x-2 text-primary-400 hover:text-primary-300 transition-colors duration-200">
+              <span class="material-symbols-outlined">arrow_back</span>
+              <span class="hidden sm:inline">Dashboard</span>
+            </a>
+            <div class="flex items-center space-x-2">
+              <div class="w-8 h-8 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
+                <span class="material-symbols-outlined text-white text-lg">quiz</span>
+              </div>
+              <h1 class="text-xl md:text-2xl font-bold gradient-text">QUIZIFY</h1>
             </div>
-            <form action="/logout" method="post">
-                <button class="btn btn-danger">
-                    <span class="material-symbols-outlined">logout</span>
-                    Logout
-                </button>
-            </form>
+          </div>
+          
+          <form action="/logout" method="post">
+            <button class="px-3 md:px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors duration-200 text-sm md:text-base">
+              <span class="material-symbols-outlined md:mr-2">logout</span>
+              <span class="hidden md:inline">Logout</span>
+            </button>
+          </form>
         </div>
+      </div>
     </nav>
     
     <!-- Main Content -->
-    <main class="container">
-        <div class="profile-grid">
-            <!-- Profile Info Card -->
-            <section class="card">
-                <div class="profile-header">
-                    <div class="profile-avatar">
-                        <%= (user.name || 'U')[0].toUpperCase() %>
-                    </div>
-                    <div class="profile-info">
-                       <div class="p1"><h4>Name :  </h4><p><%=  user.displayName || user.name %></p></div> 
-                       <div class="p1"><h4>Email  :</h4><p> <%= user.email %></p></div>
-                       <div class="p1"><h4>Role : </h4><p><%= user.role %></p></div>
-                     
-                        <p class="text-muted">
-                            Joined <%= moment(user.joinDate).format('MMMM YYYY') %>
-                        </p>
-                        <button class="btn btn-primary" onclick="toggleEditMode()">
-                            <span class="material-symbols-outlined">edit</span>
-                            Edit Profile
-                        </button>
-                    </div>
+    <main class="pt-20 pb-8 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto">
+        <div class="grid lg:grid-cols-3 gap-6 md:gap-8">
+          <!-- Profile Info Card -->
+          <div class="lg:col-span-1">
+            <div class="glass-effect bg-dark-800/50 border border-dark-700 rounded-2xl p-6 animate-fade-in">
+              <!-- Profile Header -->
+              <div class="text-center mb-6">
+                <div class="w-20 h-20 md:w-24 md:h-24 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center mx-auto mb-4 animate-float">
+                  <span class="text-2xl md:text-3xl font-bold text-white">
+                    <%= (user.name || 'U')[0].toUpperCase() %>
+                  </span>
                 </div>
+                <h2 class="text-xl md:text-2xl font-bold text-white mb-2">
+                  <%= user.displayName || user.name %>
+                </h2>
+                <p class="text-dark-300 text-sm md:text-base"><%= user.email %></p>
+                <p class="text-dark-400 text-xs md:text-sm mt-1">
+                  <%= user.role %> • Joined <%= moment(user.joinDate).format('MMMM YYYY') %>
+                </p>
+                <button onclick="toggleEditMode()" 
+                        class="mt-4 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors duration-200 text-sm">
+                  <span class="material-symbols-outlined mr-2 text-sm">edit</span>
+                  Edit Profile
+                </button>
+              </div>
 
-                <!-- Statistics -->
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <span class="material-symbols-outlined">quiz</span>
-                        <div class="stat-number"><%= stats.totalAttempts %></div>
-                        <h4>Total Attempts</h4>
-                    </div>
-                    <div class="stat-card">
-                        <span class="material-symbols-outlined">task_alt</span>
-                        <div class="stat-number"><%= stats.completionRate %>%</div>
-                        <h4>Completion Rate</h4>
-                    </div>
-                    <div class="stat-card">
-                        <span class="material-symbols-outlined">grade</span>
-                        <div class="stat-number"><%= stats.averageScore %>%</div>
-                        <h4>Avg. Score</h4>
-                    </div>
+              <!-- Statistics Grid -->
+              <div class="grid grid-cols-1 gap-4">
+                <div class="bg-dark-700/50 rounded-xl p-4 text-center">
+                  <div class="flex items-center justify-center mb-2">
+                    <span class="material-symbols-outlined text-primary-400 mr-2">quiz</span>
+                    <span class="text-2xl font-bold text-white"><%= stats.totalAttempts %></span>
+                  </div>
+                  <p class="text-dark-300 text-sm">Total Attempts</p>
                 </div>
+                
+                <div class="bg-dark-700/50 rounded-xl p-4 text-center">
+                  <div class="flex items-center justify-center mb-2">
+                    <span class="material-symbols-outlined text-green-400 mr-2">task_alt</span>
+                    <span class="text-2xl font-bold text-white"><%= stats.completionRate %>%</span>
+                  </div>
+                  <p class="text-dark-300 text-sm">Completion Rate</p>
+                </div>
+                
+                <div class="bg-dark-700/50 rounded-xl p-4 text-center">
+                  <div class="flex items-center justify-center mb-2">
+                    <span class="material-symbols-outlined text-yellow-400 mr-2">grade</span>
+                    <span class="text-2xl font-bold text-white"><%= stats.averageScore %>%</span>
+                  </div>
+                  <p class="text-dark-300 text-sm">Average Score</p>
+                </div>
+              </div>
 
-                <% if (latestAttempt) { %>
-                <div class="latest-attempt">
-                    <h3>Latest Quiz Attempt</h3>
-                    <p><%= latestAttempt.quiz.title %></p>
-                    <div class="stat-number">
-                        <%= latestAttempt.percentage.toFixed(1) %>%
-                    </div>
-                    <small>
-                        <%= moment(latestAttempt.completedAt).format('MMMM Do YYYY, h:mm a') %>
-                    </small>
+              <!-- Latest Attempt -->
+              <% if (latestAttempt) { %>
+              <div class="mt-6 bg-gradient-to-r from-primary-500/20 to-secondary-500/20 rounded-xl p-4 border border-primary-500/30">
+                <h3 class="text-lg font-semibold text-white mb-2">Latest Quiz</h3>
+                <p class="text-dark-300 text-sm mb-2"><%= latestAttempt.quiz.title %></p>
+                <div class="flex items-center justify-between">
+                  <span class="text-2xl font-bold gradient-text">
+                    <%= latestAttempt.percentage.toFixed(1) %>%
+                  </span>
+                  <span class="text-xs text-dark-400">
+                    <%= moment(latestAttempt.completedAt).format('MMM Do, h:mm a') %>
+                  </span>
                 </div>
-                <% } %>
-            </section>
+              </div>
+              <% } %>
+            </div>
+          </div>
 
-            <!-- Performance Chart Card -->
-            <section class="p-card">
-                <div class="performance-header">
-                    <div>
-                        <h2>Performance History</h2>
-                        <p class="text-muted">Your quiz scores over time</p>
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-primary active" onclick="updateChartView('all')">All Time</button>
-                       
-                    </div>
+          <!-- Performance Chart Card -->
+          <div class="lg:col-span-2">
+            <div class="glass-effect bg-dark-800/50 border border-dark-700 rounded-2xl p-6 animate-fade-in" style="animation-delay: 0.1s;">
+              <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+                <div>
+                  <h2 class="text-xl md:text-2xl font-bold text-white mb-2">Performance History</h2>
+                  <p class="text-dark-300 text-sm">Your quiz scores over time</p>
                 </div>
-                <div class="chart-container">
-                    <canvas id="performanceChart"></canvas>
-                </div>
-            </section>
+                <button onclick="updateChartView('all')" 
+                        class="mt-4 md:mt-0 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors duration-200 text-sm">
+                  All Time
+                </button>
+              </div>
+              
+              <div class="h-64 md:h-80">
+                <canvas id="performanceChart"></canvas>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </main>
+
     <script>
         // Initialize chart with clean configuration
         function initializeChart() {
@@ -357,15 +242,14 @@
                     datasets: [{
                         label: 'Quiz Scores',
                         data: performanceData.map(d => d.score),
-                        borderColor: getComputedStyle(document.documentElement)
-                            .getPropertyValue('--primary-color'),
-                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                        borderColor: '#0ea5e9',
+                        backgroundColor: 'rgba(14, 165, 233, 0.1)',
                         tension: 0.4,
                         fill: true,
-                        pointBackgroundColor: '#6366f1',
+                        pointBackgroundColor: '#0ea5e9',
                         pointBorderColor: '#fff',
                         pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: '#6366f1',
+                        pointHoverBorderColor: '#0ea5e9',
                         pointRadius: 4,
                         pointHoverRadius: 6
                     }]
@@ -378,29 +262,33 @@
                             beginAtZero: true,
                             max: 100,
                             grid: {
-                                color: 'rgba(0, 0, 0, 0.05)'
+                                color: 'rgba(255, 255, 255, 0.1)'
                             },
                             ticks: {
+                                color: '#94a3b8',
                                 callback: value => `${value}%`
                             }
                         },
                         x: {
                             grid: {
-                                color: 'rgba(0, 0, 0, 0.05)'
+                                color: 'rgba(255, 255, 255, 0.1)'
                             },
                             ticks: {
+                                color: '#94a3b8',
                                 maxRotation: 45,
                                 minRotation: 45
                             }
                         }
                     },
                     plugins: {
-                        legend: { display: false },
+                        legend: { 
+                            display: false 
+                        },
                         tooltip: {
-                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                            titleColor: '#1e293b',
-                            bodyColor: '#1e293b',
-                            borderColor: '#e2e8f0',
+                            backgroundColor: 'rgba(30, 41, 59, 0.9)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            borderColor: '#475569',
                             borderWidth: 1,
                             padding: 10,
                             callbacks: {
@@ -414,13 +302,19 @@
     
         // Profile edit functionality
         function toggleEditMode() {
-            const profileInfo = document.querySelector('.profile-info');
+            const profileInfo = document.querySelector('.text-center');
             const currentName = '<%= user.displayName || user.name %>';
             
-            profileInfo.innerHTML = `
-                <form id="editProfileForm" onsubmit="updateProfile(event)" class="edit-form">
-                    <div class="form-group">
-                        <label for="displayName">Display Name</label>
+            // Create edit form (simplified for mobile)
+            const editForm = `
+                <form id="editProfileForm" onsubmit="updateProfile(event)" class="space-y-4">
+                    <div class="w-20 h-20 md:w-24 md:h-24 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full flex items-center justify-center mx-auto mb-4 animate-float">
+                        <span class="text-2xl md:text-3xl font-bold text-white">
+                            <%= (user.name || 'U')[0].toUpperCase() %>
+                        </span>
+                    </div>
+                    <div>
+                        <label for="displayName" class="block text-sm font-medium text-white mb-2">Display Name</label>
                         <input type="text"
                                id="displayName"
                                name="displayName"
@@ -428,54 +322,32 @@
                                required
                                minlength="2"
                                maxlength="50"
-                               class="form-input">
+                               class="w-full px-3 py-2 bg-dark-700 border border-dark-600 rounded-lg text-white placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
                     </div>
-                    <div class="button-group">
-                        <button type="submit" class="btn btn-primary">
-                            <span class="material-symbols-outlined">save</span>
+                    <div class="flex space-x-2">
+                        <button type="submit" class="flex-1 px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-medium transition-colors duration-200 text-sm">
+                            <span class="material-symbols-outlined mr-1 text-sm">save</span>
                             Save
                         </button>
                         <button type="button" 
                                 onclick="location.reload()" 
-                                class="btn btn-secondary">
-                            <span class="material-symbols-outlined">close</span>
+                                class="flex-1 px-4 py-2 bg-dark-600 hover:bg-dark-500 text-white rounded-lg font-medium transition-colors duration-200 text-sm">
+                            <span class="material-symbols-outlined mr-1 text-sm">close</span>
                             Cancel
                         </button>
                     </div>
                 </form>
             `;
+            
+            profileInfo.innerHTML = editForm;
         }
     
         // Update chart view based on time period
         function updateChartView(period) {
-            const buttons = document.querySelectorAll('.btn-group .btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-    
+            // For now, just show all data
             const performanceData = <%- JSON.stringify(performanceData || []) %>;
-            let filteredData = [];
-    
-            const now = new Date();
-            switch(period) {
-                case 'week':
-                    const weekAgo = new Date(now - 7 * 24 * 60 * 60 * 1000);
-                    filteredData = performanceData.filter(d => 
-                        new Date(d.date) > weekAgo
-                    );
-                    break;
-                case 'month':
-                    const monthAgo = new Date(now.setMonth(now.getMonth() - 1));
-                    filteredData = performanceData.filter(d => 
-                        new Date(d.date) > monthAgo
-                    );
-                    break;
-                default:
-                    filteredData = performanceData;
-            }
-    
-            // Update chart with filtered data
-            chart.data.labels = filteredData.map(d => d.quizName);
-            chart.data.datasets[0].data = filteredData.map(d => d.score);
+            chart.data.labels = performanceData.map(d => d.quizName);
+            chart.data.datasets[0].data = performanceData.map(d => d.score);
             chart.update();
         }
     
@@ -497,7 +369,6 @@
                 const data = await response.json();
                 
                 if (data.success) {
-                    // Show success message
                     showNotification('Profile updated successfully', 'success');
                     setTimeout(() => location.reload(), 1500);
                 } else {
@@ -512,7 +383,7 @@
         // Notification helper
         function showNotification(message, type = 'success') {
             const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
+            notification.className = `fixed top-4 right-4 px-6 py-3 rounded-lg text-white z-50 ${type === 'success' ? 'bg-green-600' : 'bg-red-600'}`;
             notification.textContent = message;
             
             document.body.appendChild(notification);
@@ -526,43 +397,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize chart
             const chart = initializeChart();
-    
-            // Add smooth scrolling
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    document.querySelector(this.getAttribute('href'))
-                        .scrollIntoView({ behavior: 'smooth' });
-                });
-            });
-    
-            // Add notification styles
-            const style = document.createElement('style');
-            style.textContent = `
-                .notification {
-                    position: fixed;
-                    top: 20px;
-                    right: 20px;
-                    padding: 15px 25px;
-                    border-radius: 5px;
-                    color: white;
-                    z-index: 1000;
-                    animation: slideIn 0.3s ease-out;
-                }
-                .notification.success {
-                    background-color: #10b981;
-                }
-                .notification.error {
-                    background-color: #ef4444;
-                }
-                @keyframes slideIn {
-                    from { transform: translateX(100%); }
-                    to { transform: translateX(0); }
-                }
-            `;
-            document.head.appendChild(style);
         });
     </script>
-    
 </body>
 </html>
