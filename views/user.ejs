@@ -3,713 +3,409 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>QuiziFY - User Dashboard</title>
+    <title>QuiziFY - Student Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <link
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
       rel="stylesheet"
     />
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'inter': ['Inter', 'sans-serif'],
+            },
+            colors: {
+              primary: {
+                50: '#f0f9ff',
+                500: '#0ea5e9',
+                600: '#0284c7',
+                700: '#0369a1',
+              },
+              secondary: {
+                500: '#d946ef',
+                600: '#c026d3',
+              },
+              dark: {
+                50: '#f8fafc',
+                300: '#cbd5e1',
+                400: '#94a3b8',
+                500: '#64748b',
+                600: '#475569',
+                700: '#334155',
+                800: '#1e293b',
+                900: '#0f172a',
+              }
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.5s ease-out',
+              'slide-up': 'slideUp 0.6s ease-out',
+              'float': 'float 3s ease-in-out infinite',
+              'glow': 'glow 2s ease-in-out infinite alternate',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0', transform: 'translateY(10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              slideUp: {
+                '0%': { opacity: '0', transform: 'translateY(30px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0px)' },
+                '50%': { transform: 'translateY(-10px)' },
+              },
+              glow: {
+                '0%': { boxShadow: '0 0 20px rgba(14, 165, 233, 0.5)' },
+                '100%': { boxShadow: '0 0 30px rgba(14, 165, 233, 0.8)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
     <style>
-      :root {
-        --primary-gradient: linear-gradient(135deg, #6366f1, #8b5cf6);
-        --secondary-gradient: linear-gradient(135deg, #3b82f6, #2dd4bf);
-        --background-gradient: linear-gradient(135deg, #f8fafc, #e2e8f0);
-        --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        --hover-transform: translateY(-5px);
-        --sidebar-width: 280px;
-        --header-height: 80px;
-      }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Poppins", sans-serif;
-      }
-
       body {
-        background: var(--background-gradient);
-        min-height: 100vh;
-        color: #1e293b;
-        display: flex;
+        font-family: 'Inter', sans-serif;
       }
-
-      /* Sidebar Styles */
-      .sidebar {
-        width: var(--sidebar-width);
-        background: white;
-        height: 100vh;
-        position: fixed;
-        left: 0;
-        top: 0;
-        padding: 2rem;
-        box-shadow: var(--card-shadow);
-        display: flex;
-        flex-direction: column;
-        z-index: 1000;
-      }
-
-      .logo {
-        font-size: 2rem;
-        font-weight: 700;
-        background: var(--primary-gradient);
+      .gradient-text {
+        background: linear-gradient(135deg, #0ea5e9, #d946ef);
         -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
         background-clip: text;
-        color: transparent;
-        letter-spacing: -1px;
-        margin-bottom: 2rem;
       }
-
-      .nav-menu {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        margin-top: 2rem;
-      }
-
-      .nav-item:where(a, button) {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        padding: 1rem;
-        border-radius: 12px;
-        color: #64748b;
-        text-decoration: none;
-        background: none;
-        border: none;
-        width: 100%;
-        text-align: left;
-        transition: all 0.3s ease;
-        font: inherit;
-        cursor: pointer;
-      }
-
-      .nav-item:where(a, button):hover,
-      .nav-item:where(a, button).active {
-        background: var(--primary-gradient);
-        color: white;
-      }
-
-      .nav-item span {
-        font-size: 1.5rem;
-      }
-
-      /* Main Content Styles */
-      .main-content {
-        margin-left: var(--sidebar-width);
-        padding: 2rem;
-        width: calc(100% - var(--sidebar-width));
-      }
-
-      .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 2rem;
-      }
-
-      /* Quiz Cards */
-      .quiz-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 1.5rem;
-        margin-bottom: 2rem;
-      }
-
-      .quiz-card {
-        background: white;
-        border-radius: 15px;
-        padding: 1.5rem;
-        box-shadow: var(--card-shadow);
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .quiz-card:hover {
-        transform: var(--hover-transform);
-      }
-
-      .quiz-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-      }
-
-      .quiz-meta {
-        display: flex;
-        justify-content: space-between;
-        color: #64748b;
-        font-size: 0.9rem;
-        margin-bottom: 1.5rem;
-      }
-
-      .btn {
-        padding: 0.75rem 1.5rem;
-        border-radius: 12px;
-        border: none;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        width: 100%;
-      }
-
-      .btn-primary {
-        background: var(--primary-gradient);
-        color: white;
-      }
-
-      .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      }
-
-      /* Results Section */
-      .results-section {
-        background: white;
-        border-radius: 15px;
-        padding: 1.5rem;
-        box-shadow: var(--card-shadow);
-      }
-
-      .results-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1.5rem;
-      }
-
-      .results-list {
-        max-height: 400px;
-        overflow-y: auto;
-        padding-right: 1rem;
-      }
-
-      .result-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem;
-        border-bottom: 1px solid #e2e8f0;
-      }
-
-      .result-item:last-child {
-        border-bottom: none;
-      }
-
-      .result-info {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-      }
-
-      .result-score {
-        font-size: 1.5rem;
-        font-weight: 700;
-        background: var(--primary-gradient);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-      }
-
-      /* Animations */
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .fade-in {
-        animation: fadeIn 0.5s ease-out;
-      }
-
-      /* Responsive Design */
-      @media (max-width: 768px) {
-        .sidebar {
-          width: 100%;
-          height: auto;
-          position: relative;
-          margin-bottom: 2rem;
-        }
-
-        .main-content {
-          margin-left: 0;
-          width: 100%;
-        }
-
-        .quiz-grid {
-          grid-template-columns: 1fr;
-        }
-      }
-
-      /* Search Bar Styles */
-      .search-bar {
-        display: flex;
-        align-items: center;
-        background: white;
-        padding: 0.75rem 1.5rem;
-        border-radius: 12px;
-        box-shadow: var(--card-shadow);
-        width: 300px;
-      }
-
-      .search-bar input {
-        border: none;
-        outline: none;
-        width: 100%;
-        font-size: 1rem;
-        margin-left: 1rem;
-      }
-
-      /* Quiz Modal Styles */
-      .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 2000;
-        overflow-y: auto;
-      }
-
-      .modal-content {
-        background: white;
-        margin: 2rem auto;
-        padding: 2rem;
-        border-radius: 15px;
-        width: 90%;
-        max-width: 800px;
-        position: relative;
-        max-height: 90vh;
-        overflow-y: auto;
-      }
-
-      .close-modal {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        background: none;
-        border: none;
-        font-size: 1.5rem;
-        cursor: pointer;
-        color: #64748b;
-      }
-
-      #aiQuizForm {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-        max-width: 500px;
-        margin: 0 auto;
-      }
-
-      #aiQuizQuestions {
-        max-height: 70vh;
-        overflow-y: auto;
-        padding-right: 1rem;
-      }
-
-      #aiQuizResults {
-        padding: 2rem;
-        background: #f8fafc;
-        border-radius: 15px;
-        margin-top: 2rem;
-      }
-
-      .results-summary {
-        text-align: center;
-        margin-bottom: 2rem;
-      }
-
-      .score-display {
-        display: inline-block;
-        padding: 1rem 2rem;
-        background: white;
-        border-radius: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      }
-
-      .score-label {
-        font-size: 1.2rem;
-        color: #64748b;
-        margin-right: 0.5rem;
-      }
-
-      .score-value {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #1e293b;
-      }
-
-      .detailed-results {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-      }
-
-      .question-result {
-        background: white;
-        padding: 1.5rem;
-        border-radius: 10px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-      }
-
-      .question-result h4 {
-        margin-bottom: 1rem;
-        color: #1e293b;
-      }
-
-      .answer-details {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-      }
-
-      .answer-details p {
-        margin: 0;
-        font-size: 1rem;
-      }
-
-      .correct-answer {
-        color: #10b981;
-        font-weight: 500;
-      }
-
-      .wrong-answer {
-        color: #ef4444;
-        font-weight: 500;
-      }
-
-      .correct {
-        border-left: 4px solid #10b981;
-      }
-
-      .incorrect {
-        border-left: 4px solid #ef4444;
-      }
-
-      .quiz-history-item {
-        background: #f8fafc;
-        border-radius: 10px;
-        padding: 1rem;
-        margin-bottom: 1rem;
-      }
-
-      .view-history-btn {
-        background: var(--secondary-gradient);
-        color: white;
-        padding: 0.5rem 1rem;
-        border-radius: 8px;
-        border: none;
-        cursor: pointer;
-        font-size: 0.9rem;
-        margin-top: 0.5rem;
-      }
-
-      .view-history-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      }
-
-      /* AI Quiz Form Styles */
-      .form-group {
-        margin-bottom: 1.5rem;
-      }
-
-      .form-group label {
-        display: block;
-        margin-bottom: 0.5rem;
-        color: #1e293b;
-        font-weight: 500;
-      }
-
-      .form-group input {
-        width: 100%;
-        padding: 0.75rem 1rem;
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-        font-size: 1rem;
-        transition: all 0.3s ease;
-      }
-
-      .form-group input:focus {
-        outline: none;
-        border-color: #6366f1;
-        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-      }
-
-      .form-row {
-        display: flex;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-      }
-
-      .form-row .form-group {
-        flex: 1;
-        margin-bottom: 0;
-      }
-
-      /* Loading Animation */
-      .loading-container {
-        display: none;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem;
-        text-align: center;
-      }
-
-      .loading-spinner {
-        width: 50px;
-        height: 50px;
-        border: 5px solid #f3f3f3;
-        border-top: 5px solid #6366f1;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        margin-bottom: 1rem;
-      }
-
-      .loading-text {
-        color: #64748b;
-        font-size: 1.1rem;
-        margin-top: 1rem;
-      }
-
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
+      .glass-effect {
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
       }
     </style>
   </head>
-  <body>
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <h1 class="logo">QUIZIFY</h1>
-      <nav class="nav-menu">
-        <a href="/student-dashboard" class="nav-item active">
-          <span class="material-symbols-outlined">dashboard</span>
-          Dashboard
-        </a>
-        <a href="/profile" class="nav-item">
-          <span class="material-symbols-outlined">person</span>
-          Profile
-        </a>
-        <form
-          action="/logout"
-          method="post"
-          style="margin-top: auto"
-          onsubmit="handleLogout(event)"
-        >
-          <button
-            type="submit"
-            class="nav-item"
-            style="
-              /* background: none; */
-              border: none;
-              width: 100%;
-              text-align: left;
-            "
-          >
-            <span class="material-symbols-outlined">logout</span>
-            Logout
-          </button>
-        </form>
-      </nav>
-    </aside>
+  <body class="dark bg-dark-900 text-white">
+    <!-- Theme Toggle Script -->
+    <script>
+      const theme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+      
+      function toggleTheme() {
+        const isDark = document.documentElement.classList.contains('dark');
+        document.documentElement.classList.toggle('dark', !isDark);
+        localStorage.setItem('theme', isDark ? 'light' : 'dark');
+      }
+    </script>
 
-    <!-- Main Content -->
-    <main class="main-content">
-      <div class="header">
-        <h2>Student Dashboard</h2>
-        <div class="search-bar">
-          <span class="material-symbols-outlined">search</span>
-          <input type="text" id="quizSearch" placeholder="Search quizzes..." />
-        </div>
-      </div>
-
-      <!-- Available Quizzes Section -->
-      <div class="quiz-grid" id="quizContainer">
-        <!-- AI Quiz Card -->
-        <div class="quiz-card fade-in" data-title="ai quiz">
-          <h3 class="quiz-title">AI Generated Quiz</h3>
-          <div class="quiz-meta">
-            <span>10 Questions</span>
-            <span>Custom Topic</span>
+    <div class="flex min-h-screen">
+      <!-- Sidebar -->
+      <aside class="w-64 glass-effect bg-dark-800/50 border-r border-dark-700 fixed h-full z-40">
+        <div class="p-6">
+          <!-- Logo -->
+          <div class="flex items-center space-x-3 mb-8">
+            <div class="w-10 h-10 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center animate-float">
+              <span class="material-symbols-outlined text-white text-xl">quiz</span>
+            </div>
+            <h1 class="text-2xl font-bold gradient-text">QUIZIFY</h1>
           </div>
-          <button onclick="showAIQuizModal()" class="btn btn-primary">
-            <span class="material-symbols-outlined">smart_toy</span>
-            Start AI Quiz
-          </button>
-        </div>
 
-        <% users.forEach(function(e) { %>
-        <div
-          class="quiz-card fade-in"
-          data-title="<%= e.title.toLowerCase() %>"
-        >
-          <h3 class="quiz-title"><%= e.title %></h3>
-          <div class="quiz-meta">
-            <span><%= e.que %> Questions</span>
-            <span><%= e.time %> Minutes</span>
+          <!-- Navigation -->
+          <nav class="space-y-2">
+            <a href="/student-dashboard" 
+               class="flex items-center space-x-3 px-4 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-xl font-medium transition-all duration-200">
+              <span class="material-symbols-outlined">dashboard</span>
+              <span>Dashboard</span>
+            </a>
+            <a href="/profile" 
+               class="flex items-center space-x-3 px-4 py-3 text-dark-300 hover:text-white hover:bg-dark-700 rounded-xl font-medium transition-all duration-200">
+              <span class="material-symbols-outlined">person</span>
+              <span>Profile</span>
+            </a>
+          </nav>
+
+          <!-- Logout Button -->
+          <div class="absolute bottom-6 left-6 right-6">
+            <form action="/logout" method="post" onsubmit="handleLogout(event)">
+              <button type="submit" 
+                      class="w-full flex items-center space-x-3 px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl font-medium transition-colors duration-200">
+                <span class="material-symbols-outlined">logout</span>
+                <span>Logout</span>
+              </button>
+            </form>
           </div>
-          <form action="/quiz/<%= e._id %>" method="get">
-            <button type="submit" class="btn btn-primary">
-              <span class="material-symbols-outlined">play_arrow</span>
-              Start Quiz
-            </button>
-          </form>
         </div>
-        <% }); %>
-      </div>
+      </aside>
 
-      <!-- AI Quiz Modal -->
-      <div id="aiQuizModal" class="modal">
-        <div class="modal-content">
-          <button class="close-modal" onclick="closeAIQuizModal()">
-            &times;
-          </button>
-          <h2>AI Generated Quiz</h2>
-          <div id="aiQuizContent">
-            <div id="aiQuizForm">
-              <div class="form-row">
-                <div class="form-group">
-                  <label for="quizTitle">Enter Quiz Topic:</label>
-                  <input
-                    type="text"
-                    id="quizTitle"
-                    placeholder="e.g., JavaScript, History, Science..."
-                    required
-                  />
+      <!-- Main Content -->
+      <main class="flex-1 ml-64">
+        <!-- Header -->
+        <header class="glass-effect bg-dark-800/50 border-b border-dark-700 px-8 py-6">
+          <div class="flex justify-between items-center">
+            <div>
+              <h2 class="text-3xl font-bold text-white">Welcome back!</h2>
+              <p class="text-dark-300 mt-1">Ready to continue your learning journey?</p>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+              <!-- Search Bar -->
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <span class="material-symbols-outlined text-dark-400">search</span>
                 </div>
-                <div class="form-group">
-                  <label for="questionCount">Number of Questions:</label>
-                  <input
-                    type="number"
-                    id="questionCount"
-                    min="1"
-                    max="20"
-                    value="10"
-                    required
-                  />
+                <input type="text" 
+                       id="quizSearch" 
+                       placeholder="Search quizzes..." 
+                       class="pl-10 pr-4 py-2 bg-dark-700 border border-dark-600 rounded-lg text-white placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 w-64">
+              </div>
+              
+              <!-- Theme Toggle -->
+              <button onclick="toggleTheme()" 
+                      class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors duration-200"
+                      aria-label="Toggle theme">
+                <span class="material-symbols-outlined dark:hidden">dark_mode</span>
+                <span class="material-symbols-outlined hidden dark:block">light_mode</span>
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <!-- Content -->
+        <div class="p-8">
+          <!-- Available Quizzes Section -->
+          <section class="mb-12">
+            <div class="flex items-center justify-between mb-6">
+              <h3 class="text-2xl font-bold text-white">Available Quizzes</h3>
+              <div class="text-sm text-dark-300">
+                <%= users.length + 1 %> quizzes available
+              </div>
+            </div>
+            
+            <div class="grid lg:grid-cols-3 md:grid-cols-2 gap-6" id="quizContainer">
+              <!-- AI Quiz Card -->
+              <div class="quiz-card group cursor-pointer animate-fade-in" data-title="ai quiz">
+                <div class="glass-effect bg-dark-800/50 border border-dark-700 rounded-2xl p-6 hover:border-primary-500/50 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl">
+                  <div class="flex items-center space-x-4 mb-4">
+                    <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <span class="material-symbols-outlined text-white text-xl">smart_toy</span>
+                    </div>
+                    <div>
+                      <h4 class="text-lg font-semibold text-white">AI Generated Quiz</h4>
+                      <p class="text-sm text-dark-300">Custom Topic</p>
+                    </div>
+                  </div>
+                  
+                  <div class="flex items-center justify-between text-sm text-dark-400 mb-4">
+                    <span class="flex items-center">
+                      <span class="material-symbols-outlined mr-1 text-xs">quiz</span>
+                      10 Questions
+                    </span>
+                    <span class="flex items-center">
+                      <span class="material-symbols-outlined mr-1 text-xs">schedule</span>
+                      Custom Time
+                    </span>
+                  </div>
+                  
+                  <button onclick="showAIQuizModal()" 
+                          class="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-xl font-medium transition-all duration-200 transform group-hover:scale-105">
+                    <span class="material-symbols-outlined mr-2">play_arrow</span>
+                    Start AI Quiz
+                  </button>
                 </div>
               </div>
-              <button
-                onclick="startAIQuiz()"
-                class="btn btn-primary"
-                id="generateBtn"
-              >
+
+              <!-- Regular Quiz Cards -->
+              <% users.forEach(function(e, index) { %>
+              <div class="quiz-card group cursor-pointer animate-fade-in" 
+                   data-title="<%= e.title.toLowerCase() %>" 
+                   style="animation-delay: <%= (index + 1) * 0.1 %>s;">
+                <div class="glass-effect bg-dark-800/50 border border-dark-700 rounded-2xl p-6 hover:border-primary-500/50 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl">
+                  <div class="flex items-center space-x-4 mb-4">
+                    <div class="w-12 h-12 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <span class="material-symbols-outlined text-white text-xl">quiz</span>
+                    </div>
+                    <div class="flex-1">
+                      <h4 class="text-lg font-semibold text-white truncate"><%= e.title %></h4>
+                      <p class="text-sm text-dark-300">Academic Quiz</p>
+                    </div>
+                  </div>
+                  
+                  <div class="flex items-center justify-between text-sm text-dark-400 mb-4">
+                    <span class="flex items-center">
+                      <span class="material-symbols-outlined mr-1 text-xs">quiz</span>
+                      <%= e.que %> Questions
+                    </span>
+                    <span class="flex items-center">
+                      <span class="material-symbols-outlined mr-1 text-xs">schedule</span>
+                      <%= e.time %> Minutes
+                    </span>
+                  </div>
+                  
+                  <form action="/quiz/<%= e._id %>" method="get">
+                    <button type="submit" 
+                            class="w-full py-3 bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 text-white rounded-xl font-medium transition-all duration-200 transform group-hover:scale-105">
+                      <span class="material-symbols-outlined mr-2">play_arrow</span>
+                      Start Quiz
+                    </button>
+                  </form>
+                </div>
+              </div>
+              <% }); %>
+            </div>
+          </section>
+
+          <!-- Recent Results Section -->
+          <section class="animate-fade-in" style="animation-delay: 0.5s;">
+            <div class="flex items-center justify-between mb-6">
+              <h3 class="text-2xl font-bold text-white">Recent Results</h3>
+              <a href="/profile" class="text-primary-400 hover:text-primary-300 text-sm font-medium transition-colors duration-200">
+                View All Results
+              </a>
+            </div>
+            
+            <div class="glass-effect bg-dark-800/50 border border-dark-700 rounded-2xl p-6">
+              <% if (typeof recentResults !== 'undefined' && recentResults.length > 0) { %>
+                <div class="space-y-4">
+                  <% recentResults.forEach(function(result, index) { %>
+                  <div class="flex items-center justify-between p-4 bg-dark-700/50 rounded-xl hover:bg-dark-600/50 transition-colors duration-200">
+                    <div class="flex items-center space-x-4">
+                      <div class="w-10 h-10 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined text-white text-sm">quiz</span>
+                      </div>
+                      <div>
+                        <h4 class="font-medium text-white">
+                          <%= result.quiz ? result.quiz.title : 'Quiz Deleted' %>
+                        </h4>
+                        <p class="text-sm text-dark-300">
+                          Completed on <%= new Date(result.completedAt).toLocaleDateString() %>
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-4">
+                      <div class="text-right">
+                        <div class="text-2xl font-bold gradient-text">
+                          <%= result.percentage.toFixed(1) %>%
+                        </div>
+                        <div class="text-xs text-dark-400">Score</div>
+                      </div>
+                      <button onclick="showQuizHistory('<%= result._id %>')" 
+                              class="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg text-sm font-medium transition-colors duration-200">
+                        View Details
+                      </button>
+                    </div>
+                  </div>
+                  <% }); %>
+                </div>
+              <% } else { %>
+                <div class="text-center py-12">
+                  <div class="w-16 h-16 bg-dark-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="material-symbols-outlined text-dark-400 text-2xl">quiz</span>
+                  </div>
+                  <h4 class="text-lg font-medium text-white mb-2">No quiz results yet</h4>
+                  <p class="text-dark-300">Start taking quizzes to see your results here!</p>
+                </div>
+              <% } %>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <!-- AI Quiz Modal -->
+    <div id="aiQuizModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
+      <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="glass-effect bg-dark-800/90 rounded-2xl p-8 w-full max-w-2xl border border-dark-700 max-h-[90vh] overflow-y-auto">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold gradient-text">AI Generated Quiz</h2>
+            <button onclick="closeAIQuizModal()" 
+                    class="p-2 hover:bg-dark-700 rounded-lg transition-colors duration-200">
+              <span class="material-symbols-outlined text-dark-400">close</span>
+            </button>
+          </div>
+          
+          <div id="aiQuizContent">
+            <!-- Quiz Form -->
+            <div id="aiQuizForm" class="space-y-6">
+              <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label for="quizTitle" class="block text-sm font-medium text-white mb-2">Quiz Topic</label>
+                  <input type="text" 
+                         id="quizTitle" 
+                         placeholder="e.g., JavaScript, History, Science..." 
+                         class="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                         required>
+                </div>
+                <div>
+                  <label for="questionCount" class="block text-sm font-medium text-white mb-2">Number of Questions</label>
+                  <input type="number" 
+                         id="questionCount" 
+                         min="1" 
+                         max="20" 
+                         value="10" 
+                         class="w-full px-4 py-3 bg-dark-700 border border-dark-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+                         required>
+                </div>
+              </div>
+              
+              <button onclick="startAIQuiz()" 
+                      id="generateBtn"
+                      class="w-full py-4 bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 text-white rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105">
+                <span class="material-symbols-outlined mr-2">auto_awesome</span>
                 Generate Quiz
               </button>
             </div>
-            <div id="loadingContainer" class="loading-container">
-              <div class="loading-spinner"></div>
-              <div class="loading-text">Generating your quiz...</div>
+            
+            <!-- Loading State -->
+            <div id="loadingContainer" class="hidden text-center py-12">
+              <div class="w-16 h-16 border-4 border-primary-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+              <div class="text-lg font-medium text-white mb-2">Generating your quiz...</div>
+              <div class="text-dark-300">This may take a few moments</div>
             </div>
-            <div id="aiQuizQuestions" style="display: none"></div>
-            <div id="aiQuizResults" style="display: none">
-              <h3>Your Score: <span id="aiQuizScore"></span></h3>
-              <button onclick="submitAIQuizScore()" class="btn btn-primary">
-                Submit Score
-              </button>
-            </div>
+            
+            <!-- Quiz Questions -->
+            <div id="aiQuizQuestions" class="hidden space-y-6"></div>
+            
+            <!-- Quiz Results -->
+            <div id="aiQuizResults" class="hidden"></div>
           </div>
         </div>
       </div>
-
-      <!-- Recent Results Section -->
-      <div class="results-section fade-in">
-        <div class="results-header">
-          <h3>Your Recent Results</h3>
-        </div>
-        <div class="results-list">
-          <% if (typeof recentResults !== 'undefined' && recentResults.length >
-          0) { %> <% recentResults.forEach(function(result) { %>
-          <div class="result-item">
-            <div class="result-info">
-              <% if (result.quiz) { %>
-              <h4><%= result.quiz.title %></h4>
-              <p style="color: #64748b">
-                Completed on <%= new
-                Date(result.completedAt).toLocaleDateString() %>
-              </p>
-              <% } else { %>
-              <h4>Quiz title not available</h4>
-              <% } %>
-            </div>
-            <div
-              style="
-                display: flex;
-                flex-direction: column;
-                align-items: flex-end;
-              "
-            >
-              <div class="result-score">
-                <%= result.percentage.toFixed(1) %>%
-              </div>
-              <button
-                class="view-history-btn"
-                onclick="showQuizHistory('<%= result._id %>')"
-              >
-                View History
-              </button>
-            </div>
-          </div>
-          <% }); %> <% } else { %>
-          <div class="result-item">
-            <p style="text-align: center; color: #64748b">
-              No quiz results yet. Start taking quizzes to see your results
-              here!
-            </p>
-          </div>
-          <% } %>
-        </div>
-      </div>
-    </main>
+    </div>
 
     <!-- Quiz History Modal -->
-    <div id="quizHistoryModal" class="modal">
-      <div class="modal-content">
-        <button class="close-modal" onclick="closeModal()">&times;</button>
-        <h2 id="modalQuizTitle"></h2>
-        <div id="quizHistoryContent"></div>
+    <div id="quizHistoryModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
+      <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="glass-effect bg-dark-800/90 rounded-2xl p-8 w-full max-w-4xl border border-dark-700 max-h-[90vh] overflow-y-auto">
+          <div class="flex justify-between items-center mb-6">
+            <h2 id="modalQuizTitle" class="text-2xl font-bold text-white"></h2>
+            <button onclick="closeModal()" 
+                    class="p-2 hover:bg-dark-700 rounded-lg transition-colors duration-200">
+              <span class="material-symbols-outlined text-dark-400">close</span>
+            </button>
+          </div>
+          <div id="quizHistoryContent" class="space-y-4"></div>
+        </div>
       </div>
     </div>
 
     <script>
       // Search functionality
-      document
-        .getElementById("quizSearch")
-        .addEventListener("input", function (e) {
-          const searchTerm = e.target.value.toLowerCase();
-          const quizCards = document.querySelectorAll(".quiz-card");
+      document.getElementById("quizSearch").addEventListener("input", function (e) {
+        const searchTerm = e.target.value.toLowerCase();
+        const quizCards = document.querySelectorAll(".quiz-card");
 
-          quizCards.forEach((card) => {
-            const title = card.getAttribute("data-title");
-            if (title.includes(searchTerm)) {
-              card.style.display = "block";
-            } else {
-              card.style.display = "none";
-            }
-          });
+        quizCards.forEach((card) => {
+          const title = card.getAttribute("data-title");
+          if (title.includes(searchTerm)) {
+            card.style.display = "block";
+          } else {
+            card.style.display = "none";
+          }
         });
+      });
 
       // Quiz history functionality
       async function showQuizHistory(resultId) {
@@ -726,19 +422,28 @@
 
           data.questions.forEach((question, index) => {
             const questionDiv = document.createElement("div");
-            questionDiv.className = "quiz-history-item";
+            questionDiv.className = `p-6 bg-dark-700/50 rounded-xl border-l-4 ${question.isCorrect ? 'border-green-500' : 'border-red-500'}`;
             questionDiv.innerHTML = `
-              <h4>Question ${index + 1}: ${question.question}</h4>
-              <p>Your Answer: <span class="${
-                question.isCorrect ? "correct-answer" : "wrong-answer"
-              }">${question.userAnswer}</span></p>
-              <p>Correct Answer: ${question.correctAnswer}</p>
-              <p>Points: ${question.points}</p>
+              <h4 class="text-lg font-semibold text-white mb-3">Question ${index + 1}: ${question.question}</h4>
+              <div class="space-y-2">
+                <p class="text-sm">
+                  <span class="text-dark-300">Your Answer:</span> 
+                  <span class="${question.isCorrect ? 'text-green-400' : 'text-red-400'} font-medium">${question.userAnswer}</span>
+                </p>
+                <p class="text-sm">
+                  <span class="text-dark-300">Correct Answer:</span> 
+                  <span class="text-green-400 font-medium">${question.correctAnswer}</span>
+                </p>
+                <p class="text-sm">
+                  <span class="text-dark-300">Points:</span> 
+                  <span class="text-white font-medium">${question.points}</span>
+                </p>
+              </div>
             `;
             modalContent.appendChild(questionDiv);
           });
 
-          modal.style.display = "block";
+          modal.classList.remove("hidden");
         } catch (error) {
           console.error("Error fetching quiz history:", error);
           alert("Error loading quiz history. Please try again.");
@@ -746,27 +451,15 @@
       }
 
       function closeModal() {
-        document.getElementById("quizHistoryModal").style.display = "none";
+        document.getElementById("quizHistoryModal").classList.add("hidden");
       }
-
-      // Close modal when clicking outside
-      window.onclick = function (event) {
-        const modal = document.getElementById("quizHistoryModal");
-        const aiModal = document.getElementById("aiQuizModal");
-        if (event.target == modal) {
-          modal.style.display = "none";
-        }
-        if (event.target == aiModal) {
-          aiModal.style.display = "none";
-        }
-      };
 
       // AI Quiz functionality
       let currentAIQuiz = null;
       let userAnswers = {};
 
       function showAIQuizModal() {
-        document.getElementById("aiQuizModal").style.display = "block";
+        document.getElementById("aiQuizModal").classList.remove("hidden");
         document.getElementById("aiQuizForm").style.display = "block";
         document.getElementById("aiQuizQuestions").style.display = "none";
         document.getElementById("aiQuizResults").style.display = "none";
@@ -790,17 +483,12 @@
 
         // Show loading state
         document.getElementById("aiQuizForm").style.display = "none";
-        loadingContainer.style.display = "flex";
+        loadingContainer.classList.remove("hidden");
         generateBtn.disabled = true;
 
         try {
-          // Get token from localStorage
           const token = localStorage.getItem("token");
-          console.log(
-            "Token from localStorage:",
-            token ? "Present" : "Missing"
-          );
-
+          
           if (!token) {
             alert("Please log in again");
             window.location.href = "/login";
@@ -808,9 +496,7 @@
           }
 
           const response = await fetch(
-            `/ai-quiz?title=${encodeURIComponent(
-              title
-            )}&count=${questionCount}`,
+            `/ai-quiz?title=${encodeURIComponent(title)}&count=${questionCount}`,
             {
               method: "GET",
               headers: {
@@ -820,10 +506,7 @@
             }
           );
 
-          console.log("Response status:", response.status);
-
           if (response.status === 401) {
-            // Clear token and redirect to login
             localStorage.removeItem("token");
             alert("Session expired. Please log in again.");
             window.location.href = "/login";
@@ -831,71 +514,47 @@
           }
 
           const data = await response.json();
-          console.log("Response data:", data);
 
           if (data.success) {
             currentAIQuiz = data.quiz;
             userAnswers = {};
-            loadingContainer.style.display = "none";
+            loadingContainer.classList.add("hidden");
             displayAIQuiz();
           } else {
-            const errorMessage =
-              data.error ||
-              data.message ||
-              "Failed to generate quiz. Please try again.";
-            alert(
-              `Error: ${errorMessage}\n\nIf this persists, please try a different topic or try again later.`
-            );
-            console.error("Quiz generation error:", data);
-            // Reset form state
+            const errorMessage = data.error || data.message || "Failed to generate quiz. Please try again.";
+            alert(`Error: ${errorMessage}`);
             document.getElementById("aiQuizForm").style.display = "block";
-            loadingContainer.style.display = "none";
+            loadingContainer.classList.add("hidden");
             generateBtn.disabled = false;
           }
         } catch (error) {
           console.error("Error starting AI quiz:", error);
-          alert(
-            "Error connecting to the server. Please check your internet connection and try again."
-          );
-          // Reset form state
+          alert("Error connecting to the server. Please check your internet connection and try again.");
           document.getElementById("aiQuizForm").style.display = "block";
-          loadingContainer.style.display = "none";
+          loadingContainer.classList.add("hidden");
           generateBtn.disabled = false;
         }
       }
 
       function displayAIQuiz() {
         const container = document.getElementById("aiQuizQuestions");
-        container.style.display = "block";
+        container.classList.remove("hidden");
         container.innerHTML = "";
 
         currentAIQuiz.forEach((question, index) => {
           const questionDiv = document.createElement("div");
-          questionDiv.className = "quiz-history-item";
-          questionDiv.style.marginBottom = "2rem";
-          questionDiv.style.padding = "1.5rem";
-          questionDiv.style.backgroundColor = "#f8fafc";
-          questionDiv.style.borderRadius = "10px";
-
+          questionDiv.className = "p-6 bg-dark-700/50 rounded-xl border border-dark-600";
           questionDiv.innerHTML = `
-            <h4 style="margin-bottom: 1rem; color: #1e293b;">Question ${
-              index + 1
-            }: ${question.question}</h4>
-            <div class="options" style="display: flex; flex-direction: column; gap: 0.5rem;">
-              ${question.options
-                .map(
-                  (option, i) => `
-                <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; 
-                           background: white; border-radius: 8px; cursor: pointer;
-                           transition: background-color 0.3s ease;">
+            <h4 class="text-lg font-semibold text-white mb-4">Question ${index + 1}: ${question.question}</h4>
+            <div class="space-y-3">
+              ${question.options.map((option, i) => `
+                <label class="flex items-center p-3 bg-dark-600/50 hover:bg-dark-500/50 rounded-lg cursor-pointer transition-colors duration-200">
                   <input type="radio" name="q${index}" value="${option}" 
                          onchange="updateAnswer(${index}, '${option}')"
-                         style="margin: 0;">
-                  ${option}
+                         class="w-4 h-4 text-primary-500 bg-dark-700 border-dark-500 focus:ring-primary-500 focus:ring-2 mr-3">
+                  <span class="text-white">${option}</span>
                 </label>
-              `
-                )
-                .join("")}
+              `).join("")}
             </div>
           `;
           container.appendChild(questionDiv);
@@ -903,9 +562,8 @@
 
         // Add submit button
         const submitButton = document.createElement("button");
-        submitButton.className = "btn btn-primary";
-        submitButton.style.marginTop = "2rem";
-        submitButton.textContent = "Submit Quiz";
+        submitButton.className = "w-full py-4 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 mt-6";
+        submitButton.innerHTML = '<span class="material-symbols-outlined mr-2">check_circle</span>Submit Quiz';
         submitButton.onclick = calculateAIQuizScore;
         container.appendChild(submitButton);
       }
@@ -918,58 +576,46 @@
         let correctAnswers = 0;
         const totalQuestions = currentAIQuiz.length;
         const resultsContainer = document.getElementById("aiQuizResults");
-        resultsContainer.style.display = "block";
+        
+        resultsContainer.classList.remove("hidden");
         resultsContainer.innerHTML = `
-          <h3>Quiz Results</h3>
-          <div class="results-summary">
-            <div class="score-display">
-              <span class="score-label">Your Score:</span>
-              <span id="aiQuizScore" class="score-value">0/${totalQuestions}</span>
+          <div class="text-center mb-8">
+            <h3 class="text-2xl font-bold gradient-text mb-4">Quiz Results</h3>
+            <div class="inline-flex items-center justify-center w-32 h-32 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full mb-4">
+              <div class="text-3xl font-bold text-white" id="aiQuizScore">0/${totalQuestions}</div>
             </div>
           </div>
-          <div class="detailed-results">
-            ${currentAIQuiz
-              .map((question, index) => {
-                const userAnswer = userAnswers[index] || "Not answered";
-                const isCorrect = userAnswer === question.correctAnswer;
-                if (isCorrect) correctAnswers++;
-                return `
-                <div class="question-result ${
-                  isCorrect ? "correct" : "incorrect"
-                }">
-                  <h4>Question ${index + 1}: ${question.question}</h4>
-                  <div class="answer-details">
-                    <p><strong>Your Answer:</strong> <span class="${
-                      isCorrect ? "correct-answer" : "wrong-answer"
-                    }">${userAnswer}</span></p>
-                    <p><strong>Correct Answer:</strong> <span class="correct-answer">${
-                      question.correctAnswer
-                    }</span></p>
+          <div class="space-y-4">
+            ${currentAIQuiz.map((question, index) => {
+              const userAnswer = userAnswers[index] || "Not answered";
+              const isCorrect = userAnswer === question.correctAnswer;
+              if (isCorrect) correctAnswers++;
+              return `
+                <div class="p-4 bg-dark-700/50 rounded-xl border-l-4 ${isCorrect ? 'border-green-500' : 'border-red-500'}">
+                  <h4 class="font-semibold text-white mb-2">Question ${index + 1}: ${question.question}</h4>
+                  <div class="space-y-1 text-sm">
+                    <p><span class="text-dark-300">Your Answer:</span> <span class="${isCorrect ? 'text-green-400' : 'text-red-400'} font-medium">${userAnswer}</span></p>
+                    <p><span class="text-dark-300">Correct Answer:</span> <span class="text-green-400 font-medium">${question.correctAnswer}</span></p>
                   </div>
                 </div>
               `;
-              })
-              .join("")}
+            }).join("")}
           </div>
-          <button onclick="submitAIQuizScore()" class="btn btn-primary">
+          <button onclick="submitAIQuizScore()" class="w-full py-4 bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 text-white rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 mt-6">
+            <span class="material-symbols-outlined mr-2">save</span>
             Submit Score
           </button>
         `;
-        document.getElementById(
-          "aiQuizScore"
-        ).textContent = `${correctAnswers}/${totalQuestions}`;
+        
+        document.getElementById("aiQuizScore").textContent = `${correctAnswers}/${totalQuestions}`;
         document.getElementById("aiQuizQuestions").style.display = "none";
       }
 
       async function submitAIQuizScore() {
         try {
           const scoreText = document.getElementById("aiQuizScore").textContent;
-          const [correctAnswers, totalQuestions] = scoreText
-            .split("/")
-            .map((num) => parseInt(num));
-          const percentage = Math.round(
-            (correctAnswers / totalQuestions) * 100
-          );
+          const [correctAnswers, totalQuestions] = scoreText.split("/").map(num => parseInt(num));
+          const percentage = Math.round((correctAnswers / totalQuestions) * 100);
 
           const response = await fetch("/ai-quiz/marks", {
             method: "POST",
@@ -983,7 +629,6 @@
           if (data.success) {
             alert(data.message);
             closeAIQuizModal();
-            // Refresh the page to show updated results
             window.location.reload();
           } else {
             alert("Failed to submit score. Please try again.");
@@ -995,8 +640,21 @@
       }
 
       function closeAIQuizModal() {
-        document.getElementById("aiQuizModal").style.display = "none";
+        document.getElementById("aiQuizModal").classList.add("hidden");
       }
+
+      // Close modals when clicking outside
+      window.onclick = function (event) {
+        const aiModal = document.getElementById("aiQuizModal");
+        const historyModal = document.getElementById("quizHistoryModal");
+        
+        if (event.target == aiModal) {
+          aiModal.classList.add("hidden");
+        }
+        if (event.target == historyModal) {
+          historyModal.classList.add("hidden");
+        }
+      };
     </script>
   </body>
 </html>

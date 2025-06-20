@@ -4,356 +4,330 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quizify - Interactive Learning Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
       rel="stylesheet"
     />
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'inter': ['Inter', 'sans-serif'],
+            },
+            colors: {
+              primary: {
+                50: '#f0f9ff',
+                100: '#e0f2fe',
+                200: '#bae6fd',
+                300: '#7dd3fc',
+                400: '#38bdf8',
+                500: '#0ea5e9',
+                600: '#0284c7',
+                700: '#0369a1',
+                800: '#075985',
+                900: '#0c4a6e',
+              },
+              secondary: {
+                50: '#fdf4ff',
+                100: '#fae8ff',
+                200: '#f5d0fe',
+                300: '#f0abfc',
+                400: '#e879f9',
+                500: '#d946ef',
+                600: '#c026d3',
+                700: '#a21caf',
+                800: '#86198f',
+                900: '#701a75',
+              },
+              dark: {
+                50: '#f8fafc',
+                100: '#f1f5f9',
+                200: '#e2e8f0',
+                300: '#cbd5e1',
+                400: '#94a3b8',
+                500: '#64748b',
+                600: '#475569',
+                700: '#334155',
+                800: '#1e293b',
+                900: '#0f172a',
+              }
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.5s ease-out',
+              'slide-up': 'slideUp 0.6s ease-out',
+              'bounce-gentle': 'bounceGentle 2s infinite',
+              'glow': 'glow 2s ease-in-out infinite alternate',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0', transform: 'translateY(10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              slideUp: {
+                '0%': { opacity: '0', transform: 'translateY(30px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              bounceGentle: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-10px)' },
+              },
+              glow: {
+                '0%': { boxShadow: '0 0 20px rgba(14, 165, 233, 0.5)' },
+                '100%': { boxShadow: '0 0 30px rgba(14, 165, 233, 0.8)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
     <style>
-      :root {
-        --primary-color: #6366f1;
-        --secondary-color: #8b5cf6;
-        --accent-color: #3b82f6;
-        --text-color: #1e293b;
-        --light-bg: #f8fafc;
-      }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Poppins", sans-serif;
-      }
-
       body {
-        background-color: var(--light-bg);
-        color: var(--text-color);
+        font-family: 'Inter', sans-serif;
       }
-
-      .navbar {
-        background-color: white;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        padding: 1rem 2rem;
-      }
-
-      .logo {
-        font-size: 2rem;
-        font-weight: 700;
-        background: linear-gradient(
-          135deg,
-          var(--primary-color),
-          var(--secondary-color)
-        );
+      .gradient-text {
+        background: linear-gradient(135deg, #0ea5e9, #d946ef);
         -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
         background-clip: text;
-        color: transparent;
-        letter-spacing: -1px;
-        margin: 0;
       }
-
-      .nav-btn {
-        background: linear-gradient(
-          135deg,
-          var(--primary-color),
-          var(--secondary-color)
-        );
-        color: white;
-        padding: 0.5rem 1.5rem;
-        border-radius: 25px;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        border: none;
-        font-weight: 500;
-      }
-
-      .nav-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
-        color: white;
-      }
-
-      .hero-section {
-        background: linear-gradient(
-          135deg,
-          var(--primary-color),
-          var(--secondary-color)
-        );
-        color: white;
-        padding: 5rem 0;
-        text-align: center;
-        margin-bottom: 4rem;
-      }
-
-      .hero-title {
-        font-size: 3.5rem;
-        font-weight: 700;
-        margin-bottom: 1.5rem;
-      }
-
-      .hero-subtitle {
-        font-size: 1.5rem;
-        margin-bottom: 2rem;
-        opacity: 0.9;
-      }
-
-      .feature-section {
-        padding: 4rem 0;
-      }
-
-      .feature-card {
-        background: white;
-        border-radius: 15px;
-        padding: 2.5rem;
-        margin: 1rem;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-        height: 100%;
-        border: 1px solid rgba(0, 0, 0, 0.05);
-      }
-
-      .feature-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-      }
-
-      .feature-icon {
-        font-size: 2.5rem;
-        margin-bottom: 1.5rem;
-        color: var(--primary-color);
-      }
-
-      .feature-title {
-        font-size: 1.5rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-        color: var(--text-color);
-      }
-
-      .feature-text {
-        color: #64748b;
-        line-height: 1.6;
-      }
-
-      .about-section {
-        background: linear-gradient(
-          135deg,
-          var(--secondary-color),
-          var(--primary-color)
-        );
-        color: white;
-        padding: 4rem 0;
-        margin-top: 4rem;
-      }
-
-      .about-content {
-        max-width: 800px;
-        margin: 0 auto;
-        text-align: center;
-      }
-
-      .about-title {
-        font-size: 2.5rem;
-        font-weight: 700;
-        margin-bottom: 2rem;
-      }
-
-      .about-text {
-        font-size: 1.1rem;
-        line-height: 1.8;
-        margin-bottom: 1.5rem;
-        opacity: 0.9;
-      }
-
-      @media (max-width: 768px) {
-        .hero-title {
-          font-size: 2.5rem;
-        }
-
-        .hero-subtitle {
-          font-size: 1.2rem;
-        }
-
-        .feature-card {
-          padding: 2rem;
-        }
+      .glass-effect {
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
       }
     </style>
   </head>
-  <body>
+  <body class="dark bg-dark-900 text-white transition-colors duration-300">
+    <!-- Theme Toggle Script -->
+    <script>
+      // Initialize theme
+      const theme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+      
+      function toggleTheme() {
+        const isDark = document.documentElement.classList.contains('dark');
+        document.documentElement.classList.toggle('dark', !isDark);
+        localStorage.setItem('theme', isDark ? 'light' : 'dark');
+      }
+    </script>
+
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg">
-      <div class="container">
-        <a class="navbar-brand" href="/">
-          <h3 class="logo">QUIZIFY</h3>
-        </a>
-        <div class="ms-auto">
-          <a href="/signup" class="nav-btn" style="margin-right: 1rem"
-            >Sign Up</a
-          >
-          <a href="/login" class="nav-btn">Login</a>
+    <nav class="fixed top-0 w-full z-50 glass-effect bg-dark-800/80 border-b border-dark-700">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-2">
+              <div class="w-8 h-8 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
+                <span class="material-symbols-outlined text-white text-lg">quiz</span>
+              </div>
+              <h1 class="text-2xl font-bold gradient-text">QUIZIFY</h1>
+            </div>
+          </div>
+          
+          <div class="flex items-center space-x-4">
+            <!-- Theme Toggle -->
+            <button 
+              onclick="toggleTheme()" 
+              class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors duration-200"
+              aria-label="Toggle theme"
+            >
+              <span class="material-symbols-outlined dark:hidden">dark_mode</span>
+              <span class="material-symbols-outlined hidden dark:block">light_mode</span>
+            </button>
+            
+            <a href="/signup" 
+               class="px-4 py-2 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white rounded-lg font-medium transition-all duration-200 transform hover:scale-105">
+              Sign Up
+            </a>
+            <a href="/login" 
+               class="px-4 py-2 bg-dark-700 hover:bg-dark-600 text-white rounded-lg font-medium transition-colors duration-200">
+              Login
+            </a>
+          </div>
         </div>
       </div>
     </nav>
 
     <!-- Hero Section -->
-    <section class="hero-section">
-      <div class="container">
-        <h1 class="hero-title">Welcome to Quizify</h1>
-        <p class="hero-subtitle">Your Interactive Learning Platform</p>
-        <p class="hero-subtitle" style="font-size: 1.2rem">
-          Engage, Learn, and Excel with our comprehensive quiz system
-        </p>
-      </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="feature-section">
-      <div class="container">
-        <h2
-          class="text-center mb-5"
-          style="color: var(--text-color); font-size: 2.5rem"
-        >
-          Why Choose Quizify?
-        </h2>
-        <div class="row">
-          <div class="col-md-4">
-            <div class="feature-card text-center">
-              <div class="feature-icon">📚</div>
-              <h3 class="feature-title">Interactive Learning</h3>
-              <p class="feature-text">
-                Engage with dynamic quizzes that make learning fun and
-                effective.
-              </p>
+    <section class="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center animate-fade-in">
+          <div class="mb-8">
+            <div class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary-500/20 to-secondary-500/20 rounded-full border border-primary-500/30 mb-6">
+              <span class="material-symbols-outlined text-primary-400 mr-2">auto_awesome</span>
+              <span class="text-sm font-medium text-primary-300">AI-Powered Learning Platform</span>
             </div>
           </div>
-          <div class="col-md-4">
-            <div class="feature-card text-center">
-              <div class="feature-icon">📊</div>
-              <h3 class="feature-title">Real-time Analytics</h3>
-              <p class="feature-text">
-                Track your progress with detailed performance analytics.
-              </p>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="feature-card text-center">
-              <div class="feature-icon">🎯</div>
-              <h3 class="feature-title">Personalized Experience</h3>
-              <p class="feature-text">
-                Customized quizzes tailored to your learning needs.
-              </p>
-            </div>
+          
+          <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-slide-up">
+            Master Knowledge with
+            <span class="gradient-text block mt-2">Interactive Quizzes</span>
+          </h1>
+          
+          <p class="text-xl md:text-2xl text-dark-300 mb-8 max-w-3xl mx-auto animate-slide-up" style="animation-delay: 0.2s;">
+            Engage, learn, and excel with our comprehensive quiz system designed for modern learners
+          </p>
+          
+          <div class="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up" style="animation-delay: 0.4s;">
+            <a href="/signup" 
+               class="px-8 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 text-white rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 animate-glow">
+              Get Started Free
+            </a>
+            <a href="/login" 
+               class="px-8 py-4 bg-dark-700 hover:bg-dark-600 text-white rounded-xl font-semibold text-lg transition-colors duration-200 border border-dark-600">
+              Sign In
+            </a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- About Section -->
-    <section class="about-section">
-      <div class="container">
-        <div class="about-content">
-          <h2 class="about-title">About Us</h2>
-          <p class="about-text">
-            Quizify is dedicated to revolutionizing the way people learn and
-            assess their knowledge. Our platform provides an engaging and
-            interactive environment for both students and educators.
+    <!-- Features Section -->
+    <section class="py-20 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+          <h2 class="text-4xl md:text-5xl font-bold mb-6">
+            Why Choose <span class="gradient-text">Quizify?</span>
+          </h2>
+          <p class="text-xl text-dark-300 max-w-2xl mx-auto">
+            Experience the future of learning with our cutting-edge features
           </p>
-          <p class="about-text">
-            We believe in making learning accessible, enjoyable, and effective
-            for everyone. Join us in our mission to transform education through
-            technology.
-          </p>
+        </div>
+        
+        <div class="grid md:grid-cols-3 gap-8">
+          <div class="group p-8 bg-dark-800 rounded-2xl border border-dark-700 hover:border-primary-500/50 transition-all duration-300 transform hover:-translate-y-2 animate-fade-in">
+            <div class="w-16 h-16 bg-gradient-to-r from-primary-500 to-primary-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <span class="material-symbols-outlined text-white text-2xl">psychology</span>
+            </div>
+            <h3 class="text-2xl font-bold mb-4 text-white">AI-Powered Learning</h3>
+            <p class="text-dark-300 leading-relaxed">
+              Generate custom quizzes on any topic using advanced AI technology for personalized learning experiences.
+            </p>
+          </div>
+          
+          <div class="group p-8 bg-dark-800 rounded-2xl border border-dark-700 hover:border-secondary-500/50 transition-all duration-300 transform hover:-translate-y-2 animate-fade-in" style="animation-delay: 0.1s;">
+            <div class="w-16 h-16 bg-gradient-to-r from-secondary-500 to-secondary-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <span class="material-symbols-outlined text-white text-2xl">analytics</span>
+            </div>
+            <h3 class="text-2xl font-bold mb-4 text-white">Real-time Analytics</h3>
+            <p class="text-dark-300 leading-relaxed">
+              Track your progress with detailed performance analytics and insights to optimize your learning journey.
+            </p>
+          </div>
+          
+          <div class="group p-8 bg-dark-800 rounded-2xl border border-dark-700 hover:border-primary-500/50 transition-all duration-300 transform hover:-translate-y-2 animate-fade-in" style="animation-delay: 0.2s;">
+            <div class="w-16 h-16 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+              <span class="material-symbols-outlined text-white text-2xl">devices</span>
+            </div>
+            <h3 class="text-2xl font-bold mb-4 text-white">Cross-Platform</h3>
+            <p class="text-dark-300 leading-relaxed">
+              Access your quizzes anywhere, anytime with our responsive design that works on all devices.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-primary-900/20 to-secondary-900/20">
+      <div class="max-w-7xl mx-auto">
+        <div class="grid md:grid-cols-4 gap-8 text-center">
+          <div class="animate-fade-in">
+            <div class="text-4xl md:text-5xl font-bold gradient-text mb-2">10K+</div>
+            <div class="text-dark-300 font-medium">Active Users</div>
+          </div>
+          <div class="animate-fade-in" style="animation-delay: 0.1s;">
+            <div class="text-4xl md:text-5xl font-bold gradient-text mb-2">50K+</div>
+            <div class="text-dark-300 font-medium">Quizzes Created</div>
+          </div>
+          <div class="animate-fade-in" style="animation-delay: 0.2s;">
+            <div class="text-4xl md:text-5xl font-bold gradient-text mb-2">95%</div>
+            <div class="text-dark-300 font-medium">Success Rate</div>
+          </div>
+          <div class="animate-fade-in" style="animation-delay: 0.3s;">
+            <div class="text-4xl md:text-5xl font-bold gradient-text mb-2">24/7</div>
+            <div class="text-dark-300 font-medium">Support</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-4xl md:text-5xl font-bold mb-6 animate-fade-in">
+          Ready to Transform Your Learning?
+        </h2>
+        <p class="text-xl text-dark-300 mb-8 animate-fade-in" style="animation-delay: 0.1s;">
+          Join thousands of learners who have already discovered the power of interactive quizzes
+        </p>
+        <div class="animate-fade-in" style="animation-delay: 0.2s;">
+          <a href="/signup" 
+             class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 text-white rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 animate-glow">
+            <span class="material-symbols-outlined mr-2">rocket_launch</span>
+            Start Learning Today
+          </a>
         </div>
       </div>
     </section>
 
     <!-- Footer -->
-    <footer
-      style="
-        background: linear-gradient(
-          135deg,
-          var(--primary-color),
-          var(--secondary-color)
-        );
-        color: white;
-        padding: 2rem 0;
-        margin-top: 4rem;
-      "
-    >
-      <div
-        style="
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 0 2rem;
-        "
-      >
-        <div
-          style="
-            font-size: 1.5rem;
-            font-weight: 700;
-            background: white;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-          "
-        >
-          QUIZIFY
+    <footer class="py-12 px-4 sm:px-6 lg:px-8 bg-dark-800 border-t border-dark-700">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <div class="flex items-center space-x-2 mb-4 md:mb-0">
+            <div class="w-8 h-8 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
+              <span class="material-symbols-outlined text-white text-lg">quiz</span>
+            </div>
+            <span class="text-2xl font-bold gradient-text">QUIZIFY</span>
+          </div>
+          
+          <div class="flex flex-wrap justify-center gap-6 text-sm">
+            <div class="px-4 py-2 bg-dark-700 rounded-lg">23CE043</div>
+            <div class="px-4 py-2 bg-dark-700 rounded-lg">23CE028</div>
+            <div class="px-4 py-2 bg-dark-700 rounded-lg">23CE031</div>
+            <div class="px-4 py-2 bg-dark-700 rounded-lg">23CE024</div>
+          </div>
         </div>
-        <div style="display: flex; gap: 1.5rem">
-          <div
-            style="
-              background: rgba(255, 255, 255, 0.1);
-              padding: 0.5rem 1rem;
-              border-radius: 20px;
-              font-size: 0.9rem;
-              transition: all 0.3s ease;
-            "
-          >
-            23CE043
-          </div>
-          <div
-            style="
-              background: rgba(255, 255, 255, 0.1);
-              padding: 0.5rem 1rem;
-              border-radius: 20px;
-              font-size: 0.9rem;
-              transition: all 0.3s ease;
-            "
-          >
-            23CE028
-          </div>
-          <div
-            style="
-              background: rgba(255, 255, 255, 0.1);
-              font-size: 0.9rem;
-              padding: 0.5rem 1rem;
-              border-radius: 20px;
-              transition: all 0.3s ease;
-            "
-          >
-            23CE031
-          </div>
-          <div
-            style="
-              background: rgba(255, 255, 255, 0.1);
-              padding: 0.5rem 1rem;
-              border-radius: 20px;
-              font-size: 0.9rem;
-              transition: all 0.3s ease;
-            "
-          >
-            23CE024
-          </div>
+        
+        <div class="mt-8 pt-8 border-t border-dark-700 text-center text-dark-400">
+          <p>&copy; 2024 Quizify. All rights reserved.</p>
         </div>
       </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Add scroll animations
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, observerOptions);
+
+      // Observe all animated elements
+      document.addEventListener('DOMContentLoaded', () => {
+        const animatedElements = document.querySelectorAll('.animate-fade-in, .animate-slide-up');
+        animatedElements.forEach(el => {
+          el.style.opacity = '0';
+          el.style.transform = 'translateY(20px)';
+          el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+          observer.observe(el);
+        });
+      });
+    </script>
   </body>
 </html>

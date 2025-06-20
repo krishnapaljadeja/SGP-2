@@ -4,246 +4,289 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>QuiziFY - Sign Up</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <link
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
       rel="stylesheet"
     />
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'inter': ['Inter', 'sans-serif'],
+            },
+            colors: {
+              primary: {
+                50: '#f0f9ff',
+                500: '#0ea5e9',
+                600: '#0284c7',
+                700: '#0369a1',
+              },
+              secondary: {
+                500: '#d946ef',
+                600: '#c026d3',
+              },
+              dark: {
+                50: '#f8fafc',
+                300: '#cbd5e1',
+                400: '#94a3b8',
+                500: '#64748b',
+                600: '#475569',
+                700: '#334155',
+                800: '#1e293b',
+                900: '#0f172a',
+              }
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.5s ease-out',
+              'slide-up': 'slideUp 0.6s ease-out',
+              'float': 'float 3s ease-in-out infinite',
+              'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0', transform: 'translateY(10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              slideUp: {
+                '0%': { opacity: '0', transform: 'translateY(30px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0px)' },
+                '50%': { transform: 'translateY(-10px)' },
+              },
+              pulseGlow: {
+                '0%, 100%': { boxShadow: '0 0 20px rgba(14, 165, 233, 0.3)' },
+                '50%': { boxShadow: '0 0 40px rgba(14, 165, 233, 0.6)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
     <style>
-      :root {
-        --primary-gradient: linear-gradient(135deg, #6366f1, #8b5cf6);
-        --secondary-gradient: linear-gradient(135deg, #3b82f6, #2dd4bf);
-        --background-gradient: linear-gradient(135deg, #f8fafc, #e2e8f0);
-        --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        --hover-transform: translateY(-5px);
-      }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Poppins", sans-serif;
-      }
-
       body {
-        background: url("/assets/blob-scene-haikei.svg") no-repeat center center
-          fixed;
-        background-size: cover;
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #1e293b;
+        font-family: 'Inter', sans-serif;
       }
-
-      .signup-container {
-        width: 100%;
-        max-width: 420px;
-        padding: 2rem;
-      }
-
-      .signup-card {
-        background: rgba(255, 255, 255, 0.15);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border-radius: 20px;
-        padding: 2.5rem;
-        box-shadow: var(--card-shadow);
-        transition: all 0.3s ease;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        animation: fadeInScale 0.5s ease-out;
-      }
-
-      .signup-card:hover {
-        transform: var(--hover-transform);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-      }
-
-      .logo {
-        font-size: 2.5rem;
-        font-weight: 700;
-        background: var(--primary-gradient);
+      .gradient-text {
+        background: linear-gradient(135deg, #0ea5e9, #d946ef);
         -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
         background-clip: text;
-        color: transparent;
-        letter-spacing: -1px;
-        text-align: center;
-        margin-bottom: 2rem;
       }
-
-      .title {
-        font-size: 1.5rem;
-        font-weight: 600;
-        text-align: center;
-        margin-bottom: 2rem;
-        color: #f6f8fa;
+      .glass-effect {
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
       }
-
-      .input-group {
-        position: relative;
-        margin-bottom: 1.5rem;
-      }
-
-      .input-group input {
-        width: 100%;
-        padding: 1rem 3rem 1rem 1rem;
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        background: #f8fafc;
-        font-size: 1rem;
-        transition: all 0.3s ease;
-        color: #1e293b;
-      }
-
-      .input-group input:focus {
-        outline: none;
-        border-color: #6366f1;
-        background: white;
-        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
-      }
-
-      .input-group label {
+      .floating-shapes {
         position: absolute;
-        left: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        background: #f8fafc;
-        padding: 0 0.25rem;
-        color: #64748b;
-        transition: 0.3s ease;
-        pointer-events: none;
-        font-size: 1rem;
-      }
-
-      .input-group input:focus + label,
-      .input-group input:not(:placeholder-shown) + label {
-        top: -0.6rem;
-        left: 0.75rem;
-        font-size: 0.75rem;
-        background: white;
-      }
-
-      .input-group .material-symbols-outlined {
-        position: absolute;
-        right: 1rem;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #64748b;
-        cursor: pointer;
-      }
-
-      .signup-btn {
         width: 100%;
-        padding: 1rem;
-        border: none;
-        border-radius: 12px;
-        background: var(--primary-gradient);
-        color: white;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        margin-bottom: 1.5rem;
-        font-size: 1rem;
+        height: 100%;
+        overflow: hidden;
+        z-index: 0;
       }
-
-      .signup-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+      .shape {
+        position: absolute;
+        opacity: 0.1;
+        animation: float 6s ease-in-out infinite;
       }
-
-      .login-text {
-        text-align: center;
-        color: #f0f1f4;
+      .shape:nth-child(1) {
+        top: 15%;
+        left: 15%;
+        animation-delay: 0s;
       }
-
-      .login-link {
-        color: #6366f1;
-        text-decoration: none;
-        font-weight: 600;
-        transition: color 0.3s ease;
+      .shape:nth-child(2) {
+        top: 70%;
+        right: 15%;
+        animation-delay: 2s;
       }
-
-      .login-link:hover {
-        color: #818cf8;
+      .shape:nth-child(3) {
+        bottom: 15%;
+        left: 25%;
+        animation-delay: 4s;
       }
-
-      @keyframes fadeInScale {
-        from {
-          opacity: 0;
-          transform: scale(0.95);
-        }
-        to {
-          opacity: 1;
-          transform: scale(1);
-        }
-      }
-
-      @media (max-width: 480px) {
-        .signup-container {
-          padding: 1rem;
-        }
-
-        .signup-card {
-          padding: 2rem;
-        }
-
-        .logo {
-          font-size: 2rem;
-        }
+      .shape:nth-child(4) {
+        top: 40%;
+        right: 30%;
+        animation-delay: 1s;
       }
     </style>
   </head>
-  <body>
-    <div class="signup-container">
-      <form action="/signup" method="post" class="signup-card">
-        <h1 class="logo">QUIZIFY</h1>
-        <h2 class="title">Create Account</h2>
+  <body class="dark bg-dark-900 text-white min-h-screen flex items-center justify-center relative overflow-hidden">
+    <!-- Theme Toggle Script -->
+    <script>
+      const theme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+      
+      function toggleTheme() {
+        const isDark = document.documentElement.classList.contains('dark');
+        document.documentElement.classList.toggle('dark', !isDark);
+        localStorage.setItem('theme', isDark ? 'light' : 'dark');
+      }
+    </script>
 
-        <div class="input-group">
-          <input type="text" name="username" placeholder=" " required />
-          <label>Username</label>
+    <!-- Floating Background Shapes -->
+    <div class="floating-shapes">
+      <div class="shape w-32 h-32 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full"></div>
+      <div class="shape w-24 h-24 bg-gradient-to-r from-secondary-500 to-primary-500 rounded-full"></div>
+      <div class="shape w-40 h-40 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full"></div>
+      <div class="shape w-28 h-28 bg-gradient-to-r from-secondary-500 to-primary-500 rounded-full"></div>
+    </div>
+
+    <!-- Theme Toggle Button -->
+    <button 
+      onclick="toggleTheme()" 
+      class="fixed top-6 right-6 z-50 p-3 rounded-full glass-effect bg-dark-800/50 hover:bg-dark-700/50 transition-all duration-200 border border-dark-600"
+      aria-label="Toggle theme"
+    >
+      <span class="material-symbols-outlined dark:hidden text-dark-300">dark_mode</span>
+      <span class="material-symbols-outlined hidden dark:block text-white">light_mode</span>
+    </button>
+
+    <!-- Main Content -->
+    <div class="relative z-10 w-full max-w-md mx-auto p-6">
+      <div class="glass-effect bg-dark-800/30 backdrop-blur-xl rounded-3xl p-8 border border-dark-700/50 shadow-2xl animate-fade-in">
+        <!-- Logo and Header -->
+        <div class="text-center mb-8">
+          <div class="flex items-center justify-center space-x-3 mb-4">
+            <div class="w-12 h-12 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-2xl flex items-center justify-center animate-float">
+              <span class="material-symbols-outlined text-white text-2xl">quiz</span>
+            </div>
+            <h1 class="text-3xl font-bold gradient-text">QUIZIFY</h1>
+          </div>
+          <h2 class="text-2xl font-semibold text-white mb-2">Create Account</h2>
+          <p class="text-dark-300">Join thousands of learners worldwide</p>
         </div>
 
-        <div class="input-group">
-          <input type="email" name="email" placeholder=" " required />
-          <label>Email</label>
-        </div>
+        <!-- Signup Form -->
+        <form action="/signup" method="post" class="space-y-6">
+          <!-- Username Field -->
+          <div class="relative group">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <span class="material-symbols-outlined text-dark-400 group-focus-within:text-primary-400 transition-colors duration-200">person</span>
+            </div>
+            <input 
+              type="text" 
+              name="username" 
+              id="username"
+              class="w-full pl-12 pr-4 py-4 bg-dark-700/50 border border-dark-600 rounded-xl text-white placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+              placeholder="Choose a username"
+              required 
+            />
+            <div class="absolute right-4 top-4 hidden" id="username-check">
+              <span class="material-symbols-outlined text-green-400">check_circle</span>
+            </div>
+          </div>
 
-        <div class="input-group">
-          <input
-            type="password"
-            name="password"
-            id="password"
-            placeholder=" "
-            required
-          />
-          <label>Password</label>
-          <span
-            class="material-symbols-outlined toggle-password"
-            onclick="togglePassword()"
-            >visibility_off</span
+          <!-- Email Field -->
+          <div class="relative group">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <span class="material-symbols-outlined text-dark-400 group-focus-within:text-primary-400 transition-colors duration-200">mail</span>
+            </div>
+            <input 
+              type="email" 
+              name="email" 
+              id="email"
+              class="w-full pl-12 pr-4 py-4 bg-dark-700/50 border border-dark-600 rounded-xl text-white placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+              placeholder="Enter your email"
+              required 
+            />
+            <div class="absolute right-4 top-4 hidden" id="email-check">
+              <span class="material-symbols-outlined text-green-400">check_circle</span>
+            </div>
+          </div>
+
+          <!-- Password Field -->
+          <div class="relative group">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <span class="material-symbols-outlined text-dark-400 group-focus-within:text-primary-400 transition-colors duration-200">lock</span>
+            </div>
+            <input 
+              type="password" 
+              name="password" 
+              id="password"
+              class="w-full pl-12 pr-12 py-4 bg-dark-700/50 border border-dark-600 rounded-xl text-white placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+              placeholder="Create a strong password"
+              required 
+            />
+            <button
+              type="button"
+              onclick="togglePassword()"
+              class="absolute inset-y-0 right-0 pr-4 flex items-center"
+            >
+              <span class="material-symbols-outlined text-dark-400 hover:text-primary-400 transition-colors duration-200" id="toggle-icon">visibility_off</span>
+            </button>
+          </div>
+
+          <!-- Password Strength Indicator -->
+          <div class="space-y-2">
+            <div class="flex space-x-1">
+              <div class="h-1 flex-1 bg-dark-600 rounded-full">
+                <div class="h-full bg-red-500 rounded-full transition-all duration-300" id="strength-bar" style="width: 0%"></div>
+              </div>
+            </div>
+            <p class="text-xs text-dark-400" id="strength-text">Password strength: Weak</p>
+          </div>
+
+          <!-- Terms and Conditions -->
+          <div class="flex items-start space-x-3">
+            <input 
+              type="checkbox" 
+              id="terms" 
+              required
+              class="mt-1 w-4 h-4 text-primary-500 bg-dark-700 border-dark-600 rounded focus:ring-primary-500 focus:ring-2"
+            />
+            <label for="terms" class="text-sm text-dark-300">
+              I agree to the 
+              <a href="#" class="text-primary-400 hover:text-primary-300 transition-colors duration-200">Terms of Service</a> 
+              and 
+              <a href="#" class="text-primary-400 hover:text-primary-300 transition-colors duration-200">Privacy Policy</a>
+            </label>
+          </div>
+
+          <!-- Signup Button -->
+          <button 
+            type="submit" 
+            class="w-full py-4 bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 text-white rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-dark-800 animate-pulse-glow"
           >
+            Create Account
+          </button>
+        </form>
+
+        <!-- Divider -->
+        <div class="my-8 flex items-center">
+          <div class="flex-1 border-t border-dark-600"></div>
+          <span class="px-4 text-dark-400 text-sm">or</span>
+          <div class="flex-1 border-t border-dark-600"></div>
         </div>
 
-        <button type="submit" class="signup-btn">Create Account</button>
-
-        <p class="login-text">
-          Already have an account?
-          <a href="/login" class="login-link">Login</a>
-        </p>
-        <p class="login-text" style="margin-top: 1rem">
-          <a href="/" class="login-link">← Back to Home</a>
-        </p>
-      </form>
+        <!-- Login Link -->
+        <div class="text-center space-y-4">
+          <p class="text-dark-300">
+            Already have an account?
+            <a href="/login" class="text-primary-400 hover:text-primary-300 font-semibold transition-colors duration-200 ml-1">
+              Sign In
+            </a>
+          </p>
+          <a href="/" class="inline-flex items-center text-dark-400 hover:text-white transition-colors duration-200">
+            <span class="material-symbols-outlined mr-2 text-lg">arrow_back</span>
+            Back to Home
+          </a>
+        </div>
+      </div>
     </div>
 
     <script>
       function togglePassword() {
         const passwordInput = document.getElementById("password");
-        const toggleIcon = document.querySelector(".toggle-password");
+        const toggleIcon = document.getElementById("toggle-icon");
         if (passwordInput.type === "password") {
           passwordInput.type = "text";
           toggleIcon.textContent = "visibility";
@@ -252,6 +295,77 @@
           toggleIcon.textContent = "visibility_off";
         }
       }
+
+      // Password strength checker
+      function checkPasswordStrength(password) {
+        let strength = 0;
+        const checks = [
+          /.{8,}/, // At least 8 characters
+          /[a-z]/, // Lowercase letter
+          /[A-Z]/, // Uppercase letter
+          /[0-9]/, // Number
+          /[^A-Za-z0-9]/ // Special character
+        ];
+
+        checks.forEach(check => {
+          if (check.test(password)) strength++;
+        });
+
+        return strength;
+      }
+
+      // Form validation and feedback
+      document.addEventListener('DOMContentLoaded', function() {
+        const passwordInput = document.getElementById('password');
+        const strengthBar = document.getElementById('strength-bar');
+        const strengthText = document.getElementById('strength-text');
+        const usernameInput = document.getElementById('username');
+        const emailInput = document.getElementById('email');
+
+        passwordInput.addEventListener('input', function() {
+          const password = this.value;
+          const strength = checkPasswordStrength(password);
+          
+          const colors = ['bg-red-500', 'bg-orange-500', 'bg-yellow-500', 'bg-blue-500', 'bg-green-500'];
+          const texts = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'];
+          const widths = ['20%', '40%', '60%', '80%', '100%'];
+
+          strengthBar.className = `h-full rounded-full transition-all duration-300 ${colors[strength] || 'bg-red-500'}`;
+          strengthBar.style.width = widths[strength] || '0%';
+          strengthText.textContent = `Password strength: ${texts[strength] || 'Very Weak'}`;
+        });
+
+        // Email validation
+        emailInput.addEventListener('blur', function() {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          const emailCheck = document.getElementById('email-check');
+          
+          if (emailRegex.test(this.value)) {
+            this.classList.add('border-green-500');
+            this.classList.remove('border-red-500');
+            emailCheck.classList.remove('hidden');
+          } else if (this.value) {
+            this.classList.add('border-red-500');
+            this.classList.remove('border-green-500');
+            emailCheck.classList.add('hidden');
+          }
+        });
+
+        // Username validation
+        usernameInput.addEventListener('blur', function() {
+          const usernameCheck = document.getElementById('username-check');
+          
+          if (this.value.length >= 3) {
+            this.classList.add('border-green-500');
+            this.classList.remove('border-red-500');
+            usernameCheck.classList.remove('hidden');
+          } else if (this.value) {
+            this.classList.add('border-red-500');
+            this.classList.remove('border-green-500');
+            usernameCheck.classList.add('hidden');
+          }
+        });
+      });
     </script>
   </body>
 </html>

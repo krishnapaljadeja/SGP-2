@@ -4,294 +4,291 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QuiziFY - Take Quiz</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              'inter': ['Inter', 'sans-serif'],
+            },
+            colors: {
+              primary: {
+                50: '#f0f9ff',
+                500: '#0ea5e9',
+                600: '#0284c7',
+                700: '#0369a1',
+              },
+              secondary: {
+                500: '#d946ef',
+                600: '#c026d3',
+              },
+              dark: {
+                50: '#f8fafc',
+                300: '#cbd5e1',
+                400: '#94a3b8',
+                500: '#64748b',
+                600: '#475569',
+                700: '#334155',
+                800: '#1e293b',
+                900: '#0f172a',
+              }
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.5s ease-out',
+              'slide-in': 'slideIn 0.3s ease-out',
+              'pulse-warning': 'pulseWarning 1s ease-in-out infinite',
+              'shake': 'shake 0.5s ease-in-out',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0', transform: 'translateY(10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              slideIn: {
+                '0%': { opacity: '0', transform: 'translateX(-20px)' },
+                '100%': { opacity: '1', transform: 'translateX(0)' },
+              },
+              pulseWarning: {
+                '0%, 100%': { boxShadow: '0 0 0 0 rgba(239, 68, 68, 0.7)' },
+                '50%': { boxShadow: '0 0 0 10px rgba(239, 68, 68, 0)' },
+              },
+              shake: {
+                '0%, 100%': { transform: 'translateX(0)' },
+                '25%': { transform: 'translateX(-5px)' },
+                '75%': { transform: 'translateX(5px)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
     <style>
-        :root {
-            --primary-gradient: linear-gradient(135deg, #6366f1, #8b5cf6);
-            --secondary-gradient: linear-gradient(135deg, #3b82f6, #2dd4bf);
-            --background-gradient: linear-gradient(135deg, #f8fafc, #e2e8f0);
-            --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            --hover-transform: translateY(-5px);
-        }
-
-        * {
-                margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-            }
-        body {
-            background: var(--background-gradient);
-                min-height: 100vh;
-            color: #1e293b;
-            }
-
-        .navbar {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            padding: 1rem 0;
-            }
-
-        .logo {
-            font-size: 2.5rem;
-            font-weight: 700;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: -1px;
-            }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            }
-
-        .main-content {
-            margin-top: 100px;
-            padding: 2rem 0;
-            }
-
-        .card {
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: var(--card-shadow);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            }
-
-        .question-card {
-            background: #f0f7ff;
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            transition: all 0.3s ease;
-            border: 1px solid #e5e7eb;
-            }
-
-        .question-number {
-            background: var(--primary-gradient);
-            color: white;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            font-weight: 600;
-            margin-right: 1rem;
-            }
-
-        .option-label {
-            display: block;
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 1rem;
-            margin: 0.5rem 0;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .option-label:hover {
-            border-color: #8b5cf6;
-            background: #f5f3ff;
-        }
-
-        .option-label input[type="radio"] {
-            margin-right: 0.5rem;
-        }
-
-        .timer {
-            background: #dbeafe;
-            color: #1e40af;
-            padding: 0.5rem 1rem;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-weight: 600;
-        }
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border-radius: 12px;
-            border: none;
-            font-weight: 500;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary {
-            background: var(--primary-gradient);
-            color: white;
-        }
-
-        .btn-submit {
-            background: #22c55e;
-            color: white;
-        }
-
-        .btn-submit:hover {
-            background: #16a34a;
-            transform: translateY(-2px);
-        }
-
-        .fade-in {
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        .logout-btn {
-        width: 100%;
-        padding: 1rem;
-        border: none;
-        border-radius: 12px;
-        background: linear-gradient(135deg, #ef4444, #dc2626); /* Red gradient */
-        color: white;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-size: 1rem;
-        box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
-    }
-
-    .logout-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(220, 38, 38, 0.4);
-        background: linear-gradient(135deg, #dc2626, #b91c1c);
-    }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .timer-container {
-            /* position: fixed; */
-            top: 20px;
-            right: 20px;
-            background: white;
-            padding: 10px 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 1000;
-        }
-
-        .timer {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #1e293b;
-        }
-
-        .timer.warning {
-            color: #f97316;
-        }
-
-        .timer.danger {
-            color: #ef4444;
-        }
-
-        .timer-icon {
-            color: #3b82f6;
-        }
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+      .gradient-text {
+        background: linear-gradient(135deg, #0ea5e9, #d946ef);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .glass-effect {
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+      }
+      .progress-bar {
+        transition: width 0.3s ease-in-out;
+      }
     </style>
 </head>
-    <body>
-    <nav class="navbar">
-        <div class="container">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h1 class="logo">QUIZIFY</h1>
-                <div style="display: flex; gap: 1rem; align-items: center;">
-                    <div class="timer-container">
-                        <span class="material-symbols-outlined timer-icon">timer</span>
-                        <div class="timer" id="timer"><%= quiz.time %>:00</div>
-                    </div>
-                    <!-- <button class="btn">
-                        <span class="material-symbols-outlined">person</span>
-                            </button> -->
-                            <form action="/logout" method="post">
-                                <button class="logout-btn">
-                                    Logout
-                                </button>
-                            </form>
-                            
-                        </div>
+<body class="dark bg-dark-900 text-white min-h-screen">
+    <!-- Theme Toggle Script -->
+    <script>
+      const theme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+      
+      function toggleTheme() {
+        const isDark = document.documentElement.classList.contains('dark');
+        document.documentElement.classList.toggle('dark', !isDark);
+        localStorage.setItem('theme', isDark ? 'light' : 'dark');
+      }
+    </script>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-effect bg-dark-800/80 border-b border-dark-700">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-2">
+              <div class="w-8 h-8 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
+                <span class="material-symbols-outlined text-white text-lg">quiz</span>
+              </div>
+              <h1 class="text-2xl font-bold gradient-text">QUIZIFY</h1>
             </div>
-                                </div>
+          </div>
+          
+          <div class="flex items-center space-x-4">
+            <!-- Timer -->
+            <div class="flex items-center space-x-2 px-4 py-2 bg-dark-700 rounded-lg border border-dark-600">
+              <span class="material-symbols-outlined text-primary-400" id="timer-icon">timer</span>
+              <div class="text-lg font-semibold" id="timer"><%= quiz.time %>:00</div>
+            </div>
+            
+            <!-- Theme Toggle -->
+            <button 
+              onclick="toggleTheme()" 
+              class="p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors duration-200"
+              aria-label="Toggle theme"
+            >
+              <span class="material-symbols-outlined dark:hidden">dark_mode</span>
+              <span class="material-symbols-outlined hidden dark:block">light_mode</span>
+            </button>
+            
+            <form action="/logout" method="post">
+              <button class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors duration-200">
+                Logout
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
     </nav>
 
-    
+    <!-- Main Content -->
+    <main class="pt-24 pb-8 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-4xl mx-auto">
+        <!-- Quiz Header -->
+        <div class="text-center mb-8 animate-fade-in">
+          <h1 class="text-3xl md:text-4xl font-bold mb-4">
+            <span class="gradient-text"><%= quiz.title %></span>
+          </h1>
+          
+          <!-- Progress Bar -->
+          <div class="w-full bg-dark-700 rounded-full h-3 mb-4">
+            <div class="bg-gradient-to-r from-primary-500 to-secondary-500 h-3 rounded-full progress-bar" 
+                 style="width: 0%" id="progress-bar"></div>
+          </div>
+          
+          <div class="flex justify-between text-sm text-dark-300">
+            <span>Question <span id="current-question">1</span> of <%= quiz.questions.length %></span>
+            <span id="progress-text">0% Complete</span>
+          </div>
+        </div>
 
-    <main class="main-content">
-        <div class="container">
-            <div class="card fade-in">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                    <h1 style="font-size: 1.8rem; font-weight: 600;"><%= quiz.title %></h1>
+        <!-- Quiz Form -->
+        <form id="quizForm" action="/startQuiz" method="post" class="space-y-8">
+          <input type="hidden" name="quizId" value="<%= quiz._id %>" />
+          <input type="hidden" name="timeTaken" id="timeTaken">
+          
+          <% quiz.questions.forEach(function(q, index) { %>
+            <div class="question-container <%= index === 0 ? '' : 'hidden' %>" data-question="<%= index %>">
+              <div class="glass-effect bg-dark-800/50 rounded-2xl p-8 border border-dark-700 animate-slide-in">
+                <!-- Question Header -->
+                <div class="flex items-start space-x-4 mb-6">
+                  <div class="flex-shrink-0 w-12 h-12 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center">
+                    <span class="text-white font-bold text-lg"><%= index + 1 %></span>
+                  </div>
+                  <div class="flex-1">
+                    <h2 class="text-xl md:text-2xl font-semibold text-white leading-relaxed">
+                      <%= q.question %>
+                    </h2>
+                  </div>
                 </div>
-                            
-                <form id="quizForm" action="/startQuiz" method="post">
-                    <input type="hidden" name="quizId" value="<%= quiz._id %>" />
-                    <input type="hidden" name="timeTaken" id="timeTaken">
-                    <% quiz.questions.forEach(function(q, index) { %>
-                        <div class="question-card">
-                            <div style="display: flex; align-items: center; margin-bottom: 1rem;">
-                                <div class="question-number"><%= index + 1 %></div>
-                                <h2 style="font-weight: 500; font-size: 1.1rem;"><%= q.question %></h2>
-                                            </div>
 
-                            <div style="display: grid; gap: 0.75rem;">
-                                <% q.options.forEach(function(option) { %>
-                                    <label class="option-label">
-                                        <input type="radio" name="answers[<%= q._id %>]" value="<%= option %>" required />
-                                        <%= option %>
-                                    </label>
-                                <% }); %>
-                            </div>
+                <!-- Options -->
+                <div class="grid gap-4">
+                  <% q.options.forEach(function(option, optionIndex) { %>
+                    <label class="option-label group cursor-pointer">
+                      <div class="flex items-center p-4 bg-dark-700/50 hover:bg-dark-600/50 border border-dark-600 hover:border-primary-500/50 rounded-xl transition-all duration-200 group-hover:transform group-hover:scale-[1.02]">
+                        <input 
+                          type="radio" 
+                          name="answers[<%= q._id %>]" 
+                          value="<%= option %>" 
+                          class="w-5 h-5 text-primary-500 bg-dark-700 border-dark-500 focus:ring-primary-500 focus:ring-2 mr-4"
+                          required 
+                          onchange="handleOptionSelect(this)"
+                        />
+                        <div class="flex items-center space-x-3 flex-1">
+                          <div class="w-8 h-8 bg-dark-600 rounded-lg flex items-center justify-center text-sm font-medium text-dark-300 group-hover:bg-primary-500 group-hover:text-white transition-colors duration-200">
+                            <%= String.fromCharCode(65 + optionIndex) %>
+                          </div>
+                          <span class="text-white font-medium"><%= option %></span>
                         </div>
-                    <% }); %>
+                      </div>
+                    </label>
+                  <% }); %>
+                </div>
 
-                    <div style="margin-top: 2rem;">
-                        <button type="submit" class="btn btn-submit">
-                            <span class="material-symbols-outlined">check_circle</span>
-                            Submit Quiz
-                        </button>
+                <!-- Navigation Buttons -->
+                <div class="flex justify-between items-center mt-8">
+                  <button 
+                    type="button" 
+                    onclick="previousQuestion()" 
+                    class="px-6 py-3 bg-dark-700 hover:bg-dark-600 text-white rounded-xl font-medium transition-colors duration-200 <%= index === 0 ? 'invisible' : '' %>"
+                  >
+                    <span class="material-symbols-outlined mr-2">arrow_back</span>
+                    Previous
+                  </button>
+                  
+                  <div class="flex space-x-4">
+                    <% if (index === quiz.questions.length - 1) { %>
+                      <button 
+                        type="submit" 
+                        class="px-8 py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-xl font-semibold transition-all duration-200 transform hover:scale-105"
+                      >
+                        <span class="material-symbols-outlined mr-2">check_circle</span>
+                        Submit Quiz
+                      </button>
+                    <% } else { %>
+                      <button 
+                        type="button" 
+                        onclick="nextQuestion()" 
+                        class="px-6 py-3 bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 text-white rounded-xl font-medium transition-all duration-200 transform hover:scale-105"
+                        disabled
+                        id="next-btn-<%= index %>"
+                      >
+                        Next
+                        <span class="material-symbols-outlined ml-2">arrow_forward</span>
+                      </button>
+                    <% } %>
+                  </div>
+                </div>
+              </div>
             </div>
-                </form>
+          <% }); %>
+        </form>
+
+        <!-- Question Navigation Dots -->
+        <div class="flex justify-center space-x-2 mt-8">
+          <% quiz.questions.forEach(function(q, index) { %>
+            <button 
+              type="button" 
+              onclick="goToQuestion(<%= index %>)"
+              class="w-3 h-3 rounded-full transition-all duration-200 question-dot <%= index === 0 ? 'bg-primary-500' : 'bg-dark-600' %>"
+              data-question="<%= index %>"
+            ></button>
+          <% }); %>
         </div>
-        </div>
+      </div>
     </main>
     
     <script>
         let timeLeft = <%= quiz.time %> * 60; // Convert minutes to seconds
         let timerInterval;
+        let currentQuestion = 0;
+        const totalQuestions = <%= quiz.questions.length %>;
+        const answeredQuestions = new Set();
+        
         const timerDisplay = document.getElementById('timer');
+        const timerIcon = document.getElementById('timer-icon');
         const timeTakenInput = document.getElementById('timeTaken');
         const quizForm = document.getElementById('quizForm');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const currentQuestionSpan = document.getElementById('current-question');
 
         function updateTimer() {
             const minutes = Math.floor(timeLeft / 60);
             const seconds = timeLeft % 60;
             timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
 
-            // Add warning class when time is running low
-            if (timeLeft <= 300) { // 5 minutes
-                timerDisplay.classList.add('warning');
-            }
-            if (timeLeft <= 60) { // 1 minute
-                timerDisplay.classList.add('danger');
+            // Add warning styles when time is running low
+            if (timeLeft <= 300 && timeLeft > 60) { // 5 minutes to 1 minute
+                timerDisplay.classList.add('text-yellow-400');
+                timerIcon.classList.add('text-yellow-400');
+            } else if (timeLeft <= 60) { // Last minute
+                timerDisplay.classList.add('text-red-400', 'animate-pulse-warning');
+                timerIcon.classList.add('text-red-400');
             }
 
             if (timeLeft <= 0) {
@@ -303,14 +300,131 @@
             timeLeft--;
         }
 
+        function updateProgress() {
+            const progress = (answeredQuestions.size / totalQuestions) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `${Math.round(progress)}% Complete`;
+        }
+
+        function updateQuestionIndicator() {
+            currentQuestionSpan.textContent = currentQuestion + 1;
+            
+            // Update dots
+            document.querySelectorAll('.question-dot').forEach((dot, index) => {
+                dot.classList.remove('bg-primary-500', 'bg-green-500', 'bg-dark-600');
+                if (index === currentQuestion) {
+                    dot.classList.add('bg-primary-500');
+                } else if (answeredQuestions.has(index)) {
+                    dot.classList.add('bg-green-500');
+                } else {
+                    dot.classList.add('bg-dark-600');
+                }
+            });
+        }
+
+        function showQuestion(questionIndex) {
+            // Hide all questions
+            document.querySelectorAll('.question-container').forEach(container => {
+                container.classList.add('hidden');
+            });
+            
+            // Show current question
+            const currentContainer = document.querySelector(`[data-question="${questionIndex}"]`);
+            currentContainer.classList.remove('hidden');
+            
+            currentQuestion = questionIndex;
+            updateQuestionIndicator();
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < totalQuestions - 1) {
+                showQuestion(currentQuestion + 1);
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                showQuestion(currentQuestion - 1);
+            }
+        }
+
+        function goToQuestion(questionIndex) {
+            showQuestion(questionIndex);
+        }
+
+        function handleOptionSelect(input) {
+            const questionIndex = parseInt(input.closest('.question-container').dataset.question);
+            answeredQuestions.add(questionIndex);
+            
+            // Enable next button for current question
+            const nextBtn = document.getElementById(`next-btn-${questionIndex}`);
+            if (nextBtn) {
+                nextBtn.disabled = false;
+                nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+            
+            updateProgress();
+            updateQuestionIndicator();
+            
+            // Add visual feedback
+            input.closest('.option-label').classList.add('animate-pulse');
+            setTimeout(() => {
+                input.closest('.option-label').classList.remove('animate-pulse');
+            }, 300);
+        }
+
         // Start the timer
         timerInterval = setInterval(updateTimer, 1000);
 
         // Update timeTaken when form is submitted
-        quizForm.addEventListener('submit', function() {
+        quizForm.addEventListener('submit', function(e) {
+            // Check if all questions are answered
+            if (answeredQuestions.size < totalQuestions) {
+                e.preventDefault();
+                
+                // Show warning
+                const unanswered = totalQuestions - answeredQuestions.size;
+                if (!confirm(`You have ${unanswered} unanswered question(s). Are you sure you want to submit?`)) {
+                    return;
+                }
+            }
+            
             clearInterval(timerInterval);
             const timeTaken = <%= quiz.time %> * 60 - timeLeft;
             timeTakenInput.value = Math.ceil(timeTaken / 60); // Convert to minutes
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' && currentQuestion < totalQuestions - 1) {
+                nextQuestion();
+            } else if (e.key === 'ArrowLeft' && currentQuestion > 0) {
+                previousQuestion();
+            } else if (e.key >= '1' && e.key <= '4') {
+                const optionIndex = parseInt(e.key) - 1;
+                const currentContainer = document.querySelector(`[data-question="${currentQuestion}"]`);
+                const options = currentContainer.querySelectorAll('input[type="radio"]');
+                if (options[optionIndex]) {
+                    options[optionIndex].checked = true;
+                    handleOptionSelect(options[optionIndex]);
+                }
+            }
+        });
+
+        // Initialize
+        updateProgress();
+        updateQuestionIndicator();
+        
+        // Auto-advance after selection (optional)
+        document.querySelectorAll('input[type="radio"]').forEach(input => {
+            input.addEventListener('change', function() {
+                setTimeout(() => {
+                    if (currentQuestion < totalQuestions - 1) {
+                        // Auto-advance after 1 second (optional)
+                        // nextQuestion();
+                    }
+                }, 1000);
+            });
         });
     </script>
 </body>
