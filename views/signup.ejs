@@ -119,17 +119,43 @@
       }
     </style>
   </head>
-  <body class="dark bg-dark-900 text-white min-h-screen flex items-center justify-center relative overflow-hidden">
+  <body class="bg-gray-50 dark:bg-dark-900 text-gray-900 dark:text-white min-h-screen flex items-center justify-center relative overflow-hidden transition-colors duration-300">
     <!-- Theme Toggle Script -->
     <script>
-      const theme = localStorage.getItem('theme') || 'dark';
-      document.documentElement.classList.toggle('dark', theme === 'dark');
+      function initializeTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        const theme = savedTheme || 'dark';
+        
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+          document.body.classList.add('dark');
+          document.body.className = 'bg-dark-900 text-white min-h-screen flex items-center justify-center relative overflow-hidden transition-colors duration-300';
+        } else {
+          document.documentElement.classList.remove('dark');
+          document.body.classList.remove('dark');
+          document.body.className = 'bg-gray-50 text-gray-900 min-h-screen flex items-center justify-center relative overflow-hidden transition-colors duration-300';
+        }
+        
+        localStorage.setItem('theme', theme);
+      }
       
       function toggleTheme() {
         const isDark = document.documentElement.classList.contains('dark');
-        document.documentElement.classList.toggle('dark', !isDark);
-        localStorage.setItem('theme', isDark ? 'light' : 'dark');
+        
+        if (isDark) {
+          document.documentElement.classList.remove('dark');
+          document.body.classList.remove('dark');
+          document.body.className = 'bg-gray-50 text-gray-900 min-h-screen flex items-center justify-center relative overflow-hidden transition-colors duration-300';
+          localStorage.setItem('theme', 'light');
+        } else {
+          document.documentElement.classList.add('dark');
+          document.body.classList.add('dark');
+          document.body.className = 'bg-dark-900 text-white min-h-screen flex items-center justify-center relative overflow-hidden transition-colors duration-300';
+          localStorage.setItem('theme', 'dark');
+        }
       }
+      
+      initializeTheme();
     </script>
 
     <!-- Floating Background Shapes -->
@@ -143,16 +169,16 @@
     <!-- Theme Toggle Button -->
     <button 
       onclick="toggleTheme()" 
-      class="fixed top-6 right-6 z-50 p-3 rounded-full glass-effect bg-dark-800/50 hover:bg-dark-700/50 transition-all duration-200 border border-dark-600"
+      class="fixed top-6 right-6 z-50 p-3 rounded-full glass-effect bg-white/50 dark:bg-dark-800/50 hover:bg-white/70 dark:hover:bg-dark-700/50 transition-all duration-200 border border-gray-300 dark:border-dark-600"
       aria-label="Toggle theme"
     >
-      <span class="material-symbols-outlined dark:hidden text-dark-300">dark_mode</span>
+      <span class="material-symbols-outlined dark:hidden text-gray-700">dark_mode</span>
       <span class="material-symbols-outlined hidden dark:block text-white">light_mode</span>
     </button>
 
     <!-- Main Content -->
     <div class="relative z-10 w-full max-w-md mx-auto p-6">
-      <div class="glass-effect bg-dark-800/30 backdrop-blur-xl rounded-3xl p-8 border border-dark-700/50 shadow-2xl animate-fade-in">
+      <div class="glass-effect bg-white/30 dark:bg-dark-800/30 backdrop-blur-xl rounded-3xl p-8 border border-gray-300/50 dark:border-dark-700/50 shadow-2xl animate-fade-in">
         <!-- Logo and Header -->
         <div class="text-center mb-8">
           <div class="flex items-center justify-center space-x-3 mb-4">
@@ -161,8 +187,8 @@
             </div>
             <h1 class="text-3xl font-bold gradient-text">QUIZIFY</h1>
           </div>
-          <h2 class="text-2xl font-semibold text-white mb-2">Create Account</h2>
-          <p class="text-dark-300">Join thousands of learners worldwide</p>
+          <h2 class="text-2xl font-semibold text-gray-900 dark:text-white mb-2">Create Account</h2>
+          <p class="text-gray-600 dark:text-dark-300">Join thousands of learners worldwide</p>
         </div>
 
         <!-- Signup Form -->
@@ -170,13 +196,13 @@
           <!-- Username Field -->
           <div class="relative group">
             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <span class="material-symbols-outlined text-dark-400 group-focus-within:text-primary-400 transition-colors duration-200">person</span>
+              <span class="material-symbols-outlined text-gray-500 dark:text-dark-400 group-focus-within:text-primary-400 transition-colors duration-200">person</span>
             </div>
             <input 
               type="text" 
               name="username" 
               id="username"
-              class="w-full pl-12 pr-4 py-4 bg-dark-700/50 border border-dark-600 rounded-xl text-white placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+              class="w-full pl-12 pr-4 py-4 bg-white/50 dark:bg-dark-700/50 border border-gray-300 dark:border-dark-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
               placeholder="Choose a username"
               required 
             />
@@ -188,13 +214,13 @@
           <!-- Email Field -->
           <div class="relative group">
             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <span class="material-symbols-outlined text-dark-400 group-focus-within:text-primary-400 transition-colors duration-200">mail</span>
+              <span class="material-symbols-outlined text-gray-500 dark:text-dark-400 group-focus-within:text-primary-400 transition-colors duration-200">mail</span>
             </div>
             <input 
               type="email" 
               name="email" 
               id="email"
-              class="w-full pl-12 pr-4 py-4 bg-dark-700/50 border border-dark-600 rounded-xl text-white placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+              class="w-full pl-12 pr-4 py-4 bg-white/50 dark:bg-dark-700/50 border border-gray-300 dark:border-dark-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
               placeholder="Enter your email"
               required 
             />
@@ -206,13 +232,13 @@
           <!-- Password Field -->
           <div class="relative group">
             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <span class="material-symbols-outlined text-dark-400 group-focus-within:text-primary-400 transition-colors duration-200">lock</span>
+              <span class="material-symbols-outlined text-gray-500 dark:text-dark-400 group-focus-within:text-primary-400 transition-colors duration-200">lock</span>
             </div>
             <input 
               type="password" 
               name="password" 
               id="password"
-              class="w-full pl-12 pr-12 py-4 bg-dark-700/50 border border-dark-600 rounded-xl text-white placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
+              class="w-full pl-12 pr-12 py-4 bg-white/50 dark:bg-dark-700/50 border border-gray-300 dark:border-dark-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-dark-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"
               placeholder="Create a strong password"
               required 
             />
@@ -221,18 +247,18 @@
               onclick="togglePassword()"
               class="absolute inset-y-0 right-0 pr-4 flex items-center"
             >
-              <span class="material-symbols-outlined text-dark-400 hover:text-primary-400 transition-colors duration-200" id="toggle-icon">visibility_off</span>
+              <span class="material-symbols-outlined text-gray-500 dark:text-dark-400 hover:text-primary-400 transition-colors duration-200" id="toggle-icon">visibility_off</span>
             </button>
           </div>
 
           <!-- Password Strength Indicator -->
           <div class="space-y-2">
             <div class="flex space-x-1">
-              <div class="h-1 flex-1 bg-dark-600 rounded-full">
+              <div class="h-1 flex-1 bg-gray-300 dark:bg-dark-600 rounded-full">
                 <div class="h-full bg-red-500 rounded-full transition-all duration-300" id="strength-bar" style="width: 0%"></div>
               </div>
             </div>
-            <p class="text-xs text-dark-400" id="strength-text">Password strength: Weak</p>
+            <p class="text-xs text-gray-500 dark:text-dark-400" id="strength-text">Password strength: Weak</p>
           </div>
 
           <!-- Terms and Conditions -->
@@ -241,9 +267,9 @@
               type="checkbox" 
               id="terms" 
               required
-              class="mt-1 w-4 h-4 text-primary-500 bg-dark-700 border-dark-600 rounded focus:ring-primary-500 focus:ring-2"
+              class="mt-1 w-4 h-4 text-primary-500 bg-white dark:bg-dark-700 border-gray-300 dark:border-dark-600 rounded focus:ring-primary-500 focus:ring-2"
             />
-            <label for="terms" class="text-sm text-dark-300">
+            <label for="terms" class="text-sm text-gray-600 dark:text-dark-300">
               I agree to the 
               <a href="#" class="text-primary-400 hover:text-primary-300 transition-colors duration-200">Terms of Service</a> 
               and 
@@ -254,7 +280,7 @@
           <!-- Signup Button -->
           <button 
             type="submit" 
-            class="w-full py-4 bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 text-white rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-dark-800 animate-pulse-glow"
+            class="w-full py-4 bg-gradient-to-r from-primary-500 to-secondary-500 hover:from-primary-600 hover:to-secondary-600 text-white rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-dark-800 animate-pulse-glow"
           >
             Create Account
           </button>
@@ -262,20 +288,20 @@
 
         <!-- Divider -->
         <div class="my-8 flex items-center">
-          <div class="flex-1 border-t border-dark-600"></div>
-          <span class="px-4 text-dark-400 text-sm">or</span>
-          <div class="flex-1 border-t border-dark-600"></div>
+          <div class="flex-1 border-t border-gray-300 dark:border-dark-600"></div>
+          <span class="px-4 text-gray-500 dark:text-dark-400 text-sm">or</span>
+          <div class="flex-1 border-t border-gray-300 dark:border-dark-600"></div>
         </div>
 
         <!-- Login Link -->
         <div class="text-center space-y-4">
-          <p class="text-dark-300">
+          <p class="text-gray-600 dark:text-dark-300">
             Already have an account?
             <a href="/login" class="text-primary-400 hover:text-primary-300 font-semibold transition-colors duration-200 ml-1">
               Sign In
             </a>
           </p>
-          <a href="/" class="inline-flex items-center text-dark-400 hover:text-white transition-colors duration-200">
+          <a href="/" class="inline-flex items-center text-gray-500 dark:text-dark-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200">
             <span class="material-symbols-outlined mr-2 text-lg">arrow_back</span>
             Back to Home
           </a>
