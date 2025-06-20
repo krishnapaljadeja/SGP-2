@@ -103,18 +103,47 @@
       }
     </style>
   </head>
-  <body class="dark bg-dark-900 text-white transition-colors duration-300">
+  <body class="bg-dark-900 text-white transition-colors duration-300">
     <!-- Theme Toggle Script -->
     <script>
-      // Initialize theme
-      const theme = localStorage.getItem('theme') || 'dark';
-      document.documentElement.classList.toggle('dark', theme === 'dark');
+      // Initialize theme on page load
+      function initializeTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = savedTheme || (prefersDark ? 'dark' : 'dark'); // Default to dark
+        
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+          document.body.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+          document.body.classList.remove('dark');
+        }
+        
+        // Store the theme
+        localStorage.setItem('theme', theme);
+      }
       
       function toggleTheme() {
         const isDark = document.documentElement.classList.contains('dark');
-        document.documentElement.classList.toggle('dark', !isDark);
-        localStorage.setItem('theme', isDark ? 'light' : 'dark');
+        
+        if (isDark) {
+          // Switch to light mode
+          document.documentElement.classList.remove('dark');
+          document.body.classList.remove('dark');
+          document.body.className = document.body.className.replace('bg-dark-900', 'bg-white').replace('text-white', 'text-dark-900');
+          localStorage.setItem('theme', 'light');
+        } else {
+          // Switch to dark mode
+          document.documentElement.classList.add('dark');
+          document.body.classList.add('dark');
+          document.body.className = document.body.className.replace('bg-white', 'bg-dark-900').replace('text-dark-900', 'text-white');
+          localStorage.setItem('theme', 'dark');
+        }
       }
+      
+      // Initialize theme immediately
+      initializeTheme();
     </script>
 
     <!-- Navigation -->
@@ -229,30 +258,6 @@
             <p class="text-dark-300 leading-relaxed">
               Access your quizzes anywhere, anytime with our responsive design that works on all devices.
             </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-primary-900/20 to-secondary-900/20">
-      <div class="max-w-7xl mx-auto">
-        <div class="grid md:grid-cols-4 gap-8 text-center">
-          <div class="animate-fade-in">
-            <div class="text-4xl md:text-5xl font-bold gradient-text mb-2">10K+</div>
-            <div class="text-dark-300 font-medium">Active Users</div>
-          </div>
-          <div class="animate-fade-in" style="animation-delay: 0.1s;">
-            <div class="text-4xl md:text-5xl font-bold gradient-text mb-2">50K+</div>
-            <div class="text-dark-300 font-medium">Quizzes Created</div>
-          </div>
-          <div class="animate-fade-in" style="animation-delay: 0.2s;">
-            <div class="text-4xl md:text-5xl font-bold gradient-text mb-2">95%</div>
-            <div class="text-dark-300 font-medium">Success Rate</div>
-          </div>
-          <div class="animate-fade-in" style="animation-delay: 0.3s;">
-            <div class="text-4xl md:text-5xl font-bold gradient-text mb-2">24/7</div>
-            <div class="text-dark-300 font-medium">Support</div>
           </div>
         </div>
       </div>
